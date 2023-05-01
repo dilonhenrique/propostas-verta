@@ -9,10 +9,23 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.6",
+    "@emotion/server": "^11.10.0",
+    "@emotion/styled": "^11.10.6",
+    "@mui/material": "^5.12.1",
+    "@reduxjs/toolkit": "^1.9.5",
     "eslint": "8.39.0",
     "eslint-config-next": "13.3.1",
+    "framer-motion": "^10.12.4",
     "next": "13.3.1",
+    "next-redux-wrapper": "^8.1.0",
+    "normalize.css": "^8.0.1",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-icons": "^4.8.0",
+    "react-redux": "^8.0.5",
+    "sass": "^1.62.0",
+    "serverless-mysql": "^1.5.5",
+    "uuid": "^9.0.0"
   }
 }

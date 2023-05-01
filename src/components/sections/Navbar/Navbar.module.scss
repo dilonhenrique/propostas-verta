@@ -1,0 +1,40 @@
+.header {
+  background-color: #242424;
+  width: 100%;
+  padding: 12px 0;
+
+  .logoContainer{
+    width: 30px;
+    height: 30px;
+
+    img {
+      border: solid 2px #8D47FF;
+      border-radius: 50%;
+    }
+  }
+
+  .contextualContainer {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+
+    @media (max-width:600px){
+      button {
+        min-width: unset;
+      }
+      button > p {
+        display: none;
+      }
+      button > span {
+        margin-right: 0;
+        
+        * {
+          height:1.4rem;
+          width:1.4rem;
+        }
+      }
+    }
+  }
+}

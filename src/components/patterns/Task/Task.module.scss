@@ -1,0 +1,81 @@
+.task {
+  padding: .5rem 0;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+
+  .dragContainer {
+    width: fit-content;
+
+    .drag {
+      cursor: grab;
+    }
+  }
+
+  .inputsContainer {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    gap: .5rem;
+
+    .primary {
+      flex-grow: 1;
+    }
+
+    .secondary {
+      display: flex;
+      gap: .5rem;
+      width: fit-content;
+      align-items: center;
+
+      .actions {
+        display: flex;
+        flex-wrap: nowrap;
+      }
+    }
+  }
+
+  .actions,
+  .drag {
+    visibility: hidden;
+  }
+
+  &:hover {
+
+    .actions,
+    .drag {
+      visibility: visible;
+    }
+  }
+
+  @media (max-width:600px) {
+    margin: .5rem 0;
+
+    .actions,
+    .drag {
+      visibility: visible;
+    }
+  }
+}
+
+.task:not(.nested) {
+  input {
+    font-weight: bold;
+  }
+}
+
+.nested {
+  .inputsContainer {
+    padding-left: 1rem;
+
+    @media (max-width:600px) {
+      flex-wrap: wrap;
+      padding-left: 0;
+
+      .primary,
+      .secondary {
+        flex-basis: 100%;
+      }
+    }
+  }
+}
