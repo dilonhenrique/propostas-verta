@@ -3,7 +3,7 @@ import Button from '../Button';
 import { ButtonGroup, Divider, ListItemIcon, Menu, MenuItem } from '@mui/material';
 import { FiSave } from 'react-icons/fi';
 import { TbCopy, TbTrash, TbSquareRoundedPlus, TbSquaresDiagonal, TbSquaresFilled, TbSquarePlus, TbSquareRoundedChevronsUp, TbSquareChevronsUp } from 'react-icons/tb';
-import { RiArrowDropDownLine } from 'react-icons/Ri';
+import { RiArrowDropDownLine } from 'react-icons/ri';
 
 const iconProps = {
   size: 20
