@@ -3,6 +3,8 @@
   display: flex;
   align-items: center;
   gap: .5rem;
+  min-width: 0;
+  background-color: #FFF;
 
   .dragContainer {
     width: fit-content;
@@ -17,9 +19,11 @@
     align-items: center;
     flex-grow: 1;
     gap: .5rem;
+    min-width: 0;
 
     .primary {
       flex-grow: 1;
+      max-width: 100%;
     }
 
     .secondary {
@@ -27,6 +31,7 @@
       gap: .5rem;
       width: fit-content;
       align-items: center;
+      max-width: 100%;
 
       .actions {
         display: flex;

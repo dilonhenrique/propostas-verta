@@ -33,10 +33,10 @@ function ProjectBody() {
           </Box>
         </div>
         <div className="row">
-          <Stack flexGrow={1} display={tab === 0 ? 'inherit' : 'none'}>
+          <Stack flexGrow={1} display={tab === 0 ? 'inherit' : 'none'} maxWidth='100%'>
             <Reorder.Group as='div' axis="y" values={escopo} onReorder={changeItemOrder}>
               {escopo.map(item => (
-                <Task key={item.id} itemId={item.id} value={item} />
+                <Task key={item.id} item={item} />
               ))}
             </Reorder.Group>
             <AddButton onClick={adicionarItem()}>Adicionar</AddButton>

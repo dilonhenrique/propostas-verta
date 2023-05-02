@@ -100,10 +100,29 @@ const propostaAtualSlice = createSlice({
       state.custosFixos = state.custosFixos.filter(custo => custo.id !== itemId)
     },
     addItem: (state, { payload }) => {
-      const key = payload;
+      const { type, beforeId } = payload;
+
       let obj = { id: v4() }
-      if (key === 'escopo') obj.tipo = 'tarefa';
-      state[key].push(obj)
+      let index = state[type].length + 2;
+
+      if (type === 'escopo') {
+        obj.tipo = 'tarefa';
+        obj.nome = '';
+        obj.tempo = '';
+        obj.pessoas = '';
+      } else {
+        obj.nome = '';
+        obj.valor = '';
+      }
+
+      if (beforeId) {
+        const itemIndex = state[type].findIndex(item => item.id === beforeId)
+        if(itemIndex >= 0){
+          index = itemIndex + 1;
+        }
+      }
+
+      state[type].splice(index, 0, obj)
     },
     changeItem: (state, { payload }) => {
       const { itemId, type } = payload;
