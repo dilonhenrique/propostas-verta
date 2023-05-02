@@ -84,8 +84,8 @@ export default function calcularProposta(key) {
       if (!propostaAtual.customPrazo) { store.dispatch(setValue({ key: 'prazoEntrega', value: '' })) };
       store.dispatch(setValue({ key: 'valorNota', value: '' }));
       store.dispatch(setValue({ key: 'valorHora', value: '' }));
-      store.dispatch(setValue({ key: 'valorTotal', value: '' }));
-      store.dispatch(setValue({ key: 'valorVista', value: '' }));
+      store.dispatch(setValue({ key: 'valorTotal', value: 0 }));
+      store.dispatch(setValue({ key: 'valorVista', value: 0 }));
     }
   }
 }

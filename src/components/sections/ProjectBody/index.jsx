@@ -4,13 +4,13 @@ import React, { memo, useState } from 'react';
 import Cost from '@/components/patterns/Cost';
 import { useSelector } from 'react-redux';
 import OutlinedInput from '@/components/elements/OutlinedInput';
-import { changeHandler } from '@/utils/changeHandler';
+import { changeHandler } from '@/utils/dispatchers/changeHandler';
 import Task from '@/components/patterns/Task';
 import Button from '@/components/elements/Button';
-import adicionarItem from '@/utils/addItem';
+import adicionarItem from '@/utils/dispatchers/adicionarItem';
 import AddButton from '@/components/elements/AddButton';
 import { Reorder } from 'framer-motion';
-import changeItemOrder from '@/utils/changeItemOrder';
+import changeItemOrder from '@/utils/dispatchers/changeItemOrder';
 
 function ProjectBody() {
   const propostaAtual = useSelector(state => state.propostaAtual);

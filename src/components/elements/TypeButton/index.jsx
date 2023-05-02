@@ -1,4 +1,4 @@
-import mudarItem from '@/utils/mudarItem';
+import mudarItem from '@/utils/dispatchers/mudarItem';
 import { IconButton, Menu, MenuItem, Tooltip } from '@mui/material'
 import React, { useState } from 'react'
 import { TbTriangleSquareCircle } from 'react-icons/tb'

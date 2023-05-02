@@ -1,7 +1,7 @@
 import store from "@/store"
 import { setCusto, setEscopo, setFase, setTarefa, setValue } from "@/store/reducers/propostaAtual";
-import calcularProposta from "./calcularProposta";
-import calculaveis from "./calculaveis";
+import calcularProposta from "../other/calcularProposta";
+import calculaveis from "../other/calculaveis";
 
 export function changeHandler(key, itemId) {
   return (evento) => {

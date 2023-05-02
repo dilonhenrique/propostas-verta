@@ -1,4 +1,4 @@
-import adicionarItem from "@/utils/addItem";
+import adicionarItem from "@/utils/dispatchers/adicionarItem";
 import { InputAdornment, TextField } from "@mui/material";
 
 const iconProps = {

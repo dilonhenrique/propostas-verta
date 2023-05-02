@@ -1,4 +1,4 @@
-import executeQuery from "../db";
+import executeQuery from "../../db";
 
 export default async function handler(req, res) {
   const method = req.method;
@@ -33,11 +33,25 @@ export default async function handler(req, res) {
     });
 
     if (result.length > 0 || result.affectedRows > 0) {
-      res.status(200).json(result)
+      const results = result.map(prop => {
+        let newObj = { ...prop };
+        if (typeof prop.fases === 'string') {
+          newObj.fases = JSON.parse(prop.fases)
+        }
+        if (typeof prop.custosFixos === 'string') {
+          newObj.custosFixos = JSON.parse(prop.custosFixos)
+        }
+        newObj.temNota = !!newObj.temNota;
+        newObj.customParcela = !!newObj.customParcela;
+        newObj.customPrazo = !!newObj.customPrazo;
+        
+        return newObj;
+      })
+      res.status(200).json(results)
     } else {
       res.status(404).end('Nenhuma proposta encontrada')
     }
-    
+
   } catch (error) {
     console.log(error);
   }

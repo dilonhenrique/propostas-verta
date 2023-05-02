@@ -1,6 +1,6 @@
 import store from "@/store";
 import { removeItem } from "@/store/reducers/propostaAtual";
-import calcularProposta from "./calcularProposta";
+import calcularProposta from "../other/calcularProposta";
 
 export default function deleteItem(itemId) {
   return () => {

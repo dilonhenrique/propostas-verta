@@ -1,4 +1,4 @@
-import executeQuery from "../../db";
+import executeQuery from "../../../db";
 
 export default async function handler(req, res) {
   const id = req.query.id;

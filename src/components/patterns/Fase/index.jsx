@@ -7,8 +7,8 @@ import OutlinedInput from '@/components/elements/OutlinedInput';
 import { useSelector } from 'react-redux';
 import Task from '../Task';
 import { memo } from 'react';
-import { changeHandler } from '@/utils/changeHandler';
-import mudarItem from '@/utils/mudarItem';
+import { changeHandler } from '@/utils/dispatchers/changeHandler';
+import mudarItem from '@/utils/dispatchers/mudarItem';
 
 const iconProps = {
   size: 20,

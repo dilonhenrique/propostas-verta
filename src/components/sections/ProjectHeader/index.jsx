@@ -4,10 +4,11 @@ import CategorySelector from '@/components/elements/CategorySelector';
 import { useSelector } from "react-redux";
 import { TextField } from '@mui/material';
 import { memo } from 'react';
-import { changeHandler } from '@/utils/changeHandler';
+import { changeHandler } from '@/utils/dispatchers/changeHandler';
 
 function ProjectHeader() {
-  const { numeroProposta, versaoProposta, categoria, nomeProjeto, descricaoProjeto, cliente, marca } = useSelector(state => state.propostaAtual);
+  const propostaAtual = useSelector(state => state.propostaAtual);
+  const { numeroProposta, versaoProposta, categoria, nomeProjeto, descricaoProjeto, cliente, marca } = propostaAtual;
   const versoesAtual = useSelector(state => state.versoesAtual);
 
   return (
@@ -24,12 +25,12 @@ function ProjectHeader() {
         </div>
         <div className={styles.inputContainer}>
           <div className={styles.col}>
-            <TextField fullWidth required label='nome do projeto' defaultValue={nomeProjeto} onBlur={changeHandler('nomeProjeto')} />
-            <TextField fullWidth required label='descrição' defaultValue={descricaoProjeto} onBlur={changeHandler('descricaoProjeto')} />
+            <TextField fullWidth required label='nome do projeto' value={nomeProjeto} onChange={changeHandler('nomeProjeto')} />
+            <TextField fullWidth required label='descrição' value={descricaoProjeto} onChange={changeHandler('descricaoProjeto')} />
           </div>
           <div className={styles.col}>
-            <TextField fullWidth required label='cliente' defaultValue={cliente} onBlur={changeHandler('cliente')} />
-            <TextField fullWidth label='marca' defaultValue={marca} onBlur={changeHandler('marca')} />
+            <TextField fullWidth required label='cliente' value={cliente} onChange={changeHandler('cliente')} />
+            <TextField fullWidth label='marca' value={marca} onChange={changeHandler('marca')} />
           </div>
         </div>
       </div>

@@ -6,12 +6,12 @@ import TypeButton from '@/components/elements/TypeButton';
 import OutlinedInput from '@/components/elements/OutlinedInput';
 import { useSelector } from 'react-redux';
 import { memo } from 'react';
-import { changeHandler } from '@/utils/changeHandler';
+import { changeHandler } from '@/utils/dispatchers/changeHandler';
 import { Stack } from '@mui/material';
-import deleteItem from '@/utils/deleteItem';
-import mudarItem from '@/utils/mudarItem';
+import deleteItem from '@/utils/dispatchers/deleteItem';
+import mudarItem from '@/utils/dispatchers/mudarItem';
 import { Reorder, useDragControls } from 'framer-motion';
-import { keyDown } from '@/utils/keyDown';
+import { keyDown } from '@/utils/dispatchers/keyDown';
 
 const iconProps = {
   size: 20,
@@ -62,7 +62,7 @@ function Task({ item }) {
             ?
             <Stack direction='row' gap={0.5} sx={{ color: 'gray' }}>
               <TbClock />
-              <p>{taskAtual.tempo}h</p>
+              <p>{taskAtual.tempo || 0}h</p>
             </Stack>
             : taskAtual.tipo === 'terceirizada'
               ?

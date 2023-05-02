@@ -1,9 +1,9 @@
-import { addIdToObject } from "@/utils/addID";
-import createEscopo from "@/utils/createEscopo";
-import { createSlice, current } from "@reduxjs/toolkit";
+import { addIdToObject } from "@/utils/propFunctions/addID";
+import createEscopo from "@/utils/propFunctions/createEscopo";
+import { createSlice } from "@reduxjs/toolkit";
 import { v4 } from "uuid";
 
-const initialState = createEscopo(addIdToObject({
+const example = {
   "id": "72",
   "numeroProposta": "1482",
   "versaoProposta": "1",
@@ -63,7 +63,50 @@ const initialState = createEscopo(addIdToObject({
   "valorVista": 11336.4,
   "status": "aberta",
   "contrato": ""
-}))
+}
+
+const blank = {
+  "id": "72", //get from server
+  "numeroProposta": "1482", //get from server
+  "versaoProposta": "1",
+  "cliente": "",
+  "marca": "",
+  "nomeProjeto": "",
+  "descricaoProjeto": "",
+  "categoria": "IV",
+  "fases": [
+    {
+      "nome": "",
+      "tempo": "",
+      "tarefas": [
+        { "nome": "", "tempo": "", "pessoas": "" }, { "nome": "", "tempo": "", "pessoas": "" }
+      ]
+    }
+  ],
+  "custosFixos": [
+    { "nome": "", "valor": "" }
+  ],
+  "horaTecnica": 120.00, //get from server (defaultProps)
+  "custoBoleto": 2.99, //get from server (defaultProps)
+  "parcelaMinima": 1200.00, //get from server (defaultProps)
+  "descontoVista": 10, //get from server (defaultProps)
+  "descontoPrevisto": 0,
+  "porcentagemNota": 6, //get from server (defaultProps)
+  "temNota": true, //get from server (defaultProps)
+  "valorNota": "",
+  "customPrazo": false,
+  "prazoEntrega": "",
+  "customParcela": false,
+  "parcelas": "",
+  "valorHora": "",
+  "cargaHoraria": 0,
+  "valorTotal": 0,
+  "valorVista": 0,
+  "status": "aberta",
+  "contrato": ""
+}
+
+const initialState = createEscopo(addIdToObject(blank))
 
 const propostaAtualSlice = createSlice({
   name: 'propostaAtual',

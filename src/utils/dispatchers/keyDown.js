@@ -1,4 +1,4 @@
-import adicionarItem from "./addItem"
+import adicionarItem from "./adicionarItem"
 
 export function keyDown(type, itemId) {
   return (evento) => {

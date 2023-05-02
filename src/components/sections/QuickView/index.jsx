@@ -1,19 +1,20 @@
 import { useSelector } from 'react-redux';
 import styles from './QuickView.module.scss';
-import toCurrency from '@/utils/toCurrency';
+import toCurrency from '@/utils/other/toCurrency';
 
 export default function QuickView() {
   const propostaAtual = useSelector(state => state.propostaAtual);
+  const valorParcela = propostaAtual.valorTotal / propostaAtual.parcelas;
 
   return (
     <div className={styles.quickViewContainer}>
       <div className={styles.quickViewContainer__content}>
         <div>
-          <p className={styles.itemLabel}>à vista (10%)</p>
+          <p className={styles.itemLabel}>à vista ({propostaAtual.descontoVista}%)</p>
           <p className={styles.itemValue}>{toCurrency(propostaAtual.valorVista)}</p>
         </div>
         <div>
-          <p className={styles.itemLabel}>{propostaAtual.parcelas}x de {toCurrency(propostaAtual.valorTotal / propostaAtual.parcelas)}</p>
+          <p className={styles.itemLabel}>{valorParcela > 0 ? <>{propostaAtual.parcelas}x de {toCurrency(valorParcela)}</> : 'parcelado'}</p>
           <p className={styles.itemValue}>{toCurrency(propostaAtual.valorTotal)}</p>
         </div>
         <div className={styles.cargaHoraria}>

@@ -6,8 +6,8 @@ import DeleteButton from '@/components/elements/DeleteButton';
 import OutlinedInput from '@/components/elements/OutlinedInput';
 import { useSelector } from 'react-redux';
 import { memo } from 'react';
-import { changeHandler } from '@/utils/changeHandler';
-import deleteItem from '@/utils/deleteItem';
+import { changeHandler } from '@/utils/dispatchers/changeHandler';
+import deleteItem from '@/utils/dispatchers/deleteItem';
 
 const iconProps = {
   size: 20,
