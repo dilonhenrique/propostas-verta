@@ -2,7 +2,7 @@ import store from "@/store";
 
 export async function loadVersoes(numeroProposta) {
   try {
-    let listaPropostas = await fetch(`http://localhost:3000/api/propostas`);
+    let listaPropostas = await fetch(`${window.location.origin}/api/propostas`);
     listaPropostas = await listaPropostas.json();
 
     const versoes = listaPropostas.reduce((acc, proposta) => {

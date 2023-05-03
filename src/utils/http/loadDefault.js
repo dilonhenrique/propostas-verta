@@ -5,7 +5,7 @@ import { changeLoading } from "@/store/reducers/globalStatus";
 
 export async function loadDefault() {
   try {
-    let conexao = await fetch(`http://localhost:3000/api/defaultParams`);
+    let conexao = await fetch(`${window.location.origin}/api/defaultParams`);
     conexao = await conexao.json();
     
     return conexao;
