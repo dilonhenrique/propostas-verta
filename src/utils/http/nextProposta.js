@@ -3,7 +3,7 @@ import { setValue } from "@/store/reducers/propostaAtual";
 
 export async function nextProposta() {
   try {
-    let listaPropostas = await fetch(`${window.location.origin}/api/propostas`);
+    let listaPropostas = await fetch(`https://propostas.vercel.app/api/propostas`);
     listaPropostas = await listaPropostas.json();
 
     let amostragem = 10 //x últimas propostas (performance)

@@ -4,7 +4,7 @@ import { addIdToObject } from "../propFunctions/addID";
 export async function loadProposta(id) {
   try {
     //baixa a proposta de acordo com id
-    let conexao = await fetch(`${window.location.origin}/api/propostas/${id[0]}`);
+    let conexao = await fetch(`https://propostas.vercel.app/api/propostas/${id[0]}`);
     conexao = await conexao.json();
     conexao = createEscopo(addIdToObject(conexao[0]));
     return conexao;

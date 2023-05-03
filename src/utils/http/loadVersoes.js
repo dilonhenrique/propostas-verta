@@ -2,7 +2,7 @@ import store from "@/store";
 
 export async function loadVersoes(numeroProposta) {
   try {
-    let listaPropostas = await fetch(`${window.location.origin}/api/propostas`);
+    let listaPropostas = await fetch(`https://propostas.vercel.app/api/propostas`);
     listaPropostas = await listaPropostas.json();
 
     const versoes = listaPropostas.reduce((acc, proposta) => {
