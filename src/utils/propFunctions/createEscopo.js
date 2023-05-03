@@ -1,9 +1,9 @@
 export default function createEscopo(obj) {
-  if (!'escopo' in obj) return obj;
+  if ('escopo' in obj) return obj;
 
   let newObj = { ...obj, escopo: [] }
 
-  newObj.fases.map(fase => {
+  newObj.fases?.map(fase => {
     newObj.escopo.push({
       ...fase,
       tipo: 'fase'

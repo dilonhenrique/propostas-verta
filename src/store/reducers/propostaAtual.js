@@ -66,21 +66,34 @@ const example = {
 }
 
 const blank = {
-  "id": "72", //get from server
-  "numeroProposta": "1482", //get from server
+  //"id": "72", //cria automaticamente ao salvar
+  "numeroProposta": "0000", //get from server
   "versaoProposta": "1",
   "cliente": "",
   "marca": "",
   "nomeProjeto": "",
   "descricaoProjeto": "",
   "categoria": "IV",
-  "fases": [
+  "escopo": [
     {
+      "id": v4(),
+      "tipo": "fase",
+      "nome": "",
+      "tempo": 0,
+    },
+    {
+      "id": v4(),
+      "tipo": "tarefa",
       "nome": "",
       "tempo": "",
-      "tarefas": [
-        { "nome": "", "tempo": "", "pessoas": "" }, { "nome": "", "tempo": "", "pessoas": "" }
-      ]
+      "pessoas": "",
+    },
+    {
+      "id": v4(),
+      "tipo": "tarefa",
+      "nome": "",
+      "tempo": "",
+      "pessoas": "",
     }
   ],
   "custosFixos": [
@@ -143,7 +156,7 @@ const propostaAtualSlice = createSlice({
       state.custosFixos = state.custosFixos.filter(custo => custo.id !== itemId)
     },
     addItem: (state, { payload }) => {
-      const { type, beforeId } = payload;
+      const { type, beforeId, autoFocus  } = payload;
 
       let obj = { id: v4() }
       let index = state[type].length + 2;
@@ -157,6 +170,7 @@ const propostaAtualSlice = createSlice({
         obj.nome = '';
         obj.valor = '';
       }
+      if(autoFocus ){obj.autoFocus  = true}
 
       if (beforeId) {
         const itemIndex = state[type].findIndex(item => item.id === beforeId)
@@ -165,7 +179,7 @@ const propostaAtualSlice = createSlice({
         }
       }
 
-      state[type].splice(index, 0, obj)
+      state[type].splice(index, 0, obj);
     },
     changeItem: (state, { payload }) => {
       const { itemId, type } = payload;

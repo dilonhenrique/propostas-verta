@@ -1,11 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = [1, 2, 3]
+const initialState = []
 
 const versoesAtualSlice = createSlice({
   name: 'versoesAtual',
   initialState,
-  reducers: {}
+  reducers: {
+    setVersoes: (state, { payload }) => {
+      return payload;
+    }
+  }
 })
 
+export const { setVersoes } = versoesAtualSlice.actions;
 export default versoesAtualSlice.reducer;

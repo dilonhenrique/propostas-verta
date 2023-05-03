@@ -5,8 +5,11 @@ import { useSelector } from "react-redux";
 import { TextField } from '@mui/material';
 import { memo } from 'react';
 import { changeHandler } from '@/utils/dispatchers/changeHandler';
+import { useRouter } from 'next/router';
+import versionSwitcher from '@/utils/dispatchers/versionSwitcher';
 
 function ProjectHeader() {
+  const router = useRouter();
   const propostaAtual = useSelector(state => state.propostaAtual);
   const { numeroProposta, versaoProposta, categoria, nomeProjeto, descricaoProjeto, cliente, marca } = propostaAtual;
   const versoesAtual = useSelector(state => state.versoesAtual);
@@ -17,7 +20,9 @@ function ProjectHeader() {
         <div className={styles.titleContainer}>
           <div>
             <h1 style={{ display: 'inline-block', marginRight: '1rem' }}>Proposta {`${numeroProposta}.${versaoProposta}`}</h1>
-            <VersionSelector options={versoesAtual} value={versaoProposta} onChange={changeHandler('versaoProposta')} />
+            {versoesAtual.length > 1 &&
+              <VersionSelector options={versoesAtual} value={versaoProposta} onChange={versionSwitcher(router)} />
+            }
           </div>
           <div>
             <CategorySelector value={categoria} onChange={changeHandler('categoria')} />

@@ -21,11 +21,7 @@ const iconProps = {
 function Task({ item }) {
 
   const controls = useDragControls();
-  const taskAtual = useSelector(state =>
-    state.propostaAtual.escopo.find(i =>
-      i.id === item.id
-    )
-  );
+  const taskAtual = item;
 
   return (
     <Reorder.Item
@@ -33,70 +29,76 @@ function Task({ item }) {
       dragListener={false}
       dragControls={controls}
       as='div'
-      className={taskAtual.tipo === 'fase' ? styles.task : `${styles.task} ${styles.nested}`}
-      initial={false} animate={false} exit={false}
+      whileDrag={{ boxShadow: "5px 5px 10px rgba(0,0,0,0.3)" }}
+      layout={false}
+      transition={{ type: "tween" }}
+      animate={{ opacity: 1, height: 'auto', y: 0 }}
+      initial={{ opacity: 0, height: 0, y: '-100%' }}
+      exit={{ opacity: 0, height: 0, y: '-100%' }}
     >
-      <div
-        className={styles.dragContainer}
-        style={{ touchAction: "none" }}
-        onPointerDown={(e) => {
-          controls.start(e);
-          e.preventDefault();
-        }}
-      >
-        <TbGripVertical className={styles.drag} {...iconProps} />
-      </div>
-      <div className={styles.inputsContainer}>
-        <div className={styles.primary}>
-          <OutlinedInput
-            fullWidth
-            placeholder={`nome da ${taskAtual.tipo}`}
-            defaultValue={taskAtual.nome}
-            onBlur={changeHandler('nome', item.id)}
-            onKeyDown={keyDown('escopo', item.id)}
-            InputProps={{ autoFocus: true }}
-          />
+      <div className={taskAtual.tipo === 'fase' ? styles.task : `${styles.task} ${styles.nested}`}>
+        <div
+          className={styles.dragContainer}
+          style={{ touchAction: "none" }}
+          onPointerDown={(e) => {
+            controls.start(e);
+            e.preventDefault();
+          }}
+        >
+          <TbGripVertical className={styles.drag} {...iconProps} />
         </div>
-        <div className={styles.secondary}>
-          {taskAtual.tipo === 'fase'
-            ?
-            <Stack direction='row' gap={0.5} sx={{ color: 'gray' }}>
-              <TbClock />
-              <p>{taskAtual.tempo || 0}h</p>
-            </Stack>
-            : taskAtual.tipo === 'terceirizada'
+        <div className={styles.inputsContainer}>
+          <div className={styles.primary}>
+            <OutlinedInput
+              fullWidth
+              placeholder={`nome da ${taskAtual.tipo}`}
+              defaultValue={taskAtual.nome}
+              onBlur={changeHandler('nome', item.id)}
+              onKeyDown={keyDown('escopo', item.id)}
+              InputProps={{ autoFocus : item.autoFocus  }}
+            />
+          </div>
+          <div className={styles.secondary}>
+            {taskAtual.tipo === 'fase'
               ?
-              <OutlinedInput
-                defaultValue={taskAtual.valor}
-                onBlur={changeHandler('valor', item.id)}
-                type='number'
-                placeholder='custo'
-                sx={{ width: '125px' }}
-                Icon={TbCashBanknote}
-              />
-              :
-              <>
+              <Stack direction='row' gap={0.5} sx={{ color: 'gray' }}>
+                <TbClock />
+                <p>{taskAtual.tempo || 0}h</p>
+              </Stack>
+              : taskAtual.tipo === 'terceirizada'
+                ?
                 <OutlinedInput
-                  defaultValue={taskAtual.tempo}
-                  onBlur={changeHandler('tempo', item.id)}
+                  defaultValue={taskAtual.valor}
+                  onBlur={changeHandler('valor', item.id)}
                   type='number'
-                  placeholder='tempo'
+                  placeholder='custo'
                   sx={{ width: '125px' }}
-                  Icon={TbClock}
+                  Icon={TbCashBanknote}
                 />
-                <OutlinedInput
-                  defaultValue={taskAtual.pessoas == 1 ? '' : taskAtual.pessoas}
-                  onBlur={changeHandler('pessoas', item.id)}
-                  type='number'
-                  placeholder='pessoas'
-                  sx={{ width: '125px' }}
-                  Icon={TbMoodSmile}
-                />
-              </>
-          }
-          <div className={styles.actions}>
-            <DeleteButton onClick={deleteItem(item.id)} iconProps={iconProps} />
-            <TypeButton changeFn={mudarItem(item.id)} iconProps={iconProps} />
+                :
+                <>
+                  <OutlinedInput
+                    defaultValue={taskAtual.tempo}
+                    onBlur={changeHandler('tempo', item.id)}
+                    type='number'
+                    placeholder='tempo'
+                    sx={{ width: '125px' }}
+                    Icon={TbClock}
+                  />
+                  <OutlinedInput
+                    defaultValue={taskAtual.pessoas == 1 ? '' : taskAtual.pessoas}
+                    onBlur={changeHandler('pessoas', item.id)}
+                    type='number'
+                    placeholder='pessoas'
+                    sx={{ width: '125px' }}
+                    Icon={TbMoodSmile}
+                  />
+                </>
+            }
+            <div className={styles.actions}>
+              <DeleteButton onClick={deleteItem(item.id)} iconProps={iconProps} />
+              <TypeButton changeFn={mudarItem(item.id)} iconProps={iconProps} />
+            </div>
           </div>
         </div>
       </div>

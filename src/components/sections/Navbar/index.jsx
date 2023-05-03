@@ -2,24 +2,29 @@
 import Button from '@/components/elements/Button';
 import styles from './Navbar.module.scss';
 
-import { TbFileCheck, TbFileLike, TbFileExport, TbFileDollar, TbSignature, TbTrash, TbTriangleSquareCircle } from 'react-icons/tb';
+import { TbFileCheck, TbFileLike, TbFileExport, TbFileDollar, TbSignature, TbTrash, TbTriangleSquareCircle, TbSearch } from 'react-icons/tb';
 import SaveButton from '@/components/elements/SaveButton';
 import { memo } from 'react';
+import Link from 'next/link';
+import { useSelector } from 'react-redux';
+import { InputAdornment, TextField } from '@mui/material';
 
 const iconStyle = {
   size: 18
 }
 
 function Navbar() {
-  const editar = true;
+  const { mode } = useSelector(state => state.globalStatus);
 
   return (
     <header className={styles.header}>
       <div className='container row'>
         <div className={styles.logoContainer}>
-          <img src='/assets/images/verta.jpg' alt="Logotipo Estúdio Vertá" />
+          <Link href='/'>
+            <img src='/assets/images/verta.jpg' alt="Logotipo Estúdio Vertá" />
+          </Link>
         </div>
-        {editar
+        {mode === 'edit'
           ? <div className={styles.contextualContainer}>
             <SaveButton iconStyle={iconStyle} />
             <Button startIcon={<TbFileExport {...iconStyle} />}><p>Exportar</p></Button>
@@ -27,6 +32,7 @@ function Navbar() {
           </div>
           : <div className={styles.contextualContainer}>
             busca, defaultparams, nova proposta (talvez como speed dial)
+            <TextField variant='outlined' size="small" type='search' placeholder='Buscar...' InputProps={{sx:{backgroundColor:'#FFFFFF'},startAdornment:<InputAdornment position="start"><TbSearch size={18} /></InputAdornment>}} />
           </div>
         }
       </div>

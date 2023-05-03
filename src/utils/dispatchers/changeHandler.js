@@ -8,7 +8,7 @@ export function changeHandler(key, itemId) {
     let value = evento.target.value;
     if (key === 'pessoas' && evento.target.value == '') value = 1;
     if (calculaveis.includes(key) && typeof value === 'string') value = Number(value);
-    if (evento.target.classList.contains('MuiSwitch-input')) value = evento.target.checked;
+    if (evento.target.classList?.contains('MuiSwitch-input')) value = evento.target.checked;
 
     const { propostaAtual } = store.getState();
 

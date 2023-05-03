@@ -8,34 +8,41 @@ import { useSelector } from 'react-redux';
 import { memo } from 'react';
 import { changeHandler } from '@/utils/dispatchers/changeHandler';
 import deleteItem from '@/utils/dispatchers/deleteItem';
+import { motion } from 'framer-motion';
 
 const iconProps = {
   size: 20,
   color: '#A6A6A6'
 }
 
-function Cost({ itemId }) {
-  const costAtual = useSelector(state => state.propostaAtual.custosFixos.find(custo => custo.id === itemId));
+function Cost({ custo }) {
 
   return (
-    <Stack gap={1} direction='row' className={styles.cost} justifyContent='center' flexGrow={1}>
-      <OutlinedInput
-        defaultValue={costAtual.nome}
-        onBlur={changeHandler('nome', itemId)}
-        placeholder='nome'
-        Icon={TbTag}
-      />
-      <OutlinedInput
-        defaultValue={costAtual.valor}
-        onBlur={changeHandler('valor', itemId)}
-        type='number'
-        placeholder='valor'
-        Icon={TbCashBanknote}
-      />
-      <div className={styles.icons}>
-        <DeleteButton onClick={deleteItem(itemId)} iconProps={iconProps} />
-      </div>
-    </Stack>
+    <motion.div
+      transition={{ type: "tween" }}
+      animate={{ opacity: 1, height: 'auto', y: 0 }}
+      initial={{ opacity: 0, height: 0, y: '-100%' }}
+      exit={{ opacity: 0, height: 0, y: '-100%' }}
+    >
+      <Stack gap={1} direction='row' className={styles.cost} justifyContent='center' flexGrow={1}>
+        <OutlinedInput
+          defaultValue={custo.nome}
+          onBlur={changeHandler('nome', custo.id)}
+          placeholder='nome'
+          Icon={TbTag}
+        />
+        <OutlinedInput
+          defaultValue={custo.valor}
+          onBlur={changeHandler('valor', custo.id)}
+          type='number'
+          placeholder='valor'
+          Icon={TbCashBanknote}
+        />
+        <div className={styles.icons}>
+          <DeleteButton onClick={deleteItem(custo.id)} iconProps={iconProps} />
+        </div>
+      </Stack>
+    </motion.div>
   )
 }
 

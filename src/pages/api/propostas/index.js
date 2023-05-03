@@ -8,16 +8,16 @@ export default async function handler(req, res) {
 
   if (method === 'GET') {
     query = 'SELECT * FROM proposta';
-    if (params) {
-      query += ' WHERE '
-      let keyval = [];
-      for (let key in params) {
-        if (params.hasOwnProperty(key)) {
-          keyval.push(key + " = '" + params[key] + "'");
-        }
-      }
-      query += keyval.join(", ");
-    }
+    // if (params) {
+    //   query += ' WHERE '
+    //   let keyval = [];
+    //   for (let key in params) {
+    //     if (params.hasOwnProperty(key)) {
+    //       keyval.push(key + " = '" + params[key] + "'");
+    //     }
+    //   }
+    //   query += keyval.join(", ");
+    // }
   } else {
     const keys = Object.keys(data);
     const values = Object.values(data);
