@@ -1,5 +1,4 @@
 import { TbCashBanknote, TbClock, TbGripVertical, TbMoodSmile } from 'react-icons/tb';
-
 import styles from './Task.module.scss';
 import DeleteButton from '@/components/elements/DeleteButton';
 import TypeButton from '@/components/elements/TypeButton';
@@ -70,7 +69,6 @@ function Task({ item }) {
       dragControls={controls}
       as='div'
       whileDrag={{ boxShadow: "5px 5px 10px rgba(0,0,0,0.3)" }}
-      layout={false}
       transition={{ type: "tween" }}
       animate={{ opacity: 1, height: 'auto', y: 0 }}
       initial={{ opacity: 0, height: 0, y: '-100%' }}

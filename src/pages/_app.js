@@ -1,13 +1,9 @@
 import 'normalize.css/normalize.css';
 import '@/styles/globals.scss';
 import { theme } from '@/theme/theme';
-import { Fade, ThemeProvider } from '@mui/material';
+import { ThemeProvider } from '@mui/material';
 import { Provider } from 'react-redux'
 import store from '@/store';
-import PageLoader from '@/components/patterns/PageLoader';
-import { AnimatePresence } from 'framer-motion';
-import { useEffect, useState } from 'react';
-import { Router } from 'next/router';
 import { Loader } from '@/components/patterns/Loader';
 
 
