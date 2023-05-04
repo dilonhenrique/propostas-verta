@@ -58,6 +58,7 @@ html {
 body,
 #__next {
   min-height: 100%;
+  height: inherit;
 }
 
 #__next {
