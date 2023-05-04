@@ -4,10 +4,8 @@ import { TbCashBanknote, TbTag } from 'react-icons/tb';
 import styles from './Cost.module.scss';
 import DeleteButton from '@/components/elements/DeleteButton';
 import OutlinedInput from '@/components/elements/OutlinedInput';
-import { useSelector } from 'react-redux';
 import { memo } from 'react';
-import { changeHandler } from '@/utils/dispatchers/changeHandler';
-import deleteItem from '@/utils/dispatchers/deleteItem';
+import propostaDispatcher from '@/commom/dispatchers/propostaDispatcher';
 import { motion } from 'framer-motion';
 
 const iconProps = {
@@ -27,19 +25,19 @@ function Cost({ custo }) {
       <Stack gap={1} direction='row' className={styles.cost} justifyContent='center' flexGrow={1}>
         <OutlinedInput
           defaultValue={custo.nome}
-          onBlur={changeHandler('nome', custo.id)}
+          onBlur={propostaDispatcher.changeHandler('nome', custo.id)}
           placeholder='nome'
           Icon={TbTag}
         />
         <OutlinedInput
           defaultValue={custo.valor}
-          onBlur={changeHandler('valor', custo.id)}
+          onBlur={propostaDispatcher.changeHandler('valor', custo.id)}
           type='number'
           placeholder='valor'
           Icon={TbCashBanknote}
         />
         <div className={styles.icons}>
-          <DeleteButton onClick={deleteItem(custo.id)} iconProps={iconProps} />
+          <DeleteButton onClick={propostaDispatcher.deleteItem(custo.id)} iconProps={iconProps} />
         </div>
       </Stack>
     </motion.div>

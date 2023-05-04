@@ -1,5 +1,4 @@
 import PageTitle from '@/components/elements/PageTitle';
-import { Layout } from '@/components/patterns/PageLoader';
 import Navbar from '@/components/sections/Navbar';
 import ProjectBody from '@/components/sections/ProjectBody';
 import ProjectHeader from '@/components/sections/ProjectHeader';
@@ -8,20 +7,17 @@ import { setGlobalValue } from '@/store/reducers/globalStatus';
 import { setValue } from '@/store/reducers/propostaAtual';
 import { setProposta } from '@/store/reducers/propostaAtual';
 import { setVersoes } from '@/store/reducers/versoesAtual';
-import { loadDefault } from '@/utils/http/loadDefault';
-import { loadProposta } from '@/utils/http/loadProposta';
-import { loadVersoes } from '@/utils/http/loadVersoes';
-import { nextProposta } from '@/utils/http/nextProposta';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
+import propostaService from '@/commom/service/propostaService';
 
 export async function getServerSideProps({ params }) {
   const { id } = params;
 
   try {
     if (id?.length) {
-      const propostaAtual = await loadProposta(id);
-      const versoes = await loadVersoes(propostaAtual.numeroProposta);
+      const propostaAtual = await propostaService.getSingleProposta(id);
+      const versoes = await propostaService.getVersions(propostaAtual.numeroProposta);
 
       return {
         props: {
@@ -31,10 +27,14 @@ export async function getServerSideProps({ params }) {
       }
     }
   } catch (err) {
-    console.log(err)
+    if(err.response?.status){
+      console.error(err.response.status, err.response?.data);
+    } else {
+      console.error(err);
+    }
   }
-  const defaultParams = await loadDefault();
-  const numeroProposta = await nextProposta();
+  const defaultParams = await propostaService.getDefaultParams();
+  const numeroProposta = await propostaService.getNextProposta();
 
   return {
     props: {

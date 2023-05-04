@@ -4,9 +4,8 @@ import CategorySelector from '@/components/elements/CategorySelector';
 import { useSelector } from "react-redux";
 import { TextField } from '@mui/material';
 import { memo } from 'react';
-import { changeHandler } from '@/utils/dispatchers/changeHandler';
+import propostaDispatcher from '@/commom/dispatchers/propostaDispatcher';
 import { useRouter } from 'next/router';
-import versionSwitcher from '@/utils/dispatchers/versionSwitcher';
 
 function ProjectHeader() {
   const router = useRouter();
@@ -21,21 +20,21 @@ function ProjectHeader() {
           <div>
             <h1 style={{ display: 'inline-block', marginRight: '1rem' }}>Proposta {`${numeroProposta}.${versaoProposta}`}</h1>
             {versoesAtual.length > 1 &&
-              <VersionSelector options={versoesAtual} value={versaoProposta} onChange={versionSwitcher(router)} />
+              <VersionSelector options={versoesAtual} value={versaoProposta} onChange={propostaDispatcher.versionSwitcher(router)} />
             }
           </div>
           <div>
-            <CategorySelector value={categoria} onChange={changeHandler('categoria')} />
+            <CategorySelector value={categoria} onChange={propostaDispatcher.changeHandler('categoria')} />
           </div>
         </div>
         <div className={styles.inputContainer}>
           <div className={styles.col}>
-            <TextField fullWidth required label='nome do projeto' value={nomeProjeto} onChange={changeHandler('nomeProjeto')} />
-            <TextField fullWidth required label='descrição' value={descricaoProjeto} onChange={changeHandler('descricaoProjeto')} />
+            <TextField fullWidth required label='nome do projeto' value={nomeProjeto} onChange={propostaDispatcher.changeHandler('nomeProjeto')} />
+            <TextField fullWidth required label='descrição' value={descricaoProjeto} onChange={propostaDispatcher.changeHandler('descricaoProjeto')} />
           </div>
           <div className={styles.col}>
-            <TextField fullWidth required label='cliente' value={cliente} onChange={changeHandler('cliente')} />
-            <TextField fullWidth label='marca' value={marca} onChange={changeHandler('marca')} />
+            <TextField fullWidth required label='cliente' value={cliente} onChange={propostaDispatcher.changeHandler('cliente')} />
+            <TextField fullWidth label='marca' value={marca} onChange={propostaDispatcher.changeHandler('marca')} />
           </div>
         </div>
       </div>

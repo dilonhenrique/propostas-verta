@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import styles from './QuickView.module.scss';
-import toCurrency from '@/utils/other/toCurrency';
+import toCurrency from '@/commom/utils/toCurrency';
 
 export default function QuickView() {
   const propostaAtual = useSelector(state => state.propostaAtual);

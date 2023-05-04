@@ -1,5 +1,5 @@
-import { addIdToObject } from "@/utils/propFunctions/addID";
-import createEscopo from "@/utils/propFunctions/createEscopo";
+import { addIdToObject } from "@/commom/propFunctions/addID";
+import createEscopo from "@/commom/propFunctions/createEscopo";
 import { createSlice } from "@reduxjs/toolkit";
 import { v4 } from "uuid";
 

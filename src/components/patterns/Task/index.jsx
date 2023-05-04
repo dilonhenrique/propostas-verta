@@ -4,14 +4,10 @@ import styles from './Task.module.scss';
 import DeleteButton from '@/components/elements/DeleteButton';
 import TypeButton from '@/components/elements/TypeButton';
 import OutlinedInput from '@/components/elements/OutlinedInput';
-import { useSelector } from 'react-redux';
 import { memo } from 'react';
-import { changeHandler } from '@/utils/dispatchers/changeHandler';
 import { Stack } from '@mui/material';
-import deleteItem from '@/utils/dispatchers/deleteItem';
-import mudarItem from '@/utils/dispatchers/mudarItem';
+import propostaDispatcher from '@/commom/dispatchers/propostaDispatcher';
 import { Reorder, useDragControls } from 'framer-motion';
-import { keyDown } from '@/utils/dispatchers/keyDown';
 
 const iconProps = {
   size: 20,
@@ -22,6 +18,50 @@ function Task({ item }) {
 
   const controls = useDragControls();
   const taskAtual = item;
+
+  const secondaryFields = {
+    fase:
+      <Stack direction='row' gap={0.5} sx={{ color: 'gray' }}>
+        <TbClock />
+        <p>{taskAtual.tempo || 0}h</p>
+      </Stack>,
+
+    terceirizada:
+      <OutlinedInput
+        defaultValue={taskAtual.valor}
+        onBlur={propostaDispatcher.changeHandler('valor', item.id)}
+        type='number'
+        placeholder='custo'
+        sx={{ width: '125px' }}
+        Icon={TbCashBanknote}
+      />,
+      
+    tarefa:
+      <>
+        <OutlinedInput
+          defaultValue={taskAtual.tempo}
+          onBlur={propostaDispatcher.changeHandler('tempo', item.id)}
+          type='number'
+          placeholder='tempo'
+          sx={{ width: '125px' }}
+          Icon={TbClock}
+        />
+        <OutlinedInput
+          defaultValue={taskAtual.pessoas == 1 ? '' : taskAtual.pessoas}
+          onBlur={propostaDispatcher.changeHandler('pessoas', item.id)}
+          type='number'
+          placeholder='pessoas'
+          sx={{ width: '125px' }}
+          Icon={TbMoodSmile}
+        />
+      </>,
+  }
+
+  const fieldOptions = {
+    fase: secondaryFields.fase,
+    terceirizada: secondaryFields.terceirizada,
+    tarefa: secondaryFields.tarefa,
+  }
 
   return (
     <Reorder.Item
@@ -53,51 +93,16 @@ function Task({ item }) {
               fullWidth
               placeholder={`nome da ${taskAtual.tipo}`}
               defaultValue={taskAtual.nome}
-              onBlur={changeHandler('nome', item.id)}
-              onKeyDown={keyDown('escopo', item.id)}
-              InputProps={{ autoFocus : item.autoFocus  }}
+              onBlur={propostaDispatcher.changeHandler('nome', item.id)}
+              onKeyDown={propostaDispatcher.keyDownHandler('escopo', item.id)}
+              InputProps={{ autoFocus: item.autoFocus }}
             />
           </div>
           <div className={styles.secondary}>
-            {taskAtual.tipo === 'fase'
-              ?
-              <Stack direction='row' gap={0.5} sx={{ color: 'gray' }}>
-                <TbClock />
-                <p>{taskAtual.tempo || 0}h</p>
-              </Stack>
-              : taskAtual.tipo === 'terceirizada'
-                ?
-                <OutlinedInput
-                  defaultValue={taskAtual.valor}
-                  onBlur={changeHandler('valor', item.id)}
-                  type='number'
-                  placeholder='custo'
-                  sx={{ width: '125px' }}
-                  Icon={TbCashBanknote}
-                />
-                :
-                <>
-                  <OutlinedInput
-                    defaultValue={taskAtual.tempo}
-                    onBlur={changeHandler('tempo', item.id)}
-                    type='number'
-                    placeholder='tempo'
-                    sx={{ width: '125px' }}
-                    Icon={TbClock}
-                  />
-                  <OutlinedInput
-                    defaultValue={taskAtual.pessoas == 1 ? '' : taskAtual.pessoas}
-                    onBlur={changeHandler('pessoas', item.id)}
-                    type='number'
-                    placeholder='pessoas'
-                    sx={{ width: '125px' }}
-                    Icon={TbMoodSmile}
-                  />
-                </>
-            }
+            {fieldOptions[taskAtual.tipo] || fieldOptions['tarefa']}
             <div className={styles.actions}>
-              <DeleteButton onClick={deleteItem(item.id)} iconProps={iconProps} />
-              <TypeButton changeFn={mudarItem(item.id)} iconProps={iconProps} />
+              <DeleteButton onClick={propostaDispatcher.deleteItem(item.id)} iconProps={iconProps} />
+              <TypeButton changeFn={propostaDispatcher.changeItemType(item.id)} iconProps={iconProps} />
             </div>
           </div>
         </div>

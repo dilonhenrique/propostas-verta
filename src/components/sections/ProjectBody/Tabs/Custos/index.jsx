@@ -1,9 +1,8 @@
 import AddButton from '@/components/elements/AddButton'
 import styles from '../../ProjectBody.module.scss'
 import Cost from '@/components/patterns/Cost'
-import adicionarItem from '@/utils/dispatchers/adicionarItem';
-import { Stack } from '@mui/material'
-import { AnimatePresence, Reorder, motion } from 'framer-motion'
+import propostaDispatcher from '@/commom/dispatchers/propostaDispatcher';
+import { AnimatePresence, motion } from 'framer-motion'
 import React from 'react'
 import { useSelector } from 'react-redux';
 
@@ -21,7 +20,7 @@ export default function Custos({ selectedTab, variant }) {
           <Cost custo={custo} key={custo.id} />
         ))}
       </AnimatePresence>
-      <AddButton onClick={adicionarItem('custosFixos')}>Adicionar</AddButton>
+      <AddButton onClick={propostaDispatcher.addItem('custosFixos')}>Adicionar</AddButton>
     </motion.div>
   )
 }

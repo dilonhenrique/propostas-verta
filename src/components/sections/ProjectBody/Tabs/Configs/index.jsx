@@ -1,6 +1,6 @@
 import OutlinedInput from '@/components/elements/OutlinedInput'
 import styles from '../../ProjectBody.module.scss'
-import { changeHandler } from '@/utils/dispatchers/changeHandler';
+import propostaDispatcher from '@/commom/dispatchers/propostaDispatcher';
 import { InputAdornment, Stack, Switch } from '@mui/material'
 import React from 'react'
 import { Reorder, motion } from 'framer-motion'
@@ -23,7 +23,7 @@ export default function Configs({ selectedTab, variant }) {
           sx={{ flexBasis: '50%' }}
           value={propostaAtual.custoBoleto || ''}
           label='Custo do boleto'
-          onChange={changeHandler('custoBoleto')}
+          onChange={propostaDispatcher.changeHandler('custoBoleto')}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start"><small>R$</small></InputAdornment>
@@ -34,7 +34,7 @@ export default function Configs({ selectedTab, variant }) {
           sx={{ flexBasis: '50%' }}
           value={propostaAtual.parcelaMinima || ''}
           label='Parcela mínima'
-          onChange={changeHandler('parcelaMinima')}
+          onChange={propostaDispatcher.changeHandler('parcelaMinima')}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start"><small>R$</small></InputAdornment>
@@ -47,7 +47,7 @@ export default function Configs({ selectedTab, variant }) {
           sx={{ flexBasis: '50%' }}
           value={propostaAtual.descontoVista || ''}
           label='Desconto à vista'
-          onChange={changeHandler('descontoVista')}
+          onChange={propostaDispatcher.changeHandler('descontoVista')}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">%</InputAdornment>
@@ -58,7 +58,7 @@ export default function Configs({ selectedTab, variant }) {
           sx={{ flexBasis: '50%' }}
           value={propostaAtual.porcentagemNota || ''}
           label='Porcentagem NF'
-          onChange={changeHandler('porcentagemNota')}
+          onChange={propostaDispatcher.changeHandler('porcentagemNota')}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">%</InputAdornment>
@@ -69,7 +69,7 @@ export default function Configs({ selectedTab, variant }) {
       <OutlinedInput
         value={propostaAtual.horaTecnica || ''}
         label='Hora técnica inicial'
-        onChange={changeHandler('horaTecnica')}
+        onChange={propostaDispatcher.changeHandler('horaTecnica')}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start"><small>R$</small></InputAdornment>
@@ -82,7 +82,7 @@ export default function Configs({ selectedTab, variant }) {
       <OutlinedInput
         value={propostaAtual.valorHora || ''}
         label='Valor/hora final'
-        onChange={changeHandler('valorHora')}
+        onChange={propostaDispatcher.changeHandler('valorHora')}
         disabled
         InputProps={{
           startAdornment: (
@@ -98,7 +98,7 @@ export default function Configs({ selectedTab, variant }) {
           sx={{ flexBasis: '50%' }}
           value={propostaAtual.descontoPrevisto || ''}
           label='Desconto previsto'
-          onChange={changeHandler('descontoPrevisto')}
+          onChange={propostaDispatcher.changeHandler('descontoPrevisto')}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">%</InputAdornment>
@@ -110,11 +110,11 @@ export default function Configs({ selectedTab, variant }) {
           value={propostaAtual.valorNota}
           label='Valor da nota'
           disabled
-          onChange={changeHandler('valorNota')}
+          onChange={propostaDispatcher.changeHandler('valorNota')}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
-                <Switch size="small" checked={propostaAtual.temNota} onChange={changeHandler('temNota')} />
+                <Switch size="small" checked={propostaAtual.temNota} onChange={propostaDispatcher.changeHandler('temNota')} />
               </InputAdornment>
             )
           }}
@@ -125,12 +125,12 @@ export default function Configs({ selectedTab, variant }) {
           sx={{ flexBasis: '50%' }}
           value={propostaAtual.parcelas || ''}
           label='Parcelas'
-          onChange={changeHandler('parcelas')}
+          onChange={propostaDispatcher.changeHandler('parcelas')}
           disabled={!propostaAtual.customParcela}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
-                <Switch size="small" checked={propostaAtual.customParcela} onChange={changeHandler('customParcela')} />
+                <Switch size="small" checked={propostaAtual.customParcela} onChange={propostaDispatcher.changeHandler('customParcela')} />
               </InputAdornment>
             )
           }}
@@ -139,12 +139,12 @@ export default function Configs({ selectedTab, variant }) {
           sx={{ flexBasis: '50%' }}
           value={propostaAtual.prazoEntrega || ''}
           label='Prazo de entrega'
-          onChange={changeHandler('prazoEntrega')}
+          onChange={propostaDispatcher.changeHandler('prazoEntrega')}
           disabled={!propostaAtual.customPrazo}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
-                <Switch size="small" checked={propostaAtual.customPrazo} onChange={changeHandler('customPrazo')} />
+                <Switch size="small" checked={propostaAtual.customPrazo} onChange={propostaDispatcher.changeHandler('customPrazo')} />
               </InputAdornment>
             )
           }}

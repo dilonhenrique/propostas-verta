@@ -1,9 +1,7 @@
 import styles from '../../ProjectBody.module.scss'
 import AddButton from '@/components/elements/AddButton'
 import Task from '@/components/patterns/Task'
-import adicionarItem from '@/utils/dispatchers/adicionarItem'
-import changeItemOrder from '@/utils/dispatchers/changeItemOrder'
-import { Stack } from '@mui/material'
+import propostaDispatcher from '@/commom/dispatchers/propostaDispatcher'
 import { AnimatePresence, Reorder, motion } from 'framer-motion'
 import React, { memo } from 'react'
 import { useSelector } from 'react-redux'
@@ -17,14 +15,14 @@ function Escopo({ selectedTab, variant }) {
       variants={variant}
       animate={selectedTab === 0 ? 'visible' : 'hidden'}
     >
-      <Reorder.Group as='div' axis="y" values={escopo} onReorder={changeItemOrder}>
+      <Reorder.Group as='div' axis="y" values={escopo} onReorder={propostaDispatcher.reorderTasks}>
         <AnimatePresence initial={false}>
           {escopo.map(item => (
             <Task key={item.id} item={item} />
           ))}
         </AnimatePresence>
       </Reorder.Group>
-      <AddButton onClick={adicionarItem()}>Adicionar</AddButton>
+      <AddButton onClick={propostaDispatcher.addItem()}>Adicionar</AddButton>
     </motion.div>
   )
 }
