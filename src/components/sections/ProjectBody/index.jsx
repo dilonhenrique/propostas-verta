@@ -26,8 +26,8 @@ function ProjectBody() {
   return (
     <section className={styles.projectBodyContainer}>
       <div className='container'>
-        <div className='row'>
-          <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '100%', marginBottom: '2rem' }}>
+        <div className={`row ${styles.tabNavigation}`}>
+          <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '100%' }}>
             <Tabs centered value={selectedTab} onChange={(event, clickedTab) => {
               setSelectedTab(clickedTab)
             }}>

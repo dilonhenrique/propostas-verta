@@ -1,6 +1,14 @@
 .projectBodyContainer {
   // background-color: #FAFAFA;
 
+  .tabNavigation {
+    position: sticky;
+    top: 54px;
+    z-index: 1;
+    background-color: #FFFFFF;
+    margin-bottom: 2rem;
+  }
+
   .tabContent {
     grid-row-start: 1;
     grid-column-start: 1;

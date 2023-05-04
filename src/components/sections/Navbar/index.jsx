@@ -16,6 +16,19 @@ const iconStyle = {
 function Navbar() {
   const { mode } = useSelector(state => state.globalStatus);
 
+  const navBarContext = {
+    list: <>
+      busca, defaultparams, nova proposta (talvez como speed dial)
+      <TextField variant='outlined' size="small" type='search' placeholder='Buscar...' InputProps={{ sx: { backgroundColor: '#FFFFFF' }, startAdornment: <InputAdornment position="start"><TbSearch size={18} /></InputAdornment> }} />
+    </>,
+    edit: <>
+      <SaveButton iconStyle={iconStyle} />
+      <Button startIcon={<TbFileExport {...iconStyle} />}><p>Exportar</p></Button>
+      <Button startIcon={<TbFileCheck {...iconStyle} />}><p>Assinar</p></Button>
+    </>,
+    neutral:<></>
+  }
+
   return (
     <header className={styles.header}>
       <div className='container row'>
@@ -24,17 +37,9 @@ function Navbar() {
             <img src='/assets/images/verta.jpg' alt="Logotipo Estúdio Vertá" />
           </Link>
         </div>
-        {mode === 'edit'
-          ? <div className={styles.contextualContainer}>
-            <SaveButton iconStyle={iconStyle} />
-            <Button startIcon={<TbFileExport {...iconStyle} />}><p>Exportar</p></Button>
-            <Button startIcon={<TbFileCheck {...iconStyle} />}><p>Assinar</p></Button>
-          </div>
-          : <div className={styles.contextualContainer}>
-            busca, defaultparams, nova proposta (talvez como speed dial)
-            <TextField variant='outlined' size="small" type='search' placeholder='Buscar...' InputProps={{sx:{backgroundColor:'#FFFFFF'},startAdornment:<InputAdornment position="start"><TbSearch size={18} /></InputAdornment>}} />
-          </div>
-        }
+        <div className={styles.contextualContainer}>
+        {navBarContext[mode] || ''}
+        </div>
       </div>
     </header>
   )
