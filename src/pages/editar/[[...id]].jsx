@@ -10,41 +10,13 @@ import { setVersoes } from '@/store/reducers/versoesAtual';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import propostaService from '@/commom/service/propostaService';
+import withSession from '@/commom/service/session';
+import { tokenService } from '@/commom/service/tokenService';
+import nookies from 'nookies';
 
-export async function getServerSideProps({ params }) {
-  const { id } = params;
+// export async function getServerSideProps({ params }) {
 
-  try {
-    if (id?.length) {
-      const propostaAtual = await propostaService.getSingleProposta(id);
-      const versoes = await propostaService.getVersions(propostaAtual.numeroProposta);
-
-      return {
-        props: {
-          propostaAtual,
-          versoes
-        }
-      }
-    }
-  } catch (err) {
-    if(err.response?.status){
-      console.error(err.response.status, err.response?.data);
-    } else {
-      console.error(err);
-    }
-  }
-  const defaultParams = await propostaService.getDefaultParams();
-  const numeroProposta = await propostaService.getNextProposta();
-
-  return {
-    props: {
-      defaultParams: {
-        ...defaultParams,
-        numeroProposta
-      },
-    }
-  }
-}
+// }
 
 export default function Editar(props) {
   const dispatch = useDispatch();
@@ -62,16 +34,17 @@ export default function Editar(props) {
   }, [props, dispatch])
 
   useEffect(() => {
-    dispatch(setGlobalValue({key:'mode',value:'edit'}))
+    dispatch(setGlobalValue({ key: 'mode', value: 'edit' }))
   }, [dispatch])
 
   const { propostaAtual } = useSelector(state => ({
     propostaAtual: state.propostaAtual,
   }));
+  const pageTitle = `Editando proposta ${propostaAtual.numeroProposta}.${propostaAtual.versaoProposta} | Propostas Vertá`;
 
   return (
     <>
-      <PageTitle>Editando proposta {`${propostaAtual.numeroProposta}.${propostaAtual.versaoProposta}`} | Propostas Vertá</PageTitle>
+      <PageTitle>{pageTitle}</PageTitle>
       <Navbar />
       <main>
         <ProjectHeader />
@@ -81,3 +54,44 @@ export default function Editar(props) {
     </>
   )
 }
+
+//Decorator pattern
+export const getServerSideProps = withSession(async (ctx) => {
+  const session = ctx.req.session;
+  const { id } = ctx.params;
+  // const access_token = ctx.req.cookies['atPropV'];
+  const access_token = session.isRefreshed ? session.access_token : ctx.req.cookies['atPropV'];
+
+  try {
+    if (id?.length) {
+      const propostaAtual = await propostaService.getSingleProposta(id, access_token);
+      const versoes = await propostaService.getVersions(propostaAtual.numeroProposta, access_token);
+
+      return {
+        props: {
+          session,
+          propostaAtual,
+          versoes,
+        }
+      }
+    }
+  } catch (err) {
+    if (err.response?.status) {
+      console.error('erro 1',err.response.status, err.response?.data);
+    } else {
+      console.error('erro 2',err);
+    }
+  }
+  const defaultParams = await propostaService.getDefaultParams(access_token);
+  const numeroProposta = await propostaService.getNextProposta(access_token);
+
+  return {
+    props: {
+      session,
+      defaultParams: {
+        ...defaultParams,
+        numeroProposta,
+      },
+    }
+  }
+})

@@ -1,14 +1,45 @@
-import executeQuery from "../../db";
+import { authService } from "../../authService";
+import { executeQuery } from "../../db";
 
-export default async function handler(req, res) {
-  const method = req.method;
-  const id = req.query.id;
-  const data = req.body;
-  let query, values = '';
+const controllers = {
+  getPropostaById: async (req, res) => {
+    const id = req.query.id;
+    const query = `SELECT * FROM proposta WHERE id = ${id}`;
 
-  if (method === 'GET') {
-    query = `SELECT * FROM proposta WHERE id = ${id}`;
-  } else {
+    try {
+      const results = await executeQuery({
+        query,
+      });
+
+      if (results.length > 0) {
+        const formatedResult = results.map(prop => {
+          let newObj = { ...prop };
+          if (typeof prop.fases === 'string') {
+            newObj.fases = JSON.parse(prop.fases)
+          }
+          if (typeof prop.custosFixos === 'string') {
+            newObj.custosFixos = JSON.parse(prop.custosFixos)
+          }
+          newObj.temNota = !!newObj.temNota;
+          newObj.customParcela = !!newObj.customParcela;
+          newObj.customPrazo = !!newObj.customPrazo;
+
+          return newObj;
+        })
+        res.status(200).json(formatedResult);
+      } else {
+        res.status(404).json({ message: 'Nenhuma proposta encontrada' });
+      }
+
+    } catch (error) {
+      res.status(500).json({ message: 'Ops! Algo deu errado' });
+    }
+  },
+
+  savePropostaById: async (req, res) => {
+    const id = req.query.id;
+    const data = req.body;
+
     let keyval = [];
     for (let key in data) {
       if (data.hasOwnProperty(key)) {
@@ -22,37 +53,54 @@ export default async function handler(req, res) {
         keyval.push(key + " = '" + data[key] + "'");
       }
     }
+
     const updated = keyval.join(", ");
-    query = `UPDATE proposta SET ${updated} WHERE id = ${id}`;
-  }
+    const query = `UPDATE proposta SET ${updated} WHERE id = ${id}`;
 
-  try {
-    const result = await executeQuery({
-      query,
-      values,
-    });
+    try {
+      const result = await executeQuery({
+        query,
+      });
 
-    if (result.length > 0 || result.affectedRows > 0) {
-      const results = result.map(prop => {
-        let newObj = { ...prop };
-        if (typeof prop.fases === 'string') {
-          newObj.fases = JSON.parse(prop.fases)
-        }
-        if (typeof prop.custosFixos === 'string') {
-          newObj.custosFixos = JSON.parse(prop.custosFixos)
-        }
-        newObj.temNota = !!newObj.temNota;
-        newObj.customParcela = !!newObj.customParcela;
-        newObj.customPrazo = !!newObj.customPrazo;
-        
-        return newObj;
-      })
-      res.status(200).json(results)
-    } else {
-      res.status(404).end('Nenhuma proposta encontrada')
+      if (result.affectedRows > 0) {
+        res.status(200).json(result);
+      } else {
+        res.status(404).json({ message: 'Nenhuma proposta encontrada' });
+      }
+    } catch (error) {
+      res.status(500).json({ message: 'Ops! Algo deu errado' });
     }
+  },
 
-  } catch (error) {
-    console.log(error);
+  deletePropostaById: async (req, res) => {
+    const id = req.query.id;
+    const query = `DELETE FROM proposta WHERE id = ${id}`
+
+    try {
+      const result = await executeQuery({
+        query,
+      });
+
+      if (result.affectedRows > 0) {
+        res.status(200).json(result)
+      } else {
+        res.status(404).json({ message: 'Nenhuma proposta encontrada' });
+      }
+    } catch (error) {
+      res.status(500).json({ message: 'Ops! Algo deu errado' });
+    }
   }
+}
+
+const controllerBy = {
+  GET: controllers.getPropostaById,
+  POST: controllers.savePropostaById,
+  DELETE: controllers.deletePropostaById,
+}
+
+export default async function handler(req, res) {
+  if (!await authService.isAuthenticated(req)) return res.status(401).json({ message: 'Not authorized' });
+  if (controllerBy[req.method]) return controllerBy[req.method](req, res);
+
+  res.status(404).json({ message: 'Not found' });
 }

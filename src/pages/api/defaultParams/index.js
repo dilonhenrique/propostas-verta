@@ -1,38 +1,64 @@
-import executeQuery from "../db";
+import { authService } from "../authService";
+import {executeQuery} from "../db";
 
-export default async function handler(req, res) {
-  const method = req.method;
-  const data = req.body;
-  let query, values = '';
+const controllers = {
+  getParams: async (req, res) => {
+    const query = 'SELECT * FROM defaultParams';
 
-  if (method === 'GET') {
-    query = 'SELECT * FROM defaultParams';
-  } else {
+    try {
+      const result = await executeQuery({
+        query,
+      });
+
+      if (result.length > 0) {
+        const data = {
+          ...result[0],
+          temNota: !!result[0].temNota
+        }
+  
+        res.status(200).json(data)
+      } else {
+        res.status(404).json({ message: 'Nenhum parâmetro encontrado' });
+      }
+
+    } catch (error) {
+      res.status(500).json({ message: 'Ops! Algo deu errado' });
+    }
+  },
+
+  updateParams: async (req, res) => {
+    const data = req.body;
+
     const keys = Object.keys(data);
     const values = Object.values(data);
     const key = keys.join(", ");
     const val = "'" + values.join("', '") + "'";
-    query = `INSERT INTO proposta (${key}) VALUES (${val})`;
-  }
+    const query = `INSERT INTO proposta (${key}) VALUES (${val})`;
 
-  try {
-    const result = await executeQuery({
-      query,
-      values,
-    });
+    try {
+      const result = await executeQuery({
+        query,
+      });
 
-    if (result.length > 0 || result.affectedRows > 0) {
-      const data = {
-        ...result[0],
-        temNota: !!result[0].temNota
+      if (result.affectedRows > 0) {
+        res.status(200).json(result);
+      } else {
+        res.status(404).json({ message: 'Nenhuma proposta encontrada' });
       }
-
-      res.status(200).json(data)
-    } else {
-      res.status(404).end('Nenhum parâmetro encontrado')
+    } catch (error) {
+      res.status(500).json({ message: 'Ops! Algo deu errado' });
     }
+  },
+}
 
-  } catch (error) {
-    console.log(error);
-  }
+const controllerBy = {
+  GET: controllers.getParams,
+  POST: controllers.updateParams,
+}
+
+export default async function handler(req, res) {
+  if (!await authService.isAuthenticated(req)) return res.status(401).json({ message: 'Not authorized' });
+  if (controllerBy[req.method]) return controllerBy[req.method](req, res);
+
+  res.status(404).json({ message: 'Not found' });
 }

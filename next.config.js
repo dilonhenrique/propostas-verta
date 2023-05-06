@@ -11,7 +11,9 @@ const nextConfig = {
     MYSQL_PORT: process.env.MYSQL_PORT,
     MYSQL_USER: process.env.MYSQL_USER,
     MYSQL_PASSWORD: process.env.MYSQL_PASSWORD,
-}
+    ACCESSTOKEN_SECRET: process.env.ACCESSTOKEN_SECRET,
+    REFRESHTOKEN_SECRET: process.env.REFRESHTOKEN_SECRET,
+  }
 }
 
 module.exports = nextConfig

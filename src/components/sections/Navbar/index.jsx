@@ -2,12 +2,13 @@
 import Button from '@/components/elements/Button';
 import styles from './Navbar.module.scss';
 
-import { TbFileCheck, TbFileLike, TbFileExport, TbFileDollar, TbSignature, TbTrash, TbTriangleSquareCircle, TbSearch } from 'react-icons/tb';
+import { TbFilter, TbFileCheck, TbFileLike, TbFileExport, TbFileDollar, TbSignature, TbTrash, TbTriangleSquareCircle, TbSearch } from 'react-icons/tb';
 import SaveButton from '@/components/elements/SaveButton';
 import { memo } from 'react';
 import Link from 'next/link';
 import { useSelector } from 'react-redux';
-import { InputAdornment, TextField } from '@mui/material';
+import SearchBar from '@/components/elements/SearchBar';
+import { IconButton } from '@mui/material';
 
 const iconStyle = {
   size: 18
@@ -18,8 +19,8 @@ function Navbar() {
 
   const navBarContext = {
     list: <>
-      busca, defaultparams, nova proposta (talvez como speed dial)
-      <TextField variant='outlined' size="small" type='search' placeholder='Buscar...' InputProps={{ sx: { backgroundColor: '#FFFFFF' }, startAdornment: <InputAdornment position="start"><TbSearch size={18} /></InputAdornment> }} />
+      <IconButton hidden={true} size='small' color="primary"><TbFilter /></IconButton>
+      <SearchBar />
     </>,
     edit: <>
       <SaveButton iconStyle={iconStyle} />

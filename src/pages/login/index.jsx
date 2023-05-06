@@ -1,35 +1,50 @@
 import styles from '@/styles/Login.module.scss';
 import PageTitle from '@/components/elements/PageTitle';
-import React, { useState } from 'react';
-import { Button, CircularProgress, TextField } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Alert, Button, CircularProgress, Snackbar, TextField } from '@mui/material';
 import { FiArrowRight } from 'react-icons/fi';
 import { useAnimate } from 'framer-motion';
 import { useRouter } from 'next/router';
+import authService from '@/commom/service/authService';
 
 export default function Login() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [scope, animate] = useAnimate()
+  const [scope, animate] = useAnimate();
+  const errorStatus = router.query.error;
+
+  useEffect(() => {
+    async function validateSession() {
+      if(await authService.isLogged()){
+        router.push('/');
+      }
+    }
+    validateSession();
+  }, [router])
 
   async function submit(evento) {
     evento.preventDefault();
-
+    setOpenError(false);
     setLoading(true);
 
-    //simulação buscando login
-    function timeout(ms) {
-      return new Promise(resolve => setTimeout(resolve, ms));
-    }
-    await timeout(3000);
-
     //retorno do login
-    const loginSucessfull = false;
-    if (loginSucessfull) {
+    const login = await authService.login(evento.target.elements.email.value, evento.target.elements.password.value);
+    if (login?.isLogged) {
       await animate(scope.current, { scale: 0, opacity: 0 }, { ease: 'backInOut' });
       router.push('/');
+    } else {
+      setOpenError(true);
     }
 
     setLoading(false);
+  }
+
+  const [openError, setOpenError] = useState(false);
+  function handleClose(event, reason) {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenError(false);
   }
 
   return (
@@ -41,9 +56,9 @@ export default function Login() {
             <h1>Área restrita</h1>
             <p>Faça login para continuar</p>
             <form onSubmit={submit}>
-              <TextField variant='outlined' label='email' type='email' required defaultValue='dilon@dilon.com' />
-              <TextField variant='outlined' label='senha' type='password' required defaultValue='paasss' />
-              <Button type='submit' size='large' variant='contained' sx={{height:40}}>
+              <TextField variant='outlined' label='email' type='email' name='email' required defaultValue='dilon@dilon.com.br' />
+              <TextField variant='outlined' label='senha' type='password' name='password' required defaultValue='passwordboladão' />
+              <Button type='submit' size='large' variant='contained' sx={{ height: 40 }}>
                 {loading
                   ?
                   <CircularProgress size={20} color='inherit' />
@@ -52,9 +67,32 @@ export default function Login() {
                 }
               </Button>
             </form>
+            {errorStatus === '401' &&
+              <Alert
+                severity='warning'
+                variant='outlined'
+                sx={{ marginY: 2 }}
+              >
+                <strong>Ops!</strong> Você deve fazer login para acessar esta página.
+              </Alert>}
           </div>
         </section>
       </main>
+      <Snackbar
+        open={openError}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert
+          onClose={handleClose}
+          severity="error"
+          variant="filled"
+          sx={{ width: '100%' }}
+        >
+          Email ou senha inválidos!
+        </Alert>
+      </Snackbar>
     </>
   )
 }
