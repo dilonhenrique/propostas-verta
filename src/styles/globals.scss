@@ -93,6 +93,16 @@ body,
   padding: 0;
 }
 
+/*cor da seleção*/
+
+::-moz-selection { /* Code for Firefox */
+  background: #c49fff;
+}
+
+::selection {
+  background: #c49fff;
+}
+
 /*Eliminar setas nos inputs tipo number*/
 /*Chrome*/
 input::-webkit-outer-spin-button,

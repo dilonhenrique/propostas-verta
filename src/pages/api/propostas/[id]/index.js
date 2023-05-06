@@ -1,3 +1,4 @@
+import { translateDbToJs } from "..";
 import { authService } from "../../authService";
 import { executeQuery } from "../../db";
 
@@ -13,18 +14,7 @@ const controllers = {
 
       if (results.length > 0) {
         const formatedResult = results.map(prop => {
-          let newObj = { ...prop };
-          if (typeof prop.fases === 'string') {
-            newObj.fases = JSON.parse(prop.fases)
-          }
-          if (typeof prop.custosFixos === 'string') {
-            newObj.custosFixos = JSON.parse(prop.custosFixos)
-          }
-          newObj.temNota = !!newObj.temNota;
-          newObj.customParcela = !!newObj.customParcela;
-          newObj.customPrazo = !!newObj.customPrazo;
-
-          return newObj;
+          return translateDbToJs(prop);
         })
         res.status(200).json(formatedResult);
       } else {
@@ -57,6 +47,7 @@ const controllers = {
     const updated = keyval.join(", ");
     const query = `UPDATE proposta SET ${updated} WHERE id = ${id}`;
 
+    // res.status(200).json({data:query})
     try {
       const result = await executeQuery({
         query,

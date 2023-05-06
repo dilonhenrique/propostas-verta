@@ -1,5 +1,5 @@
 export default function createEscopo(obj) {
-  if ('escopo' in obj) return obj;
+  if (typeof obj.escopo === 'object' && obj.escopo !== null) return obj;
 
   let newObj = { ...obj, escopo: [] }
 

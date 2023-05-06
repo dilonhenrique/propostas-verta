@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { tokenService } from '../service/tokenService';
 
-// const API_URL = 'http://localhost:3000/api/';
-const API_URL = 'https://propostas.vercel.app/api/';
+const API_URL = 'http://localhost:3000/api/';
+// const API_URL = 'https://propostas.vercel.app/api/';
 
 export const propApi = axios.create({
   baseURL: API_URL,
@@ -40,7 +40,7 @@ export async function propApiAuth(fetchUrl, fetchOptions) {
       const refreshTokenAtual = fetchOptions?.ctx?.req?.cookies.rtPropV || null;
       const method = ctx ? 'POST' : 'GET';
 
-      if (!refreshTokenAtual) throw { response: { status: 401, message: 'No refresh token code provided' } };
+      if (!refreshTokenAtual && ctx) throw { response: { status: 401, message: 'No refresh token code provided' } };
 
       const refreshResponse = await propApi('refresh', {
         method,

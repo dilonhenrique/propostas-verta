@@ -1,5 +1,27 @@
 import { authService } from "../authService";
-import {executeQuery} from "../db";
+import { executeQuery } from "../db";
+
+export function translateDbToJs(prop) {
+  let newObj = { ...prop };
+  if (typeof prop.escopo === 'string') {
+    if(prop.escopo === 'null'){
+      newObj.escopo = null;
+    } else {
+      newObj.escopo = JSON.parse(prop.escopo)
+    }
+  }
+  if (typeof prop.fases === 'string') {
+    newObj.fases = JSON.parse(prop.fases)
+  }
+  if (typeof prop.custosFixos === 'string') {
+    newObj.custosFixos = JSON.parse(prop.custosFixos)
+  }
+  newObj.temNota = !!newObj.temNota;
+  newObj.customParcela = !!newObj.customParcela;
+  newObj.customPrazo = !!newObj.customPrazo;
+
+  return newObj;
+}
 
 const controllers = {
   getAllPropostas: async (req, res) => {
@@ -9,27 +31,16 @@ const controllers = {
       const results = await executeQuery({
         query,
       });
-  
+
       if (results.length > 0) {
         const formatedResult = results.map(prop => {
-          let newObj = { ...prop };
-          if (typeof prop.fases === 'string') {
-            newObj.fases = JSON.parse(prop.fases)
-          }
-          if (typeof prop.custosFixos === 'string') {
-            newObj.custosFixos = JSON.parse(prop.custosFixos)
-          }
-          newObj.temNota = !!newObj.temNota;
-          newObj.customParcela = !!newObj.customParcela;
-          newObj.customPrazo = !!newObj.customPrazo;
-  
-          return newObj;
+          return translateDbToJs(prop);
         })
         res.status(200).json(formatedResult);
       } else {
         res.status(404).json({ message: 'Nenhuma proposta encontrada' });
       }
-  
+
     } catch (error) {
       res.status(500).json({ message: 'Ops! Algo deu errado' });
     }

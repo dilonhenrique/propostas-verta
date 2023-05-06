@@ -1,30 +1,27 @@
-import {propApi} from '../infra/propApi';
+import { propApiAuth } from '../infra/propApi';
 import createEscopo from "../propFunctions/createEscopo";
 import { addIdToObject } from "../propFunctions/addID";
 import { tokenService } from './tokenService';
+import translateJsToDb from '../utils/translateJsToDb';
 
 const propostaService = {
-  getPropostaList: async (token) => {
-    const listaPropostas = await propApi('propostas',{
-      headers: {
-        'Authorization': token ? `Bearer ${token}` : undefined,
-      }
+  getPropostaList: async (access_token) => {
+    const listaPropostas = await propApiAuth('propostas', {
+      access_token
     });
-    return listaPropostas.data;
+    return listaPropostas;
   },
 
-  getSingleProposta: async (id, token) => {
-    const response = await propApi(`propostas/${id[0]}`,{
-      headers: {
-        'Authorization': token ? `Bearer ${token}` : undefined,
-      }
+  getSingleProposta: async (id, access_token) => {
+    const response = await propApiAuth(`propostas/${id[0]}`, {
+      access_token
     });
-    const proposta = createEscopo(addIdToObject(response.data[0]));
+    const proposta = addIdToObject(createEscopo(response[0]));
     return proposta;
   },
 
-  getVersions: async (numeroProposta, token) => {
-    const listaPropostas = await propostaService.getPropostaList(token);
+  getVersions: async (numeroProposta, access_token) => {
+    const listaPropostas = await propostaService.getPropostaList(access_token);
     const versoes = listaPropostas.reduce((acc, proposta) => {
       if (proposta.numeroProposta === numeroProposta) {
         acc.push({
@@ -37,17 +34,13 @@ const propostaService = {
     return versoes;
   },
 
-  getDefaultParams: async (token) => {
-    const { data } = propApi('defaultParams',{
-      headers: {
-        'Authorization': token ? `Bearer ${token}` : undefined,
-      }
-    });
-    return data;
+  getDefaultParams: async (access_token) => {
+    const params = propApiAuth('defaultParams', {access_token});
+    return params;
   },
 
-  getNextProposta: async (token) => {
-    const listaPropostas = await propostaService.getPropostaList(token);
+  getNextProposta: async (access_token) => {
+    const listaPropostas = await propostaService.getPropostaList(access_token);
     const amostragem = 10 //pega as x últimas propostas (performance)
 
     let maior = listaPropostas[0];
@@ -58,6 +51,18 @@ const propostaService = {
       }
     }
     return maior.numeroProposta + 1;
+  },
+
+  saveProposta: async (proposta) => {
+    const access_token = tokenService.getAccess();
+    const propostaTratada = translateJsToDb(proposta);
+    
+    const response = await propApiAuth(`propostas/${proposta.id}`, {
+      access_token,
+      method: 'POST',
+      data: JSON.stringify(propostaTratada),
+    });
+    return response;
   },
 }
 

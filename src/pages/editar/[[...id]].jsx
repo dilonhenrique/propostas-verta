@@ -22,19 +22,23 @@ export default function Editar(props) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (props.propostaAtual) {
-      dispatch(setProposta(props.propostaAtual));
-      dispatch(setVersoes(props.versoes));
-    } else {
-      for (let key in props.defaultParams) {
-        const value = props.defaultParams[key];
-        dispatch(setValue({ key, value }))
+    return () => {
+      if (props.propostaAtual) {
+        dispatch(setProposta(props.propostaAtual));
+        dispatch(setVersoes(props.versoes));
+      } else {
+        for (let key in props.defaultParams) {
+          const value = props.defaultParams[key];
+          dispatch(setValue({ key, value }))
+        }
       }
     }
   }, [props, dispatch])
 
   useEffect(() => {
-    dispatch(setGlobalValue({ key: 'mode', value: 'edit' }))
+    return () => {
+      dispatch(setGlobalValue({ key: 'mode', value: 'edit' }))
+    }
   }, [dispatch])
 
   const { propostaAtual } = useSelector(state => ({
