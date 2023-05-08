@@ -11,12 +11,6 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import propostaService from '@/commom/service/propostaService';
 import withSession from '@/commom/service/session';
-import { tokenService } from '@/commom/service/tokenService';
-import nookies from 'nookies';
-
-// export async function getServerSideProps({ params }) {
-
-// }
 
 export default function Editar(props) {
   const dispatch = useDispatch();
@@ -81,9 +75,9 @@ export const getServerSideProps = withSession(async (ctx) => {
     }
   } catch (err) {
     if (err.response?.status) {
-      console.error('erro 1',err.response.status, err.response?.data);
+      console.error('erro 1', err.response.status, err.response?.data);
     } else {
-      console.error('erro 2',err);
+      console.error('erro 2', err);
     }
   }
   const defaultParams = await propostaService.getDefaultParams(access_token);

@@ -22,6 +22,7 @@ export default function Configs({ selectedTab, variant }) {
         <OutlinedInput
           sx={{ flexBasis: '50%' }}
           value={propostaAtual.custoBoleto || ''}
+          type='number'
           label='Custo do boleto'
           onChange={propostaDispatcher.changeHandler('custoBoleto')}
           InputProps={{
@@ -33,6 +34,7 @@ export default function Configs({ selectedTab, variant }) {
         <OutlinedInput
           sx={{ flexBasis: '50%' }}
           value={propostaAtual.parcelaMinima || ''}
+          type='number'
           label='Parcela mínima'
           onChange={propostaDispatcher.changeHandler('parcelaMinima')}
           InputProps={{
@@ -46,6 +48,7 @@ export default function Configs({ selectedTab, variant }) {
         <OutlinedInput
           sx={{ flexBasis: '50%' }}
           value={propostaAtual.descontoVista || ''}
+          type='number'
           label='Desconto à vista'
           onChange={propostaDispatcher.changeHandler('descontoVista')}
           InputProps={{
@@ -57,6 +60,7 @@ export default function Configs({ selectedTab, variant }) {
         <OutlinedInput
           sx={{ flexBasis: '50%' }}
           value={propostaAtual.porcentagemNota || ''}
+          type='number'
           label='Porcentagem NF'
           onChange={propostaDispatcher.changeHandler('porcentagemNota')}
           InputProps={{
@@ -68,6 +72,7 @@ export default function Configs({ selectedTab, variant }) {
       </Stack>
       <OutlinedInput
         value={propostaAtual.horaTecnica || ''}
+        type='number'
         label='Hora técnica inicial'
         onChange={propostaDispatcher.changeHandler('horaTecnica')}
         InputProps={{
@@ -76,11 +81,12 @@ export default function Configs({ selectedTab, variant }) {
           ),
           endAdornment: (
             <InputAdornment position="end"><small>/hr</small></InputAdornment>
-          )
+          ),
+          step: "0.01",
         }}
       />
       <OutlinedInput
-        value={propostaAtual.valorHora || ''}
+        value={propostaAtual.valorHora}
         label='Valor/hora final'
         onChange={propostaDispatcher.changeHandler('valorHora')}
         disabled
@@ -97,6 +103,7 @@ export default function Configs({ selectedTab, variant }) {
         <OutlinedInput
           sx={{ flexBasis: '50%' }}
           value={propostaAtual.descontoPrevisto || ''}
+          type='number'
           label='Desconto previsto'
           onChange={propostaDispatcher.changeHandler('descontoPrevisto')}
           InputProps={{
@@ -123,7 +130,8 @@ export default function Configs({ selectedTab, variant }) {
       <Stack direction='row' gap={2}>
         <OutlinedInput
           sx={{ flexBasis: '50%' }}
-          value={propostaAtual.parcelas || ''}
+          value={propostaAtual.parcelas}
+          type='number'
           label='Parcelas'
           onChange={propostaDispatcher.changeHandler('parcelas')}
           disabled={!propostaAtual.customParcela}
@@ -137,7 +145,8 @@ export default function Configs({ selectedTab, variant }) {
         />
         <OutlinedInput
           sx={{ flexBasis: '50%' }}
-          value={propostaAtual.prazoEntrega || ''}
+          value={propostaAtual.prazoEntrega}
+          type='number'
           label='Prazo de entrega'
           onChange={propostaDispatcher.changeHandler('prazoEntrega')}
           disabled={!propostaAtual.customPrazo}

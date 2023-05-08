@@ -5,7 +5,6 @@ import { setEscopo, setFase, setValue } from "@/store/reducers/propostaAtual";
 export default function calcularProposta(key) {
   if (key === undefined || calculaveis.includes(key)) {
 
-
     for (let pIndex, acc, i = 0, { propostaAtual } = store.getState(); i < propostaAtual.escopo.length; i++) {
       const item = propostaAtual.escopo[i];
       if (item.tipo === 'fase') {
@@ -38,12 +37,12 @@ export default function calcularProposta(key) {
 
     if (cargaHoraria > 0) {
       const totalCustosFixos = propostaAtual.custosFixos.reduce((acc, custo) => acc + Number(custo.valor), 0);
-      const totalTarefas = cargaHoraria * propostaAtual.horaTecnica;
+      const totalTarefas = cargaHoraria * (propostaAtual.horaTecnica || 1);
       let totalDesconto, parcelas, valorNota;
 
       if (!propostaAtual.customParcela) {
         parcelas = Math.floor((totalTarefas + totalCustosFixos) / propostaAtual.parcelaMinima);
-        parcelas == 0 ? parcelas = 1 : null;
+        parcelas == 0 || parcelas == Infinity ? parcelas = 1 : null;
       } else { parcelas = propostaAtual.parcelas }
       if (!propostaAtual.customPrazo) {
         store.dispatch(setValue({ key: 'prazoEntrega', value: Math.floor(cargaHoraria / 7, 5) }));

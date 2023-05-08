@@ -120,6 +120,7 @@ const blank = {
 }
 
 const initialState = createEscopo(addIdToObject(blank))
+delete initialState.id;
 
 const propostaAtualSlice = createSlice({
   name: 'propostaAtual',

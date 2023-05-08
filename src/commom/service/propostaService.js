@@ -3,6 +3,7 @@ import createEscopo from "../propFunctions/createEscopo";
 import { addIdToObject } from "../propFunctions/addID";
 import { tokenService } from './tokenService';
 import translateJsToDb from '../utils/translateJsToDb';
+import Router from 'next/router';
 
 const propostaService = {
   getPropostaList: async (access_token) => {
@@ -56,12 +57,25 @@ const propostaService = {
   saveProposta: async (proposta) => {
     const access_token = tokenService.getAccess();
     const propostaTratada = translateJsToDb(proposta);
+    delete propostaTratada.id;
     
-    const response = await propApiAuth(`propostas/${proposta.id}`, {
+    const id = proposta.id || '';
+
+    const response = await propApiAuth(`propostas/${id}`, {
       access_token,
       method: 'POST',
       data: JSON.stringify(propostaTratada),
     });
+    
+    if(response.insertId){
+      Router.replace({
+        pathname: `/editar/${response.insertId}`,
+      }, 
+      undefined,
+      { shallow: true }
+      )
+    }
+    
     return response;
   },
 }

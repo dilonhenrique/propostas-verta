@@ -6,6 +6,7 @@ import { FiArrowRight } from 'react-icons/fi';
 import { useAnimate } from 'framer-motion';
 import { useRouter } from 'next/router';
 import authService from '@/commom/service/authService';
+import { useSnackbar } from 'notistack';
 
 export default function Login() {
   const router = useRouter();
@@ -22,10 +23,11 @@ export default function Login() {
     validateSession();
   }, [router])
 
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   async function submit(evento) {
     evento.preventDefault();
-    setOpenError(false);
     setLoading(true);
+    closeSnackbar();
 
     //retorno do login
     const login = await authService.login(evento.target.elements.email.value, evento.target.elements.password.value);
@@ -33,18 +35,10 @@ export default function Login() {
       await animate(scope.current, { scale: 0, opacity: 0 }, { ease: 'backInOut' });
       router.push('/');
     } else {
-      setOpenError(true);
+      enqueueSnackbar('Email ou senha inválidos!', { variant: 'error' });
     }
 
     setLoading(false);
-  }
-
-  const [openError, setOpenError] = useState(false);
-  function handleClose(event, reason) {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setOpenError(false);
   }
 
   return (
@@ -78,21 +72,6 @@ export default function Login() {
           </div>
         </section>
       </main>
-      <Snackbar
-        open={openError}
-        autoHideDuration={6000}
-        onClose={handleClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-      >
-        <Alert
-          onClose={handleClose}
-          severity="error"
-          variant="filled"
-          sx={{ width: '100%' }}
-        >
-          Email ou senha inválidos!
-        </Alert>
-      </Snackbar>
     </>
   )
 }

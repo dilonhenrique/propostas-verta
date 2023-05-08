@@ -15,8 +15,15 @@ const propostaDispatcher = {
   changeHandler: (key, itemId) => {
     return (evento) => {
       let value = evento.target.value;
-      if (key === 'pessoas' && evento.target.value == '') value = 1;
-      if (calculaveis.includes(key) && typeof value === 'string') value = Number(value);
+
+      if (calculaveis.includes(key)){
+        if(typeof value === 'string') value = Number(value);
+        // if(value < 0) value = '';
+        if (
+          (key === 'pessoas' || key === 'parcelas' || key === 'prazo')
+          && (value == '' || value == 0)
+          ) value = 1;
+      }
       if (evento.target.classList?.contains('MuiSwitch-input')) value = evento.target.checked;
 
       const { propostaAtual } = store.getState();
@@ -30,16 +37,13 @@ const propostaDispatcher = {
         if (itemIndex >= 0) {
           if (propostaAtual.escopo[itemIndex][key] != value) {
             store.dispatch(setEscopo(payload));
-            calcularProposta(key, itemIndex);
           }
         } else if (propostaAtual.custosFixos[custoIndex][key] != value) {
           store.dispatch(setCusto(payload));
-          calcularProposta(key, custoIndex);
         }
       } else {
         if (propostaAtual[key] != value) {
           store.dispatch(setValue(payload));
-          calcularProposta(key);
         }
       }
     }

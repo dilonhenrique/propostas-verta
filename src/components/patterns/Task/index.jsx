@@ -34,7 +34,7 @@ function Task({ item }) {
         sx={{ width: '125px' }}
         Icon={TbCashBanknote}
       />,
-      
+
     tarefa:
       <>
         <OutlinedInput

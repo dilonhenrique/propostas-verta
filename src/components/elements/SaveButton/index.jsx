@@ -6,6 +6,7 @@ import { TbCopy, TbTrash, TbSquareRoundedPlus, TbSquaresDiagonal, TbSquaresFille
 import { RiArrowDropDownLine } from 'react-icons/ri';
 import { useSelector } from 'react-redux';
 import propostaService from '@/commom/service/propostaService';
+import { useSnackbar } from 'notistack';
 
 const iconProps = {
   size: 20
@@ -21,37 +22,17 @@ export default function SaveButton({ iconStyle }) {
   };
 
   const propostaAtual = useSelector(state => state.propostaAtual);
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   async function saveProposta() {
     try {
       const response = await propostaService.saveProposta(propostaAtual);
-      setMsgAlert(
-        <Alert
-          onClose={closeSnack}
-          severity="success"
-          variant="filled"
-          sx={{ width: '100%' }}
-        >
-          Proposta salva com sucesso!
-        </Alert>
-      )
+      //msg de sucesso
+      enqueueSnackbar('Proposta salva com sucesso!', { variant: 'success' });
     } catch (err) {
       console.log(err)
-      setMsgAlert(
-        <Alert
-          onClose={closeSnack}
-          severity="error"
-          variant="filled"
-          sx={{ width: '100%' }}
-        >
-          {err}
-        </Alert>
-      )
+      //msg de erro
+      enqueueSnackbar('Ops! Erro ao salvar.', { variant: 'error' });
     }
-  }
-
-  const [msgAlert, setMsgAlert] = useState('');
-  const closeSnack = () => {
-    setMsgAlert('');
   }
 
   return (
@@ -99,14 +80,6 @@ export default function SaveButton({ iconStyle }) {
           Excluir versão atual
         </MenuItem>
       </Menu>
-      <Snackbar
-        open={Boolean(msgAlert)}
-        autoHideDuration={6000}
-        onClose={closeSnack}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-      >
-        {msgAlert || <></>}
-      </Snackbar>
     </>
   )
 }

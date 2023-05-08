@@ -13,6 +13,7 @@ a {
 
 body {
   font-family: 'Montserrat', sans-serif;
+  overflow-y: scroll;
 }
 
 main {
@@ -51,19 +52,14 @@ video {
 /* ================== */
 /* NextJS */
 /* ================== */
-html {
+html, body {
   height: 100%;
-}
-
-body,
-#__next {
-  min-height: 100%;
-  height: inherit;
 }
 
 #__next {
   display: flex;
   flex-direction: column;
+  min-height: 100%;
 }
 
 /* ================== */

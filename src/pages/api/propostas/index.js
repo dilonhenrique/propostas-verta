@@ -45,10 +45,48 @@ const controllers = {
       res.status(500).json({ message: 'Ops! Algo deu errado' });
     }
   },
+
+  saveNewProposta: async (req, res) => {
+    const data = req.body;
+
+    let keyval = [];
+    for (let key in data) {
+      if (data.hasOwnProperty(key)) {
+        let val = data[key];
+        if (Array.isArray(val)) {
+          data[key] = JSON.stringify(val);
+        }
+        if (val === false || val === true) {
+          data[key] = Number(val);
+        }
+        keyval.push(key + " = '" + data[key] + "'");
+      }
+    }
+
+    const updated = keyval.join(", ");
+    const query = `INSERT INTO proposta SET ${updated}`;
+    // 'INSERT INTO '.self::$table.' ('.$key.') VALUES ('.$val.')';
+
+    // res.status(200).json({data:query})
+    try {
+      const result = await executeQuery({
+        query,
+      });
+
+      if (result.affectedRows > 0) {
+        res.status(200).json(result);
+      } else {
+        res.status(404).json({ message: 'Nenhuma proposta encontrada' });
+      }
+    } catch (error) {
+      res.status(500).json({ message: 'Ops! Algo deu errado' });
+    }
+  },
 }
 
 const controllerBy = {
   GET: controllers.getAllPropostas,
+  POST: controllers.saveNewProposta,
 }
 
 export default async function handler(req, res) {

@@ -15,6 +15,7 @@ const controllers = {
           ...result[0],
           temNota: !!result[0].temNota
         }
+        delete data.id;
   
         res.status(200).json(data)
       } else {
@@ -43,7 +44,7 @@ const controllers = {
       if (result.affectedRows > 0) {
         res.status(200).json(result);
       } else {
-        res.status(404).json({ message: 'Nenhuma proposta encontrada' });
+        res.status(404).json({ message: 'Nenhum parâmetro encontrada' });
       }
     } catch (error) {
       res.status(500).json({ message: 'Ops! Algo deu errado' });
