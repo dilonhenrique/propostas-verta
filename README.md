@@ -1,9 +1,9 @@
 Em desenvolvimento...
 
-##Gerenciador de propostas comerciais Vertá
+## Gerenciador de propostas comerciais Vertá
 _v2_
 
-###Features
+### Features
 - Criação de propostas com: escopo, custos fixos e configurações financeiras;
 - Versionamento e clonagem de propostas;
 - Exportação de propostas para pdf;
@@ -11,7 +11,7 @@ _v2_
 - Mudança de configurações padrão para novas propostas criadas;
 - Api lambda para conexão com banco de dados.
 
-###Linguagens e Frameworks
+### Linguagens e Frameworks
 - Javascript
 - Reactjs
 - Nextjs
