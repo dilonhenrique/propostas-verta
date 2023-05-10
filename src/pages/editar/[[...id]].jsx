@@ -11,6 +11,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import propostaService from '@/commom/service/propostaService';
 import withSession from '@/commom/service/session';
+import propostaDispatcher from '@/commom/dispatchers/propostaDispatcher';
 
 export default function Editar(props) {
   const dispatch = useDispatch();
@@ -18,16 +19,18 @@ export default function Editar(props) {
   useEffect(() => {
     return () => {
       if (props.propostaAtual) {
-        dispatch(setProposta(props.propostaAtual));
-        dispatch(setVersoes(props.versoes));
+        propostaDispatcher.updateProposta(props.propostaAtual);
+        propostaDispatcher.updateVersions(props.versoes);
       } else {
+        //resetar proposta e versoes
+        propostaDispatcher.resetProposta();
         for (let key in props.defaultParams) {
           const value = props.defaultParams[key];
-          dispatch(setValue({ key, value }))
+          propostaDispatcher.setPropostaValue({ key, value });
         }
       }
     }
-  }, [props, dispatch])
+  }, [props])
 
   useEffect(() => {
     return () => {

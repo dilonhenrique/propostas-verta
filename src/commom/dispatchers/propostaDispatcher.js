@@ -1,8 +1,9 @@
 import store from "@/store";
-import { addItem, changeEscopoOrder, changeItem, removeItem, setCusto, setEscopo, setValue } from "@/store/reducers/propostaAtual";
+import { addItem, changeEscopoOrder, changeItem, removeItem, resetProposta, setCusto, setEscopo, setProposta, setValue } from "@/store/reducers/propostaAtual";
 import Router from "next/router";
 import calcularProposta from "../utils/calcularProposta";
 import calculaveis from "../utils/calculaveis";
+import { resetVersoes, setVersoes } from "@/store/reducers/versoesAtual";
 
 const propostaDispatcher = {
   addItem: (tipo = 'escopo', beforeId) => {
@@ -16,13 +17,13 @@ const propostaDispatcher = {
     return (evento) => {
       let value = evento.target.value;
 
-      if (calculaveis.includes(key)){
-        if(typeof value === 'string') value = Number(value);
+      if (calculaveis.includes(key)) {
+        if (typeof value === 'string') value = Number(value);
         // if(value < 0) value = '';
         if (
           (key === 'pessoas' || key === 'parcelas' || key === 'prazo')
           && (value == '' || value == 0)
-          ) value = 1;
+        ) value = 1;
       }
       if (evento.target.classList?.contains('MuiSwitch-input')) value = evento.target.checked;
 
@@ -78,17 +79,32 @@ const propostaDispatcher = {
     }
   },
 
-  versionSwitcher: (router) => {
+  versionSwitcher: () => {
     return (evento) => {
       const versaoSelecionada = evento.target.value;
       const { versoesAtual } = store.getState();
       const { id } = versoesAtual.find(versao => versao.versao === versaoSelecionada);
 
-      // store.dispatch(changeLoading(true));
-      // router.push(`/editar/${id}`);
       Router.push(`/editar/${id}`);
     }
   },
+
+  updateVersions: (versions) => {
+    store.dispatch(setVersoes(versions));
+  },
+
+  updateProposta: (proposta) => {
+    store.dispatch(setProposta(proposta));
+  },
+
+  resetProposta: () => {
+    store.dispatch(resetProposta());
+    store.dispatch(resetVersoes());
+  },
+
+  setPropostaValue: ({ key, value }) => {
+    store.dispatch(setValue({ key, value }));
+  }
 }
 
 export default propostaDispatcher;

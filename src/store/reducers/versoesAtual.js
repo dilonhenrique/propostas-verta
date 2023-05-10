@@ -6,11 +6,15 @@ const versoesAtualSlice = createSlice({
   name: 'versoesAtual',
   initialState,
   reducers: {
+    resetVersoes: () => {
+      return initialState;
+    },
+
     setVersoes: (state, { payload }) => {
       return payload;
     }
   }
 })
 
-export const { setVersoes } = versoesAtualSlice.actions;
+export const { resetVersoes, setVersoes } = versoesAtualSlice.actions;
 export default versoesAtualSlice.reducer;

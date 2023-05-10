@@ -1,3 +1,4 @@
+import LinkIntegration from "@/components/elements/LinkIntegration";
 import { createTheme } from "@mui/material";
 
 export const theme = createTheme({
@@ -27,6 +28,16 @@ export const theme = createTheme({
     MuiTextField: {
       defaultProps: {
         variant: 'standard'
+      }
+    },
+    MuiLink: {
+      defaultProps: {
+        component: LinkIntegration
+      }
+    },
+    MuiButtonBase: {
+      defaultProps: {
+        LinkComponent: LinkIntegration
       }
     }
   }

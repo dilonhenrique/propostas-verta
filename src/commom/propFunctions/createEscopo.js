@@ -4,8 +4,10 @@ export default function createEscopo(obj) {
   let newObj = { ...obj, escopo: [] }
 
   newObj.fases?.map(fase => {
+    let newFase = {...fase};
+    delete newFase.tarefas;
     newObj.escopo.push({
-      ...fase,
+      ...newFase,
       tipo: 'fase'
     })
     fase.tarefas.map(tarefa =>

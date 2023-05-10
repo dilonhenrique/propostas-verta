@@ -126,36 +126,46 @@ const propostaAtualSlice = createSlice({
   name: 'propostaAtual',
   initialState,
   reducers: {
+    resetProposta: () => {
+      return initialState;
+    },
+
     setProposta: (state, { payload }) => {
       return payload;
     },
+
     setValue: (state, { payload }) => {
       const { key, value } = payload;
       if (state[key] != value) {
         state[key] = value;
       }
     },
+
     setEscopo: (state, { payload }) => {
       const { itemId, key, value } = payload;
 
       const itemIndex = state.escopo.findIndex(item => item.id === itemId);
       state.escopo[itemIndex][key] = value;
     },
+
     changeEscopoOrder: (state, { payload }) => {
       state.escopo = payload;
     },
+
     setCusto: (state, { payload }) => {
       const { itemId, key, value } = payload;
 
       const custoIndex = state.custosFixos.findIndex(custo => custo.id === itemId);
       state.custosFixos[custoIndex][key] = value;
     },
+
     removeItem: (state, { payload }) => {
       const { itemId } = payload;
 
       state.escopo = state.escopo.filter(item => item.id !== itemId)
       state.custosFixos = state.custosFixos.filter(custo => custo.id !== itemId)
     },
+
     addItem: (state, { payload }) => {
       const { type, beforeId, autoFocus  } = payload;
 
@@ -182,6 +192,7 @@ const propostaAtualSlice = createSlice({
 
       state[type].splice(index, 0, obj);
     },
+
     changeItem: (state, { payload }) => {
       const { itemId, type } = payload;
       const itemIndex = state.escopo.findIndex(item => item.id === itemId);
@@ -191,5 +202,5 @@ const propostaAtualSlice = createSlice({
   }
 })
 
-export const { setProposta, setValue, setCusto, setEscopo, removeItem, addItem, changeItem, changeEscopoOrder } = propostaAtualSlice.actions;
+export const { resetProposta, setProposta, setValue, setCusto, setEscopo, removeItem, addItem, changeItem, changeEscopoOrder } = propostaAtualSlice.actions;
 export default propostaAtualSlice.reducer;

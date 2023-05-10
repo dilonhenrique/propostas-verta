@@ -15,7 +15,12 @@ const iconStyle = {
 }
 
 function Navbar() {
-  const { mode } = useSelector(state => state.globalStatus);
+  const { mode, id } = useSelector(state => {
+    return {
+      mode: state.globalStatus.mode,
+      id: state.propostaAtual.id,
+    }
+  });
 
   const navBarContext = {
     list: <>
@@ -24,10 +29,10 @@ function Navbar() {
     </>,
     edit: <>
       <SaveButton iconStyle={iconStyle} />
-      <Button startIcon={<TbFileExport {...iconStyle} />}><p>Exportar</p></Button>
+      <Button href={`/exportar/${id}`} startIcon={<TbFileExport {...iconStyle} />}><p>Exportar</p></Button>
       <Button startIcon={<TbFileCheck {...iconStyle} />}><p>Assinar</p></Button>
     </>,
-    neutral:<></>
+    neutral: <></>
   }
 
   return (
@@ -39,7 +44,7 @@ function Navbar() {
           </Link>
         </div>
         <div className={styles.contextualContainer}>
-        {navBarContext[mode] || ''}
+          {navBarContext[mode] || ''}
         </div>
       </div>
     </header>

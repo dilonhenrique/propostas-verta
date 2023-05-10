@@ -4,6 +4,7 @@ import { addIdToObject } from "../propFunctions/addID";
 import { tokenService } from './tokenService';
 import translateJsToDb from '../utils/translateJsToDb';
 import Router from 'next/router';
+import store from '@/store';
 
 const propostaService = {
   getPropostaList: async (access_token) => {
@@ -22,6 +23,7 @@ const propostaService = {
   },
 
   getVersions: async (numeroProposta, access_token) => {
+    access_token = access_token || tokenService.getAccess();
     const listaPropostas = await propostaService.getPropostaList(access_token);
     const versoes = listaPropostas.reduce((acc, proposta) => {
       if (proposta.numeroProposta === numeroProposta) {
@@ -36,11 +38,12 @@ const propostaService = {
   },
 
   getDefaultParams: async (access_token) => {
-    const params = propApiAuth('defaultParams', {access_token});
+    const params = propApiAuth('defaultParams', { access_token });
     return params;
   },
 
   getNextProposta: async (access_token) => {
+    access_token = access_token || tokenService.getAccess();
     const listaPropostas = await propostaService.getPropostaList(access_token);
     const amostragem = 10 //pega as x últimas propostas (performance)
 
@@ -54,11 +57,23 @@ const propostaService = {
     return maior.numeroProposta + 1;
   },
 
+  getNextVersion: () => {
+    const { versoesAtual } = store.getState();
+    let maior = versoesAtual[0];
+    for (let i = 0; i < versoesAtual.length; i++) {
+      const proposta = versoesAtual[i];
+      if (proposta.versao > maior.versao) {
+        maior = proposta
+      }
+    }
+    return maior.versao + 1;
+  },
+
   saveProposta: async (proposta) => {
     const access_token = tokenService.getAccess();
     const propostaTratada = translateJsToDb(proposta);
     delete propostaTratada.id;
-    
+
     const id = proposta.id || '';
 
     const response = await propApiAuth(`propostas/${id}`, {
@@ -66,16 +81,16 @@ const propostaService = {
       method: 'POST',
       data: JSON.stringify(propostaTratada),
     });
-    
-    if(response.insertId){
-      Router.replace({
+
+    if (response.insertId) {
+      Router.push({
         pathname: `/editar/${response.insertId}`,
-      }, 
-      undefined,
-      { shallow: true }
+      },
+        undefined,
+        { shallow: true }
       )
     }
-    
+
     return response;
   },
 }

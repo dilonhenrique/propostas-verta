@@ -1,12 +1,13 @@
 import { SpeedDial, SpeedDialAction, SpeedDialIcon } from '@mui/material';
-import { TbMoodDollar, TbFileDollar, TbSettings2 } from 'react-icons/tb';
+import Router from 'next/router';
+import { TbMoodDollar, TbFileDollar, TbSettings2, TbFilePlus } from 'react-icons/tb';
 
 const iconProp = {
   size: 20,
 }
 
 const actions = [
-  { icon: <TbFileDollar {...iconProp} />, name: 'Nova proposta' },
+  { icon: <TbFilePlus {...iconProp} />, name: 'Nova proposta', href: '/editar' },
   { icon: <TbSettings2 {...iconProp} />, name: 'Configurações' },
   { icon: <TbMoodDollar {...iconProp} />, name: 'Doar para Dilon' },
 ];
@@ -14,7 +15,7 @@ const actions = [
 export default function FloatingActions() {
   return (
     <SpeedDial
-      sx={{ position: 'absolute', bottom: 16, right: 16 }}
+      sx={{ position: 'fixed', bottom: 16, right: 16 }}
       ariaLabel="Botões de ações rápidas"
       icon={<SpeedDialIcon />}
     >
@@ -23,6 +24,7 @@ export default function FloatingActions() {
           key={action.name}
           icon={action.icon}
           tooltipTitle={action.name}
+          href={action.href ? action.href : null}
         />
       ))}
     </SpeedDial>
