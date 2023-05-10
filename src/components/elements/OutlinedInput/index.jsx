@@ -7,7 +7,7 @@ const iconProps = {
   color: '#A6A6A6'
 }
 
-export default function OutlinedInput({ onBlur, Icon, ...otherProps }) {
+export default function OutlinedInput({ Icon, ...otherProps }) {
   if (Icon) {
     otherProps.InputProps = {
       ...otherProps.InputProps,
@@ -19,14 +19,8 @@ export default function OutlinedInput({ onBlur, Icon, ...otherProps }) {
     }
   }
 
-  function onBlurHandler(evento){
-    evento.preventDefault();
-    onBlur ? onBlur(evento) : null;
-    calcularProposta();
-  }
-
   return (
-    <TextField {...otherProps} onBlur={onBlurHandler} />
+    <TextField {...otherProps} />
   )
 }
 

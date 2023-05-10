@@ -17,25 +17,21 @@ export default function Editar(props) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    return () => {
-      if (props.propostaAtual) {
-        propostaDispatcher.updateProposta(props.propostaAtual);
-        propostaDispatcher.updateVersions(props.versoes);
-      } else {
-        //resetar proposta e versoes
-        propostaDispatcher.resetProposta();
-        for (let key in props.defaultParams) {
-          const value = props.defaultParams[key];
-          propostaDispatcher.setPropostaValue({ key, value });
-        }
+    if (props.propostaAtual) {
+      propostaDispatcher.updateProposta(props.propostaAtual);
+      propostaDispatcher.updateVersions(props.versoes);
+    } else {
+      //resetar proposta e versoes
+      propostaDispatcher.resetProposta();
+      for (let key in props.defaultParams) {
+        const value = props.defaultParams[key];
+        propostaDispatcher.setPropostaValue({ key, value });
       }
     }
   }, [props])
 
   useEffect(() => {
-    return () => {
-      dispatch(setGlobalValue({ key: 'mode', value: 'edit' }))
-    }
+    dispatch(setGlobalValue({ key: 'mode', value: 'edit' }))
   }, [dispatch])
 
   const { propostaAtual } = useSelector(state => ({

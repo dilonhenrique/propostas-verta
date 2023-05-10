@@ -9,7 +9,7 @@ const propostaDispatcher = {
   addItem: (tipo = 'escopo', beforeId) => {
     if (beforeId) return store.dispatch(addItem({ type: tipo, beforeId: beforeId, autoFocus: true }));
     return () => {
-      store.dispatch(addItem({ type: tipo }))
+      store.dispatch(addItem({ type: tipo, autoFocus: true }))
     }
   },
 
@@ -38,13 +38,16 @@ const propostaDispatcher = {
         if (itemIndex >= 0) {
           if (propostaAtual.escopo[itemIndex][key] != value) {
             store.dispatch(setEscopo(payload));
+            calcularProposta(key);
           }
         } else if (propostaAtual.custosFixos[custoIndex][key] != value) {
           store.dispatch(setCusto(payload));
+          calcularProposta(key);
         }
       } else {
         if (propostaAtual[key] != value) {
           store.dispatch(setValue(payload));
+          calcularProposta(key);
         }
       }
     }
