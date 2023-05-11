@@ -1,0 +1,18 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.stackRow {
+  gap: 2rem;
+  flex-direction: row;
+
+  @media (max-width:600px) {
+    flex-direction: column;
+  }
+}
+
+.input {
+  flex-basis: 50%;
+}

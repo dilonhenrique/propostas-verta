@@ -30,11 +30,22 @@ const controllers = {
   updateParams: async (req, res) => {
     const data = req.body;
 
-    const keys = Object.keys(data);
-    const values = Object.values(data);
-    const key = keys.join(", ");
-    const val = "'" + values.join("', '") + "'";
-    const query = `INSERT INTO proposta (${key}) VALUES (${val})`;
+    let keyval = [];
+    for (let key in data) {
+      if (data.hasOwnProperty(key)) {
+        let val = data[key];
+        if (Array.isArray(val)) {
+          data[key] = JSON.stringify(val);
+        }
+        if (val === false || val === true) {
+          data[key] = Number(val);
+        }
+        keyval.push(key + " = '" + data[key] + "'");
+      }
+    }
+
+    const updated = keyval.join(", ");
+    const query = `UPDATE defaultParams SET ${updated} WHERE id = 1`;
 
     try {
       const result = await executeQuery({

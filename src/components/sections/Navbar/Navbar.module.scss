@@ -24,13 +24,16 @@
     gap: 1rem;
 
     @media (max-width:600px){
-      button {
+      button,
+      a {
         min-width: unset;
       }
-      button > p {
+      button > p,
+      a > p {
         display: none;
       }
-      button > span {
+      button > span,
+      a > span {
         margin-right: 0;
         
         * {
