@@ -14,7 +14,7 @@ export default function SearchBar() {
       placeholder='Buscar...'
       InputProps={{
         sx: {
-          backgroundColor: '#e7e7e7',
+          // backgroundColor: '#e7e7e7',
           borderRadius: 50,
           height: 30,
           // '&::focus': {

@@ -86,7 +86,7 @@ const propostaDispatcher = {
     return (evento) => {
       const versaoSelecionada = evento.target.value;
       const { versoesAtual } = store.getState();
-      const { id } = versoesAtual.find(versao => versao.versao === versaoSelecionada);
+      const { id } = versoesAtual.find(versao => versao.versaoProposta === versaoSelecionada);
 
       Router.push(`/editar/${id}`);
     }

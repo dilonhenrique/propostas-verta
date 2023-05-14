@@ -6,7 +6,8 @@ import { FiArrowRight } from 'react-icons/fi';
 import { useAnimate } from 'framer-motion';
 import { useRouter } from 'next/router';
 import authService from '@/commom/service/authService';
-import { useSnackbar } from 'notistack';
+import { closeSnackbar, enqueueSnackbar } from 'notistack';
+import { useDispatch } from 'react-redux';
 
 export default function Login() {
   const router = useRouter();
@@ -14,6 +15,7 @@ export default function Login() {
   const [scope, animate] = useAnimate();
   const errorStatus = router.query.error;
 
+  const dispatch = useDispatch();
   useEffect(() => {
     async function validateSession() {
       if(await authService.isLogged()){
@@ -21,9 +23,8 @@ export default function Login() {
       }
     }
     validateSession();
-  }, [router])
+  }, [router, dispatch])
 
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   async function submit(evento) {
     evento.preventDefault();
     setLoading(true);

@@ -19,7 +19,7 @@ function ProjectHeader() {
         <div className={styles.titleContainer}>
           <div>
             <h1 style={{ display: 'inline-block', marginRight: '1rem' }}>Proposta {`${numeroProposta}.${versaoProposta}`}</h1>
-            {versoesAtual.length > 1 &&
+            {!propostaAtual.excluido && versoesAtual.length > 1 &&
               <VersionSelector options={versoesAtual} value={versaoProposta} onChange={propostaDispatcher.versionSwitcher(router)} />
             }
           </div>

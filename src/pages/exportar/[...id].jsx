@@ -1,15 +1,28 @@
 import propostaService from '@/commom/service/propostaService';
 import withSession from '@/commom/service/session';
 import toCurrency from '@/commom/utils/toCurrency';
+import PageTitle from '@/components/elements/PageTitle';
+import Navbar from '@/components/sections/Navbar';
+import { setGlobalValue } from '@/store/reducers/globalStatus';
 import styles from '@/styles/Exportar.module.scss';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
 export default function Exportar(props) {
   const { propostaAtual } = props;
   const hoje = new Date();
   const mes = ["janeiro", "fevereiro", "marco", "abril", "maio", "junho", "julho", "agosto", "septembro", "outubro", "novembro", "dezembro"]
+  const pageTitle = `VERTA${propostaAtual.numeroProposta}.${propostaAtual.versaoProposta}-${propostaAtual.categoria}-${(propostaAtual.marca || propostaAtual.cliente).toUpperCase()}`;
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(setGlobalValue({ key: 'mode', value: 'neutral' }))
+  }, [dispatch])
 
   return (
     <>
+      <PageTitle>{pageTitle}</PageTitle>
+      <Navbar />
       <div className={styles.container}>
         <div className={styles.row}>
           <div className={`${styles.col} ${styles.spaceBetween}`} style={{ height: '100vh' }}>
@@ -139,7 +152,7 @@ export default function Exportar(props) {
 //Decorator pattern
 export const getServerSideProps = withSession(async (ctx) => {
   const session = ctx.req.session;
-  const { id } = ctx.params;
+  const [id] = ctx.params.id;
   // const access_token = ctx.req.cookies['atPropV'];
   const access_token = session.isRefreshed ? session.access_token : ctx.req.cookies['atPropV'];
 

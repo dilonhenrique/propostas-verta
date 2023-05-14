@@ -1,0 +1,36 @@
+.listaRow {
+  display: grid;
+  grid-template-columns: 2rem 3rem 3fr 2fr 1fr 110px 3rem;
+  gap: 1rem;
+  background-color: transparent;
+}
+
+.listaPropostas {
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.25);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.propostaItem {
+  background-color: #FFF;
+  min-height: 5rem;
+  border-bottom: 1px #e9e9e9 solid;
+  // box-shadow: 0 5px 5px rgba(0, 0, 0, 0.25);
+
+  // &:hover {
+  //   background-color: #fafafa;
+  // }
+}
+
+.nested {
+  background-image: linear-gradient(0.25turn,#FAFAFA,#FFFFFF 25%);
+  // padding-left: 2rem;
+  // &:hover {
+  //   background-color: #f2f2f2;
+  // }
+}
+
+.link {
+  font-weight: 700;
+  color: #8D47FF;
+}

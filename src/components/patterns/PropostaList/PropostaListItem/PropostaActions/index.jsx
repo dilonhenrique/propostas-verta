@@ -1,20 +1,11 @@
-import { useState } from 'react';
-import Button from '../Button';
-import { ButtonGroup, Divider, ListItemIcon, Menu, MenuItem } from '@mui/material';
-import { FiSave } from 'react-icons/fi';
-import { TbCopy, TbTrash, TbSquaresDiagonal } from 'react-icons/tb';
-import { RiArrowDropDownLine } from 'react-icons/ri';
-import { useSelector } from 'react-redux';
 import propostaService from '@/commom/service/propostaService';
-import { useRouter } from 'next/router';
+import { CircularProgress, Divider, IconButton, ListItemIcon, Menu, MenuItem } from '@mui/material'
+import React, { useState } from 'react'
+import { SlOptions } from 'react-icons/sl'
+import { TbCopy, TbFileCheck, TbSquaresDiagonal, TbTrash } from 'react-icons/tb'
 
-const iconProps = {
-  size: 20
-}
-
-export default function SaveButton({ iconStyle }) {
-  const router = useRouter();
-
+export default function PropostaActions({ proposta }) {
+  const [loading, setLoading] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -22,24 +13,28 @@ export default function SaveButton({ iconStyle }) {
   const closeMenu = () => {
     setAnchorEl(null);
   };
-
-  const propostaAtual = useSelector(state => state.propostaAtual);
-  async function saveProposta(proposta) {
-    closeMenu();
-    return await propostaService.saveProposta(proposta || propostaAtual);
+  
+  async function saveProposta(propostaAtual) {
+    await propostaService.saveProposta(propostaAtual);
+    setLoading(false);
   }
-
-  async function versionar() {
+  async function versionar(){
+    closeMenu();
+    setLoading(true);
+    const propostaAtual = await propostaService.getSingleProposta(proposta.id);
     const novaProposta = {
       ...propostaAtual,
-      versaoProposta: await propostaService.getNextVersion(),
+      versaoProposta: await propostaService.getNextVersion(proposta.numeroProposta),
       id: undefined,
       status: propostaAtual.status === 'aprovada' ? 'aprovada' : propostaAtual.status,
       contrato: '',
     };
     await saveProposta(novaProposta);
   }
-  async function clonar() {
+  async function clonar(){
+    closeMenu();
+    setLoading(true);
+    const propostaAtual = await propostaService.getSingleProposta(proposta.id);
     const novaProposta = {
       ...propostaAtual,
       numeroProposta: await propostaService.getNextProposta(),
@@ -50,32 +45,25 @@ export default function SaveButton({ iconStyle }) {
     };
     await saveProposta(novaProposta);
   }
-  async function excluir() {
+  async function excluir(){
     closeMenu();
-    const response = await propostaService.deleteProposta(propostaAtual.id);
-    if (response.affectedRows) {
-      router.push('/');
-    }
+    setLoading(true);
+    await propostaService.deleteProposta(proposta.id);
+    setLoading(false);
   }
 
   return (
     <>
-      <ButtonGroup>
-        <Button variant='contained' startIcon={<FiSave {...iconStyle} />} onClick={() => saveProposta()}>
-          Salvar
-        </Button>
-        <Button variant="contained" onClick={handleMenu} className='dropdown'>
-          <RiArrowDropDownLine size={20} />
-        </Button>
-      </ButtonGroup>
-
+      {loading
+        ? <CircularProgress size={16} thickness={6} />
+        : <IconButton onClick={handleMenu}><SlOptions size={18} color='#a9a9a9' /></IconButton>
+      }
       <Menu
         anchorEl={anchorEl}
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'right',
         }}
-        keepMounted
         transformOrigin={{
           vertical: 'top',
           horizontal: 'right',
@@ -85,22 +73,28 @@ export default function SaveButton({ iconStyle }) {
       >
         <MenuItem onClick={versionar}>
           <ListItemIcon>
-            <TbSquaresDiagonal {...iconProps} />
+            <TbFileCheck size={20} />
+          </ListItemIcon>
+          Assinar
+        </MenuItem>
+        <MenuItem onClick={versionar}>
+          <ListItemIcon>
+            <TbSquaresDiagonal size={20} />
           </ListItemIcon>
           Versionar (nova versão)
         </MenuItem>
         <MenuItem onClick={clonar}>
           <ListItemIcon>
-            <TbCopy {...iconProps} />
+            <TbCopy size={20} />
           </ListItemIcon>
           Clonar (nova proposta)
         </MenuItem>
         <Divider />
         <MenuItem onClick={excluir}>
           <ListItemIcon>
-            <TbTrash {...iconProps} />
+            <TbTrash size={20} />
           </ListItemIcon>
-          Excluir versão atual
+          Excluir versão
         </MenuItem>
       </Menu>
     </>

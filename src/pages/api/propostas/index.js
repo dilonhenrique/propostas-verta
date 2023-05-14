@@ -19,13 +19,15 @@ export function translateDbToJs(prop) {
   newObj.temNota = !!newObj.temNota;
   newObj.customParcela = !!newObj.customParcela;
   newObj.customPrazo = !!newObj.customPrazo;
+  newObj.excluido = !!newObj.excluido;
 
   return newObj;
 }
 
 const controllers = {
   getAllPropostas: async (req, res) => {
-    const query = 'SELECT * FROM proposta';
+    const query = 'SELECT * FROM proposta WHERE excluido = 0';
+    
 
     try {
       const results = await executeQuery({

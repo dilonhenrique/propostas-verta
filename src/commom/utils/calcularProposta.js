@@ -4,7 +4,7 @@ import { setEscopo, setFase, setValue } from "@/store/reducers/propostaAtual";
 
 export default function calcularProposta(key) {
   if (key === undefined || calculaveis.includes(key)) {
-console.log('calculando')
+
     for (let pIndex, acc, i = 0, { propostaAtual } = store.getState(); i < propostaAtual.escopo.length; i++) {
       const item = propostaAtual.escopo[i];
       if (item.tipo === 'fase') {

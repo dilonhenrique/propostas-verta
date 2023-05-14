@@ -10,7 +10,7 @@ export default function translateJsToDb(jsObj) {
           if (typeof item === 'object'){
             let newItem = {...item};
             newItem.autoFocus ? delete newItem.autoFocus : null;
-            newItem.tarefas ? delete newItem.tarefas : null;
+            newItem.tarefas && key === 'escopo' ? delete newItem.tarefas : null;
             newObj[key].push(newItem);
           } else {
             newObj[key].push(item);

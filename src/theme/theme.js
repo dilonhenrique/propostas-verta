@@ -1,7 +1,7 @@
 import LinkIntegration from "@/components/elements/LinkIntegration";
 import { createTheme } from "@mui/material";
 
-export const theme = createTheme({
+export const verta = createTheme({
   palette: {
     primary: {
       main: '#8D47FF'
@@ -42,3 +42,24 @@ export const theme = createTheme({
     }
   }
 });
+
+export const dark = createTheme({
+  palette: {
+    mode: 'dark',
+    primary: {
+      main: '#8D47FF'
+    }
+  },
+  components: {
+    MuiLink: {
+      defaultProps: {
+        component: LinkIntegration
+      }
+    },
+    MuiButtonBase: {
+      defaultProps: {
+        LinkComponent: LinkIntegration
+      }
+    },
+  }
+})

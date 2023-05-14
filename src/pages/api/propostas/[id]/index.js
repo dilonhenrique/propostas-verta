@@ -35,18 +35,18 @@ const controllers = {
       if (data.hasOwnProperty(key)) {
         let val = data[key];
         if (Array.isArray(val)) {
-          data[key] = JSON.stringify(val);
+          val = JSON.stringify(val);
         }
-        if (val === false || val === true) {
-          data[key] = Number(val);
+        if (typeof val === 'boolean') {
+          val = Number(val);
         }
-        keyval.push(key + " = '" + data[key] + "'");
+        keyval.push(key + " = '" + val + "'");
       }
     }
 
     const updated = keyval.join(", ");
     const query = `UPDATE proposta SET ${updated} WHERE id = ${id}`;
-
+    
     // res.status(200).json({data:query})
     try {
       const result = await executeQuery({
@@ -65,7 +65,7 @@ const controllers = {
 
   deletePropostaById: async (req, res) => {
     const id = req.query.id;
-    const query = `DELETE FROM proposta WHERE id = ${id}`
+    const query = `UPDATE proposta SET excluido = '1' WHERE id = ${id}`;
 
     try {
       const result = await executeQuery({
