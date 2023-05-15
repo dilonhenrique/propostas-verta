@@ -10,6 +10,13 @@ import { AnimatePresence, motion } from 'framer-motion';
 import PropostaActions from './PropostaActions';
 import propostaService from '@/commom/service/propostaService';
 
+export const rowStyle = {
+  display: 'grid',
+  gridTemplateColumns: '2rem 3rem 3fr 2fr 1fr 110px 3rem',
+  gap: '1rem',
+  backgroundColor: 'transparent',
+}
+
 export default function PropostaListItem({ proposta, nested = false }) {
   const [openNested, setOpenNested] = useState(false);
 
@@ -27,7 +34,7 @@ export default function PropostaListItem({ proposta, nested = false }) {
         animate={{ opacity: 1, height: 'auto' }}
         exit={{ opacity: 0, height: 0 }}
       >
-        <ListItem className={`${styles.listaRow} ${styles.propostaItem} ${nested ? styles.nested : ''}`}>
+        <ListItem className={`${styles.propostaItem} ${nested ? styles.nested : ''}`} sx={rowStyle}>
           <div>
             {nested
               ? <VscIndent size={20} color='#888888' style={{ marginLeft: '0.5rem' }} />

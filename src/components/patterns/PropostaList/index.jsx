@@ -1,6 +1,6 @@
 import { List, ListSubheader } from '@mui/material';
 import styles from '@/styles/Home.module.scss';
-import PropostaListItem from './PropostaListItem';
+import PropostaListItem, { rowStyle } from './PropostaListItem';
 import { useSelector } from 'react-redux';
 import { AnimatePresence } from 'framer-motion';
 
@@ -9,7 +9,7 @@ export default function PropostaList() {
 
   return (
     <List>
-      <ListSubheader className={styles.listaRow}>
+      <ListSubheader  sx={rowStyle}>
         <div></div>
         <div>#</div>
         <div>nome/marca</div>
