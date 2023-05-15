@@ -14,7 +14,6 @@ export const rowStyle = {
   display: 'grid',
   gridTemplateColumns: '2rem 3rem 3fr 2fr 1fr 110px 3rem',
   gap: '1rem',
-  backgroundColor: 'transparent',
 }
 
 export default function PropostaListItem({ proposta, nested = false }) {
