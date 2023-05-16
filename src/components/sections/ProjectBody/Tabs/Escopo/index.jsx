@@ -6,15 +6,11 @@ import { AnimatePresence, Reorder, motion } from 'framer-motion'
 import React, { memo } from 'react'
 import { useSelector } from 'react-redux'
 
-function Escopo({ selectedTab, variant }) {
-  const escopo = useSelector(state => state.propostaAtual.escopo);
-
+export default function Escopo({ selectedTab, variant }) {
+  const escopo = useSelector(state => state.propostaAtual.data.escopo);
+  
   return (
-    <motion.div
-      className={styles.tabContent}
-      variants={variant}
-      animate={selectedTab === 0 ? 'visible' : 'hidden'}
-    >
+    <>
       <Reorder.Group as='div' axis="y" values={escopo} onReorder={propostaDispatcher.reorderTasks}>
         <AnimatePresence initial={false}>
           {escopo.map(item => (
@@ -23,8 +19,8 @@ function Escopo({ selectedTab, variant }) {
         </AnimatePresence>
       </Reorder.Group>
       <AddButton onClick={propostaDispatcher.addItem()}>Adicionar</AddButton>
-    </motion.div>
+    </>
   )
 }
 
-export default memo(Escopo);
+//  memo(Escopo);

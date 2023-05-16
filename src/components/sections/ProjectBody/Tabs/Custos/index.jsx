@@ -7,20 +7,16 @@ import React from 'react'
 import { useSelector } from 'react-redux';
 
 export default function Custos({ selectedTab, variant }) {
-  const custosFixos = useSelector(state => state.propostaAtual.custosFixos);
+  const custosFixos = useSelector(state => state.propostaAtual.data.custosFixos);
 
   return (
-    <motion.div
-      className={styles.tabContent}
-      variants={variant}
-      animate={selectedTab === 1 ? 'visible' : 'hidden'}
-    >
+    <>
       <AnimatePresence initial={false}>
         {custosFixos.map(custo => (
           <Cost custo={custo} key={custo.id} />
         ))}
       </AnimatePresence>
       <AddButton onClick={propostaDispatcher.addItem('custosFixos')}>Adicionar</AddButton>
-    </motion.div>
+    </>
   )
 }

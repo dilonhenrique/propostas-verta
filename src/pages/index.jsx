@@ -23,7 +23,7 @@ export default function Home(props) {
       <Navbar />
       <main style={{ backgroundColor: '#f2f2f2' }}>
         <div className='container'>
-          <h1 style={{ marginTop: '3rem', marginBottom: 0 }}>Propostas Vertá</h1>
+          <h1 style={{ marginTop: '3rem', marginBottom: 0 }}>Bem vindo(a), {props.session.data.nome}</h1>
           <PropostaList />
         </div>
         <FloatingActions />
@@ -35,23 +35,23 @@ export default function Home(props) {
 //Decorator pattern
 export const getServerSideProps = withSession(async (ctx) => {
   const session = ctx.req.session;
-  const access_token = session.isRefreshed ? session.access_token : ctx.req.cookies['atPropV'];
+  // const access_token = session.isRefreshed ? session.access_token : ctx.req.cookies['atPropV'];
 
-  try {
-    const listaPropostas = await propostaService.getPropostaList(access_token);
-    return {
-      props: {
-        listaPropostas,
-        session,
-      }
-    }
-  } catch (err) {
-    if (err.response?.status) {
-      console.error('erro 1', err.response.status, err.response?.data);
-    } else {
-      console.error('erro 2', err);
-    }
-  }
+  // try {
+  //   const listaPropostas = await propostaService.getPropostaList(access_token);
+  //   return {
+  //     props: {
+  //       listaPropostas,
+  //       session,
+  //     }
+  //   }
+  // } catch (err) {
+  //   if (err.response?.status) {
+  //     console.error('erro 1', err.response.status, err.response?.data);
+  //   } else {
+  //     console.error('erro 2', err);
+  //   }
+  // }
 
   return {
     props: {

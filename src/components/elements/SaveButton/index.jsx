@@ -23,7 +23,7 @@ export default function SaveButton({ iconStyle }) {
     setAnchorEl(null);
   };
 
-  const propostaAtual = useSelector(state => state.propostaAtual);
+  const propostaAtual = useSelector(state => state.propostaAtual.data);
   async function saveProposta(proposta) {
     closeMenu();
     return await propostaService.saveProposta(proposta || propostaAtual);

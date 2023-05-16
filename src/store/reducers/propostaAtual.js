@@ -1,7 +1,22 @@
 import { addIdToObject } from "@/commom/propFunctions/addID";
 import createEscopo from "@/commom/propFunctions/createEscopo";
-import { createSlice } from "@reduxjs/toolkit";
+import propostaService from "@/commom/service/propostaService";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { v4 } from "uuid";
+
+export const updateProposta = createAsyncThunk('propostaAtual/update', async (id) => {
+  if (id) {
+    const data = await propostaService.getSingleProposta(id);
+    const versoes = await propostaService.getVersions(data.numeroProposta);
+
+    return { data, versoes, isSaved: true }
+  }
+
+  const defaultParams = await propostaService.getDefaultParams();
+  const numeroProposta = await propostaService.getNextProposta();
+
+  return { data: { ...defaultParams, numeroProposta }, isSaved: true }
+})
 
 const example = {
   "id": "72",
@@ -66,61 +81,66 @@ const example = {
 }
 
 const blank = {
-  //"id": "72", //cria automaticamente ao salvar
-  "numeroProposta": "0000", //get from server
-  "versaoProposta": "1",
-  "cliente": "",
-  "marca": "",
-  "nomeProjeto": "",
-  "descricaoProjeto": "",
-  "categoria": "IV",
-  "escopo": [
-    {
-      "id": v4(),
-      "tipo": "fase",
-      "nome": "",
-      "tempo": 0,
-    },
-    {
-      "id": v4(),
-      "tipo": "tarefa",
-      "nome": "",
-      "tempo": "",
-      "pessoas": "",
-    },
-    {
-      "id": v4(),
-      "tipo": "tarefa",
-      "nome": "",
-      "tempo": "",
-      "pessoas": "",
-    }
-  ],
-  "custosFixos": [
-    { "nome": "", "valor": "" }
-  ],
-  "horaTecnica": 120.00, //get from server (defaultProps)
-  "custoBoleto": 2.99, //get from server (defaultProps)
-  "parcelaMinima": 1200.00, //get from server (defaultProps)
-  "descontoVista": 10, //get from server (defaultProps)
-  "descontoPrevisto": 0,
-  "porcentagemNota": 6, //get from server (defaultProps)
-  "temNota": true, //get from server (defaultProps)
-  "valorNota": "",
-  "customPrazo": false,
-  "prazoEntrega": "",
-  "customParcela": false,
-  "parcelas": "",
-  "valorHora": "",
-  "cargaHoraria": 0,
-  "valorTotal": 0,
-  "valorVista": 0,
-  "status": "aberta",
-  "contrato": ""
+  isLoading: true,
+  isSaved: false,
+  versoes: [],
+  data: {
+    //"id": "72", //cria automaticamente ao salvar
+    "numeroProposta": "0000", //get from server
+    "versaoProposta": "1",
+    "cliente": "",
+    "marca": "",
+    "nomeProjeto": "",
+    "descricaoProjeto": "",
+    "categoria": "IV",
+    "escopo": [
+      {
+        "id": v4(),
+        "tipo": "fase",
+        "nome": "",
+        "tempo": 0,
+      },
+      {
+        "id": v4(),
+        "tipo": "tarefa",
+        "nome": "",
+        "tempo": "",
+        "pessoas": "",
+      },
+      {
+        "id": v4(),
+        "tipo": "tarefa",
+        "nome": "",
+        "tempo": "",
+        "pessoas": "",
+      }
+    ],
+    "custosFixos": [
+      { "nome": "", "valor": "" }
+    ],
+    "horaTecnica": 120.00, //get from server (defaultProps)
+    "custoBoleto": 2.99, //get from server (defaultProps)
+    "parcelaMinima": 1200.00, //get from server (defaultProps)
+    "descontoVista": 10, //get from server (defaultProps)
+    "descontoPrevisto": 0,
+    "porcentagemNota": 6, //get from server (defaultProps)
+    "temNota": true, //get from server (defaultProps)
+    "valorNota": "",
+    "customPrazo": false,
+    "prazoEntrega": "",
+    "customParcela": false,
+    "parcelas": "",
+    "valorHora": "",
+    "cargaHoraria": 0,
+    "valorTotal": 0,
+    "valorVista": 0,
+    "status": "aberta",
+    "contrato": ""
+  }
 }
 
-const initialState = createEscopo(addIdToObject(blank))
-delete initialState.id;
+const initialState = {...blank, data: createEscopo(addIdToObject(blank.data))}
+delete initialState.data.id;
 
 const propostaAtualSlice = createSlice({
   name: 'propostaAtual',
@@ -130,47 +150,64 @@ const propostaAtualSlice = createSlice({
       return initialState;
     },
 
+    setLoading: (state, { payload }) => {
+      state.isLoading = payload || true;
+    },
+
+    setSaved: (state, { payload }) => {
+      state.isSaved = payload || true;
+    },
+
+    setVersoes: (state, { payload }) => {
+      state.versoes = payload;
+    },
+
     setProposta: (state, { payload }) => {
-      return payload;
+      state.data = payload;
     },
 
     setValue: (state, { payload }) => {
       const { key, value } = payload;
-      if (state[key] != value) {
-        state[key] = value;
+      if (state.data[key] != value) {
+        state.data[key] = value;
+        state.isSaved = false;
       }
     },
 
     setEscopo: (state, { payload }) => {
       const { itemId, key, value } = payload;
 
-      const itemIndex = state.escopo.findIndex(item => item.id === itemId);
-      state.escopo[itemIndex][key] = value;
+      const itemIndex = state.data.escopo.findIndex(item => item.id === itemId);
+      state.data.escopo[itemIndex][key] = value;
+      state.isSaved = false;
     },
 
     changeEscopoOrder: (state, { payload }) => {
-      state.escopo = payload;
+      state.data.escopo = payload;
+      state.isSaved = false;
     },
 
     setCusto: (state, { payload }) => {
       const { itemId, key, value } = payload;
 
-      const custoIndex = state.custosFixos.findIndex(custo => custo.id === itemId);
-      state.custosFixos[custoIndex][key] = value;
+      const custoIndex = state.data.custosFixos.findIndex(custo => custo.id === itemId);
+      state.data.custosFixos[custoIndex][key] = value;
+      state.isSaved = false;
     },
 
     removeItem: (state, { payload }) => {
       const { itemId } = payload;
 
-      state.escopo = state.escopo.filter(item => item.id !== itemId)
-      state.custosFixos = state.custosFixos.filter(custo => custo.id !== itemId)
+      state.data.escopo = state.data.escopo.filter(item => item.id !== itemId)
+      state.data.custosFixos = state.data.custosFixos.filter(custo => custo.id !== itemId)
+      state.isSaved = false;
     },
 
     addItem: (state, { payload }) => {
-      const { type, beforeId, autoFocus  } = payload;
+      const { type, beforeId, autoFocus } = payload;
 
       let obj = { id: v4() }
-      let index = state[type].length + 2;
+      let index = state.data[type].length + 2;
 
       if (type === 'escopo') {
         obj.tipo = 'tarefa';
@@ -181,26 +218,52 @@ const propostaAtualSlice = createSlice({
         obj.nome = '';
         obj.valor = '';
       }
-      if(autoFocus ){obj.autoFocus  = true}
+      if (autoFocus) { obj.autoFocus = true }
 
       if (beforeId) {
-        const itemIndex = state[type].findIndex(item => item.id === beforeId)
-        if(itemIndex >= 0){
+        const itemIndex = state.data[type].findIndex(item => item.id === beforeId)
+        if (itemIndex >= 0) {
           index = itemIndex + 1;
         }
       }
 
-      state[type].splice(index, 0, obj);
+      state.data[type].splice(index, 0, obj);
+      state.isSaved = false;
     },
 
     changeItem: (state, { payload }) => {
       const { itemId, type } = payload;
-      const itemIndex = state.escopo.findIndex(item => item.id === itemId);
+      const itemIndex = state.data.escopo.findIndex(item => item.id === itemId);
 
-      state.escopo[itemIndex].tipo = type;
+      state.data.escopo[itemIndex].tipo = type;
+      state.isSaved = false;
     },
+  },
+  extraReducers(builder) {
+    builder
+      .addCase(updateProposta.pending,
+        (state, { payload }) => {
+          state.isLoading = true;
+        })
+      .addCase(updateProposta.fulfilled,
+        (state, { payload }) => {
+          return {
+            ...initialState,
+            ...payload,
+            data: {
+              ...initialState.data,
+              ...payload.data,
+            },
+            isLoading: false
+          };
+        })
+      .addCase(updateProposta.rejected,
+        (state, { payload }) => {
+          alert('Erro ao atualizar lista');
+          return { ...initialState, isLoading: false };
+        })
   }
 })
 
-export const { resetProposta, setProposta, setValue, setCusto, setEscopo, removeItem, addItem, changeItem, changeEscopoOrder } = propostaAtualSlice.actions;
+export const { setSaved, setLoading, setVersoes, resetProposta, setProposta, setValue, setCusto, setEscopo, removeItem, addItem, changeItem, changeEscopoOrder } = propostaAtualSlice.actions;
 export default propostaAtualSlice.reducer;

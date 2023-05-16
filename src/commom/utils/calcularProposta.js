@@ -1,38 +1,40 @@
 import store from "@/store"
 import calculaveis from "./calculaveis";
-import { setEscopo, setFase, setValue } from "@/store/reducers/propostaAtual";
+import { setEscopo, setValue } from "@/store/reducers/propostaAtual";
 
 export default function calcularProposta(key) {
   if (key === undefined || calculaveis.includes(key)) {
 
-    for (let pIndex, acc, i = 0, { propostaAtual } = store.getState(); i < propostaAtual.escopo.length; i++) {
-      const item = propostaAtual.escopo[i];
+    for (let pIndex, acc, i = 0, { propostaAtual } = store.getState(); i < propostaAtual.data.escopo.length; i++) {
+      const item = propostaAtual.data.escopo[i];
       if (item.tipo === 'fase') {
         if (pIndex !== undefined) {
           store.dispatch(setEscopo({
             key: 'tempo',
             value: acc,
-            itemId: propostaAtual.escopo[pIndex].id
+            itemId: propostaAtual.data.escopo[pIndex].id
           }))
         }
         pIndex = i;
         acc = 0;
       } else {
         let adicionar = item.tipo === 'terceirizada'
-          ? item.valor === '' ? 0 : Math.ceil(Number(item.valor) / Number(propostaAtual.horaTecnica)) || 0
+          ? item.valor === '' ? 0 : Math.ceil(Number(item.valor) / Number(propostaAtual.data.horaTecnica)) || 0
           : item.tempo === '' ? 0 : Number(item.tempo) * Number(item.pessoas === '' ? 1 : item.pessoas)
         acc += adicionar;
       }
-      if (i === propostaAtual.escopo.length - 1) {
+      if (i === propostaAtual.data.escopo.length - 1) {
         store.dispatch(setEscopo({
           key: 'tempo',
           value: acc,
-          itemId: propostaAtual.escopo[pIndex].id
+          itemId: propostaAtual.data.escopo[pIndex].id
         }))
       }
     }
 
-    const { propostaAtual } = store.getState();
+    let { propostaAtual } = store.getState();
+    propostaAtual = propostaAtual.data;
+    
     const cargaHoraria = propostaAtual.escopo.reduce((acc, item) => item.tipo === 'fase' ? acc + Number(item.tempo) : acc, 0);
 
     if (cargaHoraria > 0) {

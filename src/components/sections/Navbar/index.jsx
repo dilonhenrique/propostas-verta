@@ -17,11 +17,10 @@ const iconStyle = {
 }
 
 function Navbar() {
-  const { mode, id, excluido } = useSelector(state => {
+  const { mode, id } = useSelector(state => {
     return {
       mode: state.globalStatus.mode,
-      id: state.propostaAtual.id,
-      excluido: state.propostaAtual.excluido,
+      id: state.propostaAtual.data.id,
     }
   });
 

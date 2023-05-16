@@ -7,17 +7,12 @@ import { Reorder, motion } from 'framer-motion'
 import { useSelector } from 'react-redux';
 
 export default function Configs({ selectedTab, variant }) {
-  const propostaAtual = useSelector(state => state.propostaAtual);
+  const propostaAtual = useSelector(state => state.propostaAtual.data);
 
   const sx = { width: '100%', maxWidth: '600px', margin: '0 auto', gap: '2rem' }
 
   return (
-    <motion.div
-      className={styles.tabContent}
-      style={sx}
-      variants={variant}
-      animate={selectedTab === 2 ? 'visible' : 'hidden'}
-    >
+    <>
       <Stack direction='row' gap={2}>
         <OutlinedInput
           sx={{ flexBasis: '50%' }}
@@ -159,6 +154,6 @@ export default function Configs({ selectedTab, variant }) {
           }}
         />
       </Stack>
-    </motion.div>
+    </>
   )
 }

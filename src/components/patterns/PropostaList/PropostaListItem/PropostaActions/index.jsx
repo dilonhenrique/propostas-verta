@@ -71,7 +71,7 @@ export default function PropostaActions({ proposta }) {
         open={Boolean(anchorEl)}
         onClose={closeMenu}
       >
-        <MenuItem onClick={versionar}>
+        <MenuItem disabled onClick={() => {}}>
           <ListItemIcon>
             <TbFileCheck size={20} />
           </ListItemIcon>

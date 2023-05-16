@@ -2,8 +2,17 @@ import propostaService from "@/commom/service/propostaService";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  isLoading: false,
-  data: []
+  isLoading: true,
+  data: [],
+  search: '',
+  filter: {
+    categoria: ['IV', 'NAM', 'NIV', 'EMB', 'DESIGN', 'MOVIE'],
+    status: ['aberta', 'aprovada', 'recusada'],
+  },
+  order: {
+    label: 'numeroProposta',
+    order: 'ASC'
+  },
 }
 
 async function prepareList(list) {
@@ -68,10 +77,9 @@ const listaPropostasSlice = createSlice({
   name: 'listaPropostas',
   initialState,
   reducers: {
-    setListaPropostas: (state, { payload }) => {
-      // const prepararLista = await prepareList(payload);
-      // console.log(prepararLista);
-      // state.data = prepararLista;
+    setSearch: (state, { payload }) => {
+      if(state.search !== payload)
+        state.search = payload;
     },
   },
   extraReducers(builder) {
@@ -82,8 +90,8 @@ const listaPropostasSlice = createSlice({
         })
       .addCase(updateListaProposta.fulfilled,
         (state, { payload }) => {
-          state.isLoading = false;
           state.data = payload;
+          state.isLoading = false;
         })
       .addCase(updateListaProposta.rejected,
         (state, { payload }) => {
@@ -93,5 +101,5 @@ const listaPropostasSlice = createSlice({
   }
 })
 
-export const { setListaPropostas } = listaPropostasSlice.actions;
+export const { setSearch } = listaPropostasSlice.actions;
 export default listaPropostasSlice.reducer;

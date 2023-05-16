@@ -1,9 +1,8 @@
 import store from "@/store";
-import { addItem, changeEscopoOrder, changeItem, removeItem, resetProposta, setCusto, setEscopo, setProposta, setValue } from "@/store/reducers/propostaAtual";
+import { addItem, changeEscopoOrder, changeItem, removeItem, resetProposta, setCusto, setEscopo, setProposta, setSaved, setValue, setVersoes } from "@/store/reducers/propostaAtual";
 import Router from "next/router";
 import calcularProposta from "../utils/calcularProposta";
 import calculaveis from "../utils/calculaveis";
-import { resetVersoes, setVersoes } from "@/store/reducers/versoesAtual";
 
 const propostaDispatcher = {
   addItem: (tipo = 'escopo', beforeId) => {
@@ -27,7 +26,8 @@ const propostaDispatcher = {
       }
       if (evento.target.classList?.contains('MuiSwitch-input')) value = evento.target.checked;
 
-      const { propostaAtual } = store.getState();
+      let { propostaAtual } = store.getState();
+      propostaAtual = propostaAtual.data;
 
       const payload = { key, value, itemId }
 
@@ -85,8 +85,8 @@ const propostaDispatcher = {
   versionSwitcher: () => {
     return (evento) => {
       const versaoSelecionada = evento.target.value;
-      const { versoesAtual } = store.getState();
-      const { id } = versoesAtual.find(versao => versao.versaoProposta === versaoSelecionada);
+      const { propostaAtual } = store.getState();
+      const { id } = propostaAtual.versoes.find(versao => versao.versaoProposta === versaoSelecionada);
 
       Router.push(`/editar/${id}`);
     }
@@ -102,7 +102,6 @@ const propostaDispatcher = {
 
   resetProposta: () => {
     store.dispatch(resetProposta());
-    store.dispatch(resetVersoes());
   },
 
   setPropostaValue: ({ key, value }) => {

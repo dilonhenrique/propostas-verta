@@ -10,6 +10,7 @@ import { updateListaProposta } from '@/store/reducers/listaPropostas';
 import { enqueueSnackbar } from 'notistack';
 import propostaDispatcher from '../dispatchers/propostaDispatcher';
 import { Button } from '@mui/material';
+import { setSaved } from '@/store/reducers/propostaAtual';
 
 const propostaService = {
   getPropostaList: async (access_token = tokenService.getAccess()) => {
@@ -41,12 +42,12 @@ const propostaService = {
     return versoes;
   },
 
-  getDefaultParams: async (access_token) => {
+  getDefaultParams: async (access_token = tokenService.getAccess()) => {
     const params = propApiAuth('defaultParams', { access_token });
     return params;
   },
 
-  getNextProposta: async (access_token) => {
+  getNextProposta: async (access_token = tokenService.getAccess()) => {
     access_token = access_token || tokenService.getAccess();
     const listaPropostas = await propostaService.getPropostaList(access_token);
     const amostragem = 10 //pega as x últimas propostas (performance)
@@ -62,7 +63,9 @@ const propostaService = {
   },
 
   getNextVersion: async (numeroProposta) => {
-    let { versoesAtual } = store.getState();
+    const { propostaAtual } = store.getState();
+    let versoesAtual = propostaAtual.versoes;
+
     if (numeroProposta !== undefined) {
       const access_token = tokenService.getAccess();
       const listaPropostas = await propostaService.getPropostaList(access_token);
@@ -108,6 +111,7 @@ const propostaService = {
       }
       if (response.affectedRows) {
         enqueueSnackbar('Proposta salva com sucesso!', { variant: 'success' })
+        store.dispatch(setSaved(true));
         return response;
       } else {
         throw Error(response)
