@@ -26,7 +26,7 @@ function Navbar() {
 
   const navBarContext = {
     list: <>
-      <IconButton hidden={true} size='small' color="primary"><TbFilter /></IconButton>
+      {/* <IconButton hidden={true} size='small' color="primary"><TbFilter /></IconButton> */}
       <SearchBar />
     </>,
     edit: <>

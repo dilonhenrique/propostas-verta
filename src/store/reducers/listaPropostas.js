@@ -10,8 +10,8 @@ const initialState = {
     status: ['aberta', 'aprovada', 'recusada'],
   },
   order: {
-    label: 'numeroProposta',
-    order: 'ASC'
+    key: 'numeroProposta',
+    asc: false,
   },
 }
 
@@ -81,6 +81,18 @@ const listaPropostasSlice = createSlice({
       if(state.search !== payload)
         state.search = payload;
     },
+
+    setOrder: (state, { payload }) => {
+      const asc = state.order.asc;
+      state.order = {
+        key: payload,
+        asc: !asc
+      }
+    },
+
+    setFilter: (state, { payload }) => {
+      
+    },
   },
   extraReducers(builder) {
     builder
@@ -101,5 +113,5 @@ const listaPropostasSlice = createSlice({
   }
 })
 
-export const { setSearch } = listaPropostasSlice.actions;
+export const { setSearch, setOrder, setFilter } = listaPropostasSlice.actions;
 export default listaPropostasSlice.reducer;

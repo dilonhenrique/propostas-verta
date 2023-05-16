@@ -4,6 +4,7 @@ import PropostaListItem, { rowStyle } from './PropostaListItem';
 import { useSelector } from 'react-redux';
 import { AnimatePresence } from 'framer-motion';
 import { useEffect, useState } from 'react';
+import Orderer from './Orderer';
 
 export default function PropostaList() {
   const { listaPropostas, search, filter, order, isLoading } = useSelector(state => ({
@@ -25,16 +26,21 @@ export default function PropostaList() {
           return false;
         })
       )
-    : [...listaPropostas]
+      : [...listaPropostas]
 
-    // for (let i = 0; i < listaPropostas.length; i++) {
-    //   const prop = listaPropostas[i];
-    //   pesquisaveis.forEach(campo => {
-    //     if (campo in prop && prop[campo].indexOf(search) != -1) {
-    //       novaLista.push(prop);
-    //     }
-    //   })
-    // }
+    if (order.key === "numeroProposta" || order.key === "valorTotal") {
+      if (order.asc) {
+        novaLista.sort((a, b) => a[order.key] - b[order.key])
+      } else {
+        novaLista.sort((a, b) => b[order.key] - a[order.key])
+      }
+    } else {
+      if (order.asc) {
+        novaLista.sort((a, b) => b[order.key] > a[order.key] ? 1 : a[order.key] > b[order.key] ? -1 : 0)
+      } else {
+        novaLista.sort((a, b) => a[order.key] > b[order.key] ? 1 : b[order.key] > a[order.key] ? -1 : 0)
+      }
+    }
 
     setListaFiltrada(novaLista);
   }, [search, filter, order, listaPropostas])
@@ -44,11 +50,11 @@ export default function PropostaList() {
       <List sx={{ minWidth: '700px' }}>
         <ListSubheader sx={{ ...rowStyle, backgroundColor: 'transparent', }}>
           <div></div>
-          <div>#</div>
-          <div>nome/marca</div>
-          <div>cliente</div>
-          <div>valor</div>
-          <div>status</div>
+          <Orderer chave='numeroProposta' label='#' order={order} />
+          <Orderer chave='nomeProjeto' label='nome/marca' order={order} />
+          <Orderer chave='cliente' label='cliente' order={order} />
+          <Orderer chave='valorTotal' label='valor' order={order} />
+          <Orderer chave='status' label='status' order={order} />
           <div></div>
         </ListSubheader>
         {listaFiltrada.length
