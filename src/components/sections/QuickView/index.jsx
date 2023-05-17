@@ -9,7 +9,6 @@ export default function QuickView() {
 
   return (
       <motion.div
-        key='quickView'
         className={styles.quickViewContainer}
         initial={{opacity:0, y:'100%'}}
         animate={{opacity:1, y:'0%'}}

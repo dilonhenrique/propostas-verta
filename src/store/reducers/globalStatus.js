@@ -2,7 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   loading: false,
-  mode: 'neutral'
+  mode: 'neutral',
+  darkMode: false,
 }
 
 const globalStatusSlice = createSlice({
@@ -22,8 +23,11 @@ const globalStatusSlice = createSlice({
         state.loading = !state.loading
       }
     },
+    setDarkMode: (state, { payload }) => {
+      state.darkMode = !state.darkMode
+    },
   }
 })
 
-export const { setGlobalValue, changeLoading } = globalStatusSlice.actions;
+export const { setGlobalValue, changeLoading, setDarkMode } = globalStatusSlice.actions;
 export default globalStatusSlice.reducer;

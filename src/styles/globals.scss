@@ -66,13 +66,22 @@ html, body {
 /* ================== */
 /* Propostas Vertá */
 /* ================== */
-.container {
+.container,
+.containerXl {
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: $bp-xl;
+  max-width: $bp-lg;
   padding: 0 2rem;
   margin: 0 auto;
+
+  @media (min-width:$bp-lg){
+    padding: 0;
+  }
+}
+
+.containerXl {
+  max-width: $bp-xl;
 
   @media (min-width:$bp-xl){
     padding: 0;

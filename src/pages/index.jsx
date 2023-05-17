@@ -23,12 +23,12 @@ export default function Home(props) {
       <PageTitle>Propostas Vertá</PageTitle>
       <Navbar />
       <div className={styles.listHeader}>
-        <div className='container'>
+        <div className='containerXl'>
           <Typography component='h1' variant='h4' style={{ marginTop: '3rem', marginBottom: 0 }}>Bem vindo(a), {props.session.data.nome}</Typography>
         </div>
       </div>
       <main style={{ backgroundColor: '#f2f2f2' }}>
-        <div className='container'>
+        <div className='containerXl'>
           <PropostaList />
         </div>
         <FloatingActions />

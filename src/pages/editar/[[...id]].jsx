@@ -30,7 +30,7 @@ export default function Editar(props) {
     //     propostaDispatcher.setPropostaValue({ key, value });
     //   }
     // }
-    const [id] = router.query.id || [undefined];
+    const id = router.query.id[0];
     dispatch(updateProposta(id));
   }, [dispatch, router.query.id])
 
@@ -61,7 +61,7 @@ export default function Editar(props) {
       </main>
       <AnimatePresence>
         {!isLoading &&
-          <QuickView />}
+          <QuickView key='quickview' />}
       </AnimatePresence>
     </>
   )

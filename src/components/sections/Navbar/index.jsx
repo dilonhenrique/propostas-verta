@@ -2,13 +2,13 @@
 import Button from '@/components/elements/Button';
 import styles from './Navbar.module.scss';
 
-import { TbFilter, TbFileCheck, TbFileExport, TbHistory, TbTrashOff } from 'react-icons/tb';
+import { TbFilter, TbFileCheck, TbFileExport, TbHistory, TbTrashOff, TbSquaresDiagonal, TbFileStack, TbUserCircle, TbUserPlus, TbLogout, TbMoon, TbSunHigh, TbSun } from 'react-icons/tb';
 import SaveButton from '@/components/elements/SaveButton';
-import { memo } from 'react';
+import { memo, useState } from 'react';
 import Link from 'next/link';
 import { useSelector } from 'react-redux';
 import SearchBar from '@/components/elements/SearchBar';
-import { Alert, IconButton, ThemeProvider } from '@mui/material';
+import { Alert, Avatar, ButtonBase, Divider, IconButton, ListItemIcon, Menu, MenuItem, ThemeProvider } from '@mui/material';
 import propostaService from '@/commom/service/propostaService';
 import { dark } from '@/theme/theme';
 
@@ -17,10 +17,11 @@ const iconStyle = {
 }
 
 function Navbar() {
-  const { mode, id } = useSelector(state => {
+  const { mode, id, darkMode } = useSelector(state => {
     return {
       mode: state.globalStatus.mode,
       id: state.propostaAtual.data.id,
+      darkMode: state.globalStatus.darkMode,
     }
   });
 
@@ -41,20 +42,78 @@ function Navbar() {
     neutral: <></>,
   }
 
+  const [anchorEl, setAnchorEl] = useState(null);
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const closeMenu = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <ThemeProvider theme={dark}>
       <header className={styles.header}>
-        <div className='container row'>
+        <div className='containerXl row'>
           <div className={styles.logoContainer}>
-            <Link href='/'>
-              <img src='/assets/images/verta.jpg' alt="Logotipo Estúdio Vertá" />
-            </Link>
+            <ButtonBase onClick={handleMenu}>
+              <Avatar alt='Menu principal' src='/assets/images/verta.jpg' sx={{ width: '30px', height: '30px' }} />
+            </ButtonBase>
           </div>
           <div className={styles.contextualContainer}>
             {navBarContext[mode] || ''}
           </div>
         </div>
       </header>
+      <Menu
+        anchorEl={anchorEl}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        keepMounted
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'left',
+        }}
+        open={Boolean(anchorEl)}
+        onClose={closeMenu}
+      >
+        <MenuItem onClick={closeMenu} href="/" component={Link}>
+          <ListItemIcon>
+            <TbFileStack {...iconStyle} />
+          </ListItemIcon>
+          Lista de propostas
+        </MenuItem>
+        <MenuItem onClick={closeMenu} href="/" disabled component={Link}>
+          <ListItemIcon>
+            <TbUserCircle {...iconStyle} />
+          </ListItemIcon>
+          Meu perfil
+        </MenuItem>
+        <MenuItem onClick={closeMenu} href="/" disabled component={Link}>
+          <ListItemIcon>
+            <TbUserPlus {...iconStyle} />
+          </ListItemIcon>
+          Cadastrar usuário
+        </MenuItem>
+        <MenuItem onClick={closeMenu} disabled>
+          <ListItemIcon>
+            {darkMode
+              ? <TbSun {...iconStyle} />
+              : <TbMoon {...iconStyle} />}
+          </ListItemIcon>
+          {darkMode
+              ? 'Light mode'
+              : 'Dark mode'}
+        </MenuItem>
+        <Divider />
+        <MenuItem disabled onClick={closeMenu}>
+          <ListItemIcon>
+            <TbLogout {...iconStyle} />
+          </ListItemIcon>
+          Logout
+        </MenuItem>
+      </Menu>
     </ThemeProvider>
   )
 }
