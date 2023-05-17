@@ -1,3 +1,5 @@
+@import '@/theme/theme.scss';
+
 .task {
   padding: .5rem 0;
   border-radius: 5px;
@@ -54,7 +56,7 @@
     }
   }
 
-  @media (max-width:600px) {
+  @media (max-width:$bp-sm) {
     margin: .5rem 0;
 
     .actions,
@@ -74,7 +76,7 @@
   .inputsContainer {
     padding-left: 1rem;
 
-    @media (max-width:600px) {
+    @media (max-width:$bp-sm) {
       flex-wrap: wrap;
       padding-left: 0;
 

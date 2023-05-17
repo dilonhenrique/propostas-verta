@@ -1,5 +1,7 @@
+@import '@/theme/theme.scss';
+
 .header {
-  background-color: #242424;
+  background-color: $color-black;
   position: sticky;
   top: 0;
   width: 100%;
@@ -15,7 +17,7 @@
     height: 30px;
 
     img {
-      border: solid 2px #8D47FF;
+      border: solid 2px $color-primary;
       border-radius: 50%;
     }
   }
@@ -27,7 +29,7 @@
     align-items: center;
     gap: 1rem;
 
-    @media (max-width:600px){
+    @media (max-width:$bp-sm){
       button,
       a {
         min-width: unset;

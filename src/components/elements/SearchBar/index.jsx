@@ -2,20 +2,22 @@ import { setSearch } from '@/store/reducers/listaPropostas';
 import { InputAdornment, TextField } from '@mui/material'
 import React, { useState } from 'react'
 import { TbSearch } from 'react-icons/tb'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function SearchBar() {
-  const [busca, setBusca] = useState('');
+  const { search } = useSelector(state => state.listaPropostas);
   const dispatch = useDispatch();
   function buscar(evento) {
     evento.preventDefault();
     dispatch(setSearch(evento.target.value));
   }
-  function keyDown(evento){
-    if(evento.keyCode == 13){
+  function keyDown(evento) {
+    if (evento.keyCode == 13) {
       buscar(evento);
     }
   }
+
+  const [busca, setBusca] = useState(search);
 
   return (
     <form onSubmit={buscar}>

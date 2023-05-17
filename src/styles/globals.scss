@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200;500;700&display=swap');
+@import 'https://fonts.googleapis.com/css2?family=Montserrat:wght@200;500;700&display=swap';
+@import '@/theme/theme.scss';
 
 * {
   box-sizing: border-box;
@@ -69,11 +70,11 @@ html, body {
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 1000px;
+  max-width: $bp-xl;
   padding: 0 2rem;
   margin: 0 auto;
 
-  @media (min-width:1000px){
+  @media (min-width:$bp-xl){
     padding: 0;
   }
 }

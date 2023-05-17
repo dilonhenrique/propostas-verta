@@ -1,4 +1,3 @@
-import propostaService from '@/commom/service/propostaService';
 import withSession from '@/commom/service/session';
 import PageTitle from '@/components/elements/PageTitle';
 import FloatingActions from '@/components/patterns/FloatingActions';
@@ -8,6 +7,8 @@ import { useDispatch } from 'react-redux';
 import PropostaList from '@/components/patterns/PropostaList';
 import { updateListaProposta } from '@/store/reducers/listaPropostas';
 import Navbar from '@/components/sections/Navbar';
+import styles from '@/styles/Home.module.scss';
+import { Typography } from '@mui/material';
 
 export default function Home(props) {
 
@@ -21,9 +22,13 @@ export default function Home(props) {
     <>
       <PageTitle>Propostas Vertá</PageTitle>
       <Navbar />
+      <div className={styles.listHeader}>
+        <div className='container'>
+          <Typography component='h1' variant='h4' style={{ marginTop: '3rem', marginBottom: 0 }}>Bem vindo(a), {props.session.data.nome}</Typography>
+        </div>
+      </div>
       <main style={{ backgroundColor: '#f2f2f2' }}>
         <div className='container'>
-          <h1 style={{ marginTop: '3rem', marginBottom: 0 }}>Bem vindo(a), {props.session.data.nome}</h1>
           <PropostaList />
         </div>
         <FloatingActions />

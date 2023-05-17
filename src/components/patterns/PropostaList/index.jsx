@@ -48,7 +48,7 @@ export default function PropostaList() {
   return (
     <div className={styles.listContainer}>
       <List sx={{ minWidth: '700px' }}>
-        <ListSubheader sx={{ ...rowStyle, backgroundColor: 'transparent', }}>
+        <ListSubheader sx={{ ...rowStyle, backgroundColor: 'transparent', color:'#FFFFFF' }}>
           <div></div>
           <Orderer chave='numeroProposta' label='#' order={order} />
           <Orderer chave='nomeProjeto' label='nome/marca' order={order} />
@@ -65,7 +65,7 @@ export default function PropostaList() {
               )}
             </AnimatePresence>
           </div>
-          : <div style={{ margin: '2rem 0', textAlign: 'center' }}>
+          : <div style={{ margin: '5rem 0', textAlign: 'center' }}>
             {isLoading
               ? <CircularProgress />
               : <h2>Nenhuma proposta encontrada</h2>

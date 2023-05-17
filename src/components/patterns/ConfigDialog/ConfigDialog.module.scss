@@ -1,3 +1,5 @@
+@import '@/theme/theme.scss';
+
 .form {
   display: flex;
   flex-direction: column;
@@ -8,7 +10,7 @@
   gap: 2rem;
   flex-direction: row;
 
-  @media (max-width:600px) {
+  @media (max-width:$bp-sm) {
     flex-direction: column;
   }
 }

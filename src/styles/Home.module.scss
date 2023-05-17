@@ -1,5 +1,17 @@
+@import '@/theme/theme.scss';
+
+$sobreposicao: 6rem;
+
+.listHeader {
+  background-color: $color-black;
+  color: $color-primary;
+  padding-bottom: $sobreposicao;
+}
+
 .listContainer {
-  @media (max-width: 800px){
+  margin-top: -$sobreposicao;
+
+  @media (max-width: $bp-md){
     overflow: auto;
   }
 }
@@ -22,5 +34,5 @@
 
 .link {
   font-weight: 700;
-  color: #8D47FF;
+  color: $color-primary;
 }

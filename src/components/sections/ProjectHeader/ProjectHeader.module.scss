@@ -1,3 +1,5 @@
+@import '@/theme/theme.scss';
+
 .projectHeaderContainer {
   background-color: #FAFAFA;
   padding: 3rem 0;
@@ -22,7 +24,7 @@
     gap: 3rem;
     margin-bottom: 1rem;
 
-    @media (max-width: 600px){
+    @media (max-width: $bp-sm){
       flex-direction: column;
       gap: 1rem;
       justify-content: stretch;
