@@ -16,13 +16,14 @@ export const rowStyle = {
   gap: '1rem',
 }
 
-export default function PropostaListItem({ proposta, nested = false }) {
+export default function PropostaListItem({ proposta, versoes = [], nested = false }) {
   const [openNested, setOpenNested] = useState(false);
+  const versoesAlt = versoes.length <= 1 ? [] : versoes.filter(versao => versao.versaoProposta !== proposta.versaoProposta);
 
   function changeHandler(){
     return async (evento) => {
       const value = evento.target.value;
-      const response = await propostaService.changeStatus(proposta.id, value);
+      const response = await propostaService.changeStatus(proposta, value);
     }
   }
 
@@ -37,7 +38,7 @@ export default function PropostaListItem({ proposta, nested = false }) {
           <div>
             {nested
               ? <VscIndent size={20} color='#888888' style={{ marginLeft: '0.5rem' }} />
-              : !!proposta.versoes.length && <IconButton onClick={() => { setOpenNested(current => !current) }}><AiOutlinePlus size={18} /></IconButton>
+              : !!versoesAlt.length && <IconButton onClick={() => { setOpenNested(current => !current) }}><AiOutlinePlus size={18} /></IconButton>
             }
           </div>
           <ListItemText secondary={`${proposta.numeroProposta}.${proposta.versaoProposta}`} />
@@ -54,8 +55,8 @@ export default function PropostaListItem({ proposta, nested = false }) {
       </motion.div>
 
       <AnimatePresence>
-        {proposta.versoes && openNested
-          ? proposta.versoes.map(versao => (
+        {versoesAlt.length && openNested
+          ? versoesAlt.map(versao => (
             <PropostaListItem key={versao.id} proposta={versao} nested />
           ))
           : null}

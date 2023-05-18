@@ -1,6 +1,4 @@
 import { propApiAuth } from '../infra/propApi';
-import createEscopo from "../propFunctions/createEscopo";
-import { addIdToObject } from "../propFunctions/addID";
 import { tokenService } from './tokenService';
 import translateJsToDb from '../utils/translateJsToDb';
 import Router from 'next/router';
@@ -24,8 +22,7 @@ const propostaService = {
     const response = await propApiAuth(`propostas/${id}`, {
       access_token
     });
-    const proposta = addIdToObject(createEscopo(response[0]));
-    return proposta;
+    return response[0];
   },
 
   getVersions: async (numeroProposta, access_token = tokenService.getAccess()) => {
@@ -166,16 +163,45 @@ const propostaService = {
     return response;
   },
 
-  changeStatus: async (id, newStatus) => {
+  changeStatus: async (proposta, newStatus) => {
     const access_token = tokenService.getAccess();
+    if(proposta.status === newStatus) return;
 
-    const response = await propApiAuth(`propostas/${id}`, {
+    const response = await propApiAuth(`propostas/${proposta.id}`, {
       access_token,
       method: 'POST',
       data: JSON.stringify({ status: newStatus }),
     });
 
     if (response.affectedRows) {
+      //muda o estado das versoes alternativas
+      const { listaPropostas } = store.getState();
+      const [{ versoes }] = listaPropostas.data.filter(prop => prop.numeroProposta === proposta.numeroProposta);
+      const versoesAlt = versoes.filter(prop => prop.versaoProposta !== proposta.versaoProposta);
+      //se mudar PARA aprovada
+      if(newStatus === 'aprovada'){
+        versoesAlt.forEach(async versao => {
+          if(versao.status !== 'aprovada*')
+            await propApiAuth(`propostas/${versao.id}`, {
+              access_token,
+              method: 'POST',
+              data: JSON.stringify({ status: 'aprovada*' }),
+            });
+        })
+      }
+      //se mudar DE aprovada
+      if(proposta.status === 'aprovada'){
+        versoesAlt.forEach(async versao => {
+          if(versao.status === 'aprovada*')
+            await propApiAuth(`propostas/${versao.id}`, {
+              access_token,
+              method: 'POST',
+              data: JSON.stringify({ status: 'aberta' }),
+            });
+        })
+      }
+
+      //atualiza a lista de propostas
       store.dispatch(updateListaProposta());
     }
 

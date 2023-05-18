@@ -30,7 +30,7 @@ export default function Editar(props) {
     //     propostaDispatcher.setPropostaValue({ key, value });
     //   }
     // }
-    const id = router.query.id[0];
+    const [id] = router.query.id || [undefined];
     dispatch(updateProposta(id));
   }, [dispatch, router.query.id])
 

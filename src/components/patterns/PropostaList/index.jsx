@@ -19,13 +19,17 @@ export default function PropostaList() {
   useEffect(() => {
     const pesquisaveis = ['marca', 'cliente', 'descricaoProjeto', 'nomeProjeto']
     let novaLista = search
-      ? listaPropostas.filter(prop =>
-        Object.keys(prop).some(key => {
-          if (pesquisaveis.includes(key))
-            return prop[key].toLowerCase().includes(search.toLowerCase());
-          return false;
-        })
-      )
+      ? listaPropostas.reduce((filtrado, prop) => {
+        const versoesFiltradas = prop.versoes.filter(versao =>
+          Object.keys(versao).some(key => {
+            if (pesquisaveis.includes(key))
+              return versao[key].toLowerCase().includes(search.toLowerCase());
+            return false;
+          })
+        )
+        if (versoesFiltradas.length) filtrado.push({ ...prop, versoes: versoesFiltradas });
+        return filtrado;
+      }, [])
       : [...listaPropostas]
 
     if (order.key === "numeroProposta" || order.key === "valorTotal") {
@@ -48,7 +52,7 @@ export default function PropostaList() {
   return (
     <div className={styles.listContainer}>
       <List sx={{ minWidth: '700px' }}>
-        <ListSubheader sx={{ ...rowStyle, backgroundColor: 'transparent', color:'#FFFFFF' }}>
+        <ListSubheader sx={{ ...rowStyle, backgroundColor: 'transparent', color: '#FFFFFF' }}>
           <div></div>
           <Orderer chave='numeroProposta' label='#' order={order} />
           <Orderer chave='nomeProjeto' label='nome/marca' order={order} />
@@ -61,7 +65,7 @@ export default function PropostaList() {
           ? <div className={styles.listaPropostas}>
             <AnimatePresence>
               {listaFiltrada.map(proposta => (
-                <PropostaListItem key={proposta.id} proposta={proposta} />)
+                <PropostaListItem key={proposta.versoes[0].id} proposta={proposta.versoes[0]} versoes={proposta.versoes} />)
               )}
             </AnimatePresence>
           </div>

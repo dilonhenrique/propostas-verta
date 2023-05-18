@@ -1,5 +1,3 @@
-import { addIdToObject } from "@/commom/propFunctions/addID";
-import createEscopo from "@/commom/propFunctions/createEscopo";
 import propostaService from "@/commom/service/propostaService";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { v4 } from "uuid";
@@ -139,7 +137,7 @@ const blank = {
   }
 }
 
-const initialState = {...blank, data: createEscopo(addIdToObject(blank.data))}
+const initialState = blank;
 delete initialState.data.id;
 
 const propostaAtualSlice = createSlice({
@@ -259,7 +257,7 @@ const propostaAtualSlice = createSlice({
         })
       .addCase(updateProposta.rejected,
         (state, { payload }) => {
-          alert('Erro ao atualizar lista');
+          alert('Erro ao atualizar proposta');
           return { ...initialState, isLoading: false };
         })
   }
