@@ -15,7 +15,7 @@ const initialState = {
   },
 }
 
-function prepareList(originalList) {
+export function prepareList(originalList) {
   let newList = [];
   originalList.forEach((prop,index,lista) => {
     //primeira ocorrência do numeroProposta
@@ -64,6 +64,10 @@ const listaPropostasSlice = createSlice({
     setFilter: (state, { payload }) => {
 
     },
+
+    setListaPropostas: (state, { payload }) => {
+      state.data = prepareList(payload);
+    },
   },
   extraReducers(builder) {
     builder
@@ -85,5 +89,5 @@ const listaPropostasSlice = createSlice({
   }
 })
 
-export const { setSearch, setOrder, setFilter } = listaPropostasSlice.actions;
+export const { setSearch, setOrder, setFilter, setListaPropostas } = listaPropostasSlice.actions;
 export default listaPropostasSlice.reducer;

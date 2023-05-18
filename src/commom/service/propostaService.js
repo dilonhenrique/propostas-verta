@@ -87,6 +87,7 @@ const propostaService = {
     const id = proposta.id || '';
 
     try {
+      propostaDispatcher.setPropostaSaved();
       const response = await propApiAuth(`propostas/${id}`, {
         access_token,
         method: 'POST',
@@ -104,7 +105,6 @@ const propostaService = {
         //atualiza no store
         propostaDispatcher.updateVersions(await propostaService.getVersions(proposta.numeroProposta));
         propostaDispatcher.updateProposta({ ...proposta, id: response.insertId });
-
       }
       if (response.affectedRows) {
         enqueueSnackbar('Proposta salva com sucesso!', { variant: 'success' })
@@ -132,7 +132,7 @@ const propostaService = {
         enqueueSnackbar('Proposta excluída com sucesso!', {
           variant: 'success',
           action:
-            <Button color="inherit" size="small" onClick={() => propostaService.undeleteProposta(id)}>
+            <Button color="inherit" size="small" variant='outlined' onClick={() => propostaService.undeleteProposta(id)}>
               Desfazer
             </Button>
         });
@@ -158,7 +158,7 @@ const propostaService = {
     });
 
     if (response.affectedRows) {
-      Router.push(`/editar/${id}`);
+      Router.replace(Router.asPath);
     }
     return response;
   },

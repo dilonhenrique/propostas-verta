@@ -106,7 +106,11 @@ const propostaDispatcher = {
 
   setPropostaValue: ({ key, value }) => {
     store.dispatch(setValue({ key, value }));
-  }
+  },
+
+  setPropostaSaved: (value) => {
+    store.dispatch(setSaved(value));
+  },
 }
 
 export default propostaDispatcher;

@@ -4,7 +4,7 @@ import { executeQuery } from "../db";
 export function translateDbToJs(prop) {
   let newObj = { ...prop };
   if (typeof prop.escopo === 'string') {
-    if(prop.escopo === 'null'){
+    if (prop.escopo === 'null') {
       newObj.escopo = null;
     } else {
       newObj.escopo = JSON.parse(prop.escopo)
@@ -27,7 +27,7 @@ export function translateDbToJs(prop) {
 const controllers = {
   getAllPropostas: async (req, res) => {
     const query = 'SELECT * FROM proposta WHERE excluido = 0';
-    
+
 
     try {
       const results = await executeQuery({
@@ -36,7 +36,9 @@ const controllers = {
 
       if (results.length > 0) {
         const formatedResult = results.map(prop => {
-          return translateDbToJs(prop);
+          const { nomeProjeto, numeroProposta, versaoProposta, categoria, cliente, marca, valorTotal, status, id } = prop;
+          const propSimplificada = { nomeProjeto, numeroProposta, versaoProposta, categoria, cliente, marca, valorTotal, status, id };
+          return translateDbToJs(propSimplificada);
         })
         res.status(200).json(formatedResult);
       } else {

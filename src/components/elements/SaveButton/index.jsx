@@ -34,7 +34,7 @@ export default function SaveButton({ iconStyle }) {
       ...propostaAtual,
       versaoProposta: await propostaService.getNextVersion(),
       id: undefined,
-      status: propostaAtual.status === 'aprovada' ? 'aprovada' : propostaAtual.status,
+      status: propostaAtual.status === 'aprovada' ? 'aberta' : propostaAtual.status,
       contrato: '',
     };
     await saveProposta(novaProposta);

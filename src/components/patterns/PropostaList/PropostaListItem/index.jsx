@@ -42,10 +42,10 @@ export default function PropostaListItem({ proposta, versoes = [], nested = fals
             }
           </div>
           <ListItemText secondary={`${proposta.numeroProposta}.${proposta.versaoProposta}`} />
-          <ListItemText secondary={proposta.marca}>
+          <ListItemText secondary={<small>{proposta.categoria}</small>}>
             <Link href={`/editar/${proposta.id}`} className={styles.link}>{proposta.nomeProjeto}</Link>
           </ListItemText>
-          <ListItemText secondary={proposta.cliente} />
+          <ListItemText primary={proposta.cliente} secondary={proposta.marca} />
           <ListItemText secondary={toCurrency(proposta.valorTotal)} />
           <StatusSelector value={proposta.status} onChange={changeHandler()} />
           <div>

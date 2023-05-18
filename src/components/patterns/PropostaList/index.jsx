@@ -34,17 +34,32 @@ export default function PropostaList() {
 
     if (order.key === "numeroProposta" || order.key === "valorTotal") {
       if (order.asc) {
-        novaLista.sort((a, b) => a[order.key] - b[order.key])
+        novaLista.sort((a, b) => a.versoes[0][order.key] - b.versoes[0][order.key])
       } else {
-        novaLista.sort((a, b) => b[order.key] - a[order.key])
+        novaLista.sort((a, b) => b.versoes[0][order.key] - a.versoes[0][order.key])
       }
     } else {
       if (order.asc) {
-        novaLista.sort((a, b) => b[order.key] > a[order.key] ? 1 : a[order.key] > b[order.key] ? -1 : 0)
+        novaLista.sort((a, b) => b.versoes[0][order.key] > a.versoes[0][order.key] ? 1 : a.versoes[0][order.key] > b.versoes[0][order.key] ? -1 : 0)
       } else {
-        novaLista.sort((a, b) => a[order.key] > b[order.key] ? 1 : b[order.key] > a[order.key] ? -1 : 0)
+        novaLista.sort((a, b) => a.versoes[0][order.key] > b.versoes[0][order.key] ? 1 : b.versoes[0][order.key] > a.versoes[0][order.key] ? -1 : 0)
       }
     }
+
+    novaLista = novaLista.reduce((filtrado, prop) => {
+      const versoesFiltradas = prop.versoes.filter(versao => {
+        for (let key in filter) {
+          const valor = versao[key] === 'aprovada*' ? 'aprovada' : versao[key];
+          if(!filter[key].includes(valor)){
+            return false
+          }
+        }
+        return true
+      })
+      
+      if (versoesFiltradas.length) filtrado.push({ ...prop, versoes: versoesFiltradas });
+      return filtrado;
+    }, [])
 
     setListaFiltrada(novaLista);
   }, [search, filter, order, listaPropostas])
@@ -55,8 +70,8 @@ export default function PropostaList() {
         <ListSubheader sx={{ ...rowStyle, backgroundColor: 'transparent', color: '#FFFFFF' }}>
           <div></div>
           <Orderer chave='numeroProposta' label='#' order={order} />
-          <Orderer chave='nomeProjeto' label='nome/marca' order={order} />
-          <Orderer chave='cliente' label='cliente' order={order} />
+          <Orderer chave='nomeProjeto' label='nome/categoria' order={order} />
+          <Orderer chave='cliente' label='cliente/marca' order={order} />
           <Orderer chave='valorTotal' label='valor' order={order} />
           <Orderer chave='status' label='status' order={order} />
           <div></div>

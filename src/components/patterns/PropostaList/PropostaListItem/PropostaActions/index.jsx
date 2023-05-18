@@ -26,7 +26,7 @@ export default function PropostaActions({ proposta }) {
       ...propostaAtual,
       versaoProposta: await propostaService.getNextVersion(proposta.numeroProposta),
       id: undefined,
-      status: propostaAtual.status === 'aprovada' ? 'aprovada' : propostaAtual.status,
+      status: propostaAtual.status === 'aprovada' ? 'aberta' : propostaAtual.status,
       contrato: '',
     };
     await saveProposta(novaProposta);
