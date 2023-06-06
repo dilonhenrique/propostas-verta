@@ -63,7 +63,7 @@ function* assinarPropostaWorker() {
     }))
     
     yield put(setSigning({ mensagem: 'Assinatura efetuada com sucesso!', porcentagem: 100 }));
-    throw new Error('exemplo de erro');
+    // throw new Error('exemplo de erro');
 
   } catch (err) {
     yield put(setSigning({ mensagem: 'Ops! Algo deu errado.', porcentagem: 100, error: true }));
