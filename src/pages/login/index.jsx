@@ -1,29 +1,18 @@
 import styles from '@/styles/Login.module.scss';
 import PageTitle from '@/components/elements/PageTitle';
-import React, { useEffect, useState } from 'react';
-import { Alert, Button, CircularProgress, Snackbar, TextField } from '@mui/material';
+import React, { useState } from 'react';
+import { Alert, Button, CircularProgress, TextField } from '@mui/material';
 import { FiArrowRight } from 'react-icons/fi';
 import { useAnimate } from 'framer-motion';
 import { useRouter } from 'next/router';
 import authService from '@/commom/service/authService';
 import { closeSnackbar, enqueueSnackbar } from 'notistack';
-import { useDispatch } from 'react-redux';
 
 export default function Login() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [scope, animate] = useAnimate();
   const errorStatus = router.query.error;
-
-  const dispatch = useDispatch();
-  useEffect(() => {
-    async function validateSession() {
-      if(await authService.isLogged()){
-        router.push('/');
-      }
-    }
-    validateSession();
-  }, [router, dispatch])
 
   async function submit(evento) {
     evento.preventDefault();
@@ -75,4 +64,20 @@ export default function Login() {
       </main>
     </>
   )
+}
+
+//Decorator pattern
+export const getServerSideProps = async (ctx) => {
+  if (await authService.isLogged(ctx)) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/'
+      }
+    }
+  }
+
+  return {
+    props: {}
+  }
 }

@@ -1,7 +1,24 @@
+const controllers = {
+  GET: async (req, res) => {
+
+  },
+  POST: async (req, res) => {
+
+  },
+}
+
 export default async function handler(req, res) {
   const url = process.env.AS_URL;
   const key = process.env.AS_KEY;
-  const params = req.query.params;
+  const query = req.query;
+  const { params, email } = query;
+  delete query.params;
+
+  // if(controllers[req.method]) return controllers[req.method](req,res);
+
+  if(req.method === 'GET'){
+    if(!email && !params.includes('cities')) return res.status(200).json({ ok: true, data: [] })
+  }
 
   const options = {
     method: req.method,
@@ -10,11 +27,23 @@ export default async function handler(req, res) {
       'access_token': key
     }
   }
-  if (req.method !== 'GET'){
+  if (req.method === 'POST' || req.method === 'PUT') {
     options.body = typeof req.body === 'object' ? JSON.stringify(req.body) : req.body
   }
 
-  fetch(`${url}${params.join('/')}`, options)
+  function urlConstructor() {
+    let fetchUrl = `${url}${params.join('/')}`;
+    if (Object.keys(query).length !== 0 && query.constructor === Object) {
+      fetchUrl += '?';
+      for (let key in query) {
+        fetchUrl += `${key}=${query[key]}&`;
+      }
+    }
+
+    return fetchUrl;
+  }
+
+  fetch(urlConstructor(), options)
     .then(async response => {
       const data = await response.json();
       return {
@@ -22,6 +51,6 @@ export default async function handler(req, res) {
         data
       }
     })
-    .then(response => res.status(response.status).json(response.data))
-    .catch(erro => res.status(erro.status))
+    .then(response => (res.status(response.status).json(response.data)))
+    .catch(erro => (res.status(erro.status).json(erro.data)))
 }

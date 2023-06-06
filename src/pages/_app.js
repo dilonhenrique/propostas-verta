@@ -1,15 +1,16 @@
 import 'normalize.css/normalize.css';
 import '@/styles/globals.scss';
-import { verta } from '@/theme/theme';
+import '@/styles/nprogress.css';
+import { Provider } from 'react-redux';
 import { ThemeProvider } from '@mui/material';
-import { Provider } from 'react-redux'
 import { SnackbarProvider } from 'notistack';
 import store from '@/store';
+import { useEffect } from "react";
+import { verta } from '@/theme/theme';
 import { Loader } from '@/components/patterns/Loader';
 import NProgress from "nprogress";
 import Router from "next/router";
-import { useEffect } from "react";
-import '@/styles/nprogress.css';
+
 
 
 export default function App({ Component, pageProps }) {

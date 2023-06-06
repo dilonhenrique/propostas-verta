@@ -1,4 +1,6 @@
 export default async function handler(req, res) {
+  if(req.method === 'GET') return res.status(200).json({ ok: true, data: [] })
+
   const url = process.env.CU_URL;
   const spaceUrl = '/space/90070088088/' // Projetos: 453254 || Teste Api: 90070088088
   // esta variavel será usada somente nas funções padrão de criação de tarefas, pastas, etc
@@ -12,7 +14,7 @@ export default async function handler(req, res) {
       'Authorization': key
     }
   }
-  if (req.method !== 'GET'){
+  if (req.method === 'POST' || req.method === 'PUT'){
     options.body = typeof req.body === 'object' ? JSON.stringify(req.body) : req.body
   }
 

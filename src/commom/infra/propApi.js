@@ -9,10 +9,10 @@ export const propApi = axios.create({
   headers: {
     'Content-Type': 'application/json',
   }
-})
+});
 
 export async function propApiAuth(fetchUrl, fetchOptions) {
-  const { ctx } = fetchOptions
+  const { ctx } = fetchOptions;
   const accessTokenAtual = fetchOptions?.access_token || tokenService.getAccess(ctx);
 
   const options = {
@@ -66,7 +66,7 @@ export async function propApiAuth(fetchUrl, fetchOptions) {
       }
     } catch (err) {
       console.log('Final error:', err)
-      throw new Error(err.message)
+      throw new Error(err)
     }
   }
 }

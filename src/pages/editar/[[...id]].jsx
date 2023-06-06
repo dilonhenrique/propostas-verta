@@ -14,6 +14,7 @@ import { updateProposta } from '@/store/reducers/propostaAtual';
 import ProjectLoading from '@/components/sections/ProjectLoading';
 import { useLeavePageConfirmation } from '@/commom/hooks/useLeavePageConfirmation';
 import { AnimatePresence } from 'framer-motion';
+import { Slide } from '@mui/material';
 
 export default function Editar(props) {
   const dispatch = useDispatch();
@@ -59,10 +60,9 @@ export default function Editar(props) {
         <ProjectHeader />
         <ProjectBody />
       </main>
-      <AnimatePresence>
-        {!isLoading &&
-          <QuickView key='quickview' />}
-      </AnimatePresence>
+      <Slide direction="up" in={!isLoading} mountOnEnter unmountOnExit>
+        <QuickView key='quickview' />
+      </Slide>
     </>
   )
 }
@@ -71,6 +71,7 @@ export default function Editar(props) {
 export const getServerSideProps = withSession(async (ctx) => {
   const session = ctx.req.session;
   // const [id] = ctx.params.id || [undefined];
+  //------------NAO COLOCAR ACCESS TOKEN NA SESSION, MAS NO ctx.req.cookies----------------------
   // const access_token = session.isRefreshed ? session.access_token : ctx.req.cookies['atPropV'];
 
   // try {

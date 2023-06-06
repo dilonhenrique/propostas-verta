@@ -1,4 +1,4 @@
-import { propApiAuth } from '../infra/propApi';
+import { propApi, propApiAuth } from '../infra/propApi';
 import { tokenService } from './tokenService';
 import translateJsToDb from '../utils/translateJsToDb';
 import Router from 'next/router';
@@ -165,7 +165,7 @@ const propostaService = {
 
   changeStatus: async (proposta, newStatus) => {
     const access_token = tokenService.getAccess();
-    if(proposta.status === newStatus) return;
+    // if(proposta.status === newStatus) return;
 
     const response = await propApiAuth(`propostas/${proposta.id}`, {
       access_token,
@@ -175,9 +175,10 @@ const propostaService = {
 
     if (response.affectedRows) {
       //muda o estado das versoes alternativas
-      const { listaPropostas } = store.getState();
-      const [{ versoes }] = listaPropostas.data.filter(prop => prop.numeroProposta === proposta.numeroProposta);
-      const versoesAlt = versoes.filter(prop => prop.versaoProposta !== proposta.versaoProposta);
+      const novaLista = await propApi(`propostas?numeroProposta='${proposta.numeroProposta}'`);
+      const lista = novaLista.data;
+      const versoesAlt = lista.filter(prop => prop.numeroProposta === proposta.numeroProposta && prop.versaoProposta !== proposta.versaoProposta);
+
       //se mudar PARA aprovada
       if(newStatus === 'aprovada'){
         versoesAlt.forEach(async versao => {
@@ -189,6 +190,7 @@ const propostaService = {
             });
         })
       }
+
       //se mudar DE aprovada
       if(proposta.status === 'aprovada'){
         versoesAlt.forEach(async versao => {
@@ -205,7 +207,10 @@ const propostaService = {
       store.dispatch(updateListaProposta());
     }
 
-    return response;
+    return {
+      ...response,
+      proposta,
+    };
   },
 }
 

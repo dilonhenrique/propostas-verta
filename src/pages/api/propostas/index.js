@@ -25,9 +25,35 @@ export function translateDbToJs(prop) {
 }
 
 const controllers = {
+  getAllSimplePropostas: async (req, res) => {
+    let query;
+    if(req.query.versaoProposta){
+      query = `SELECT * FROM proposta WHERE excluido = 0 AND numeroProposta = ${req.query.numeroProposta} AND versaoProposta = ${req.query.versaoProposta} AND cliente = ${req.query.cliente}`;
+    } else {
+      query = `SELECT * FROM proposta WHERE excluido = 0 AND numeroProposta = ${req.query.numeroProposta}`;      
+    }
+
+    try {
+      const results = await executeQuery({
+        query,
+      });
+
+      if (results.length > 0) {
+        const formatedResult = results.map(prop => {
+          return translateDbToJs(prop);
+        })
+        res.status(200).json(formatedResult);
+      } else {
+        res.status(404).json({ message: 'Nenhuma proposta encontrada' });
+      }
+
+    } catch (error) {
+      res.status(500).json({ message: 'Ops! Algo deu errado' });
+    }
+  },
+
   getAllPropostas: async (req, res) => {
     const query = 'SELECT * FROM proposta WHERE excluido = 0';
-
 
     try {
       const results = await executeQuery({
@@ -93,9 +119,18 @@ const controllerBy = {
   POST: controllers.saveNewProposta,
 }
 
-export default async function handler(req, res) {
-  if (!await authService.isAuthenticated(req)) return res.status(401).json({ message: 'Not authorized' });
-  if (controllerBy[req.method]) return controllerBy[req.method](req, res);
+const simpleControllerBy = {
+  GET: controllers.getAllSimplePropostas,
+}
 
-  res.status(404).json({ message: 'Not found' });
+export default async function handler(req, res) {
+  if (await authService.isAuthenticated(req)) {
+    if (controllerBy[req.method]) return controllerBy[req.method](req, res);
+
+    res.status(404).json({ message: 'Not found' });
+  } else {
+    if (simpleControllerBy[req.method]) return simpleControllerBy[req.method](req, res);
+
+    return res.status(401).json({ message: 'Not authorized' });
+  }
 }

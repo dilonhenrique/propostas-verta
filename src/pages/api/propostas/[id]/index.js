@@ -89,9 +89,18 @@ const controllerBy = {
   DELETE: controllers.deletePropostaById,
 }
 
-export default async function handler(req, res) {
-  if (!await authService.isAuthenticated(req)) return res.status(401).json({ message: 'Not authorized' });
-  if (controllerBy[req.method]) return controllerBy[req.method](req, res);
+const controllerSimpleBy = {
+  POST: controllers.savePropostaById,
+}
 
-  res.status(404).json({ message: 'Not found' });
+export default async function handler(req, res) {
+  if (await authService.isAuthenticated(req)){
+    if (controllerBy[req.method]) return controllerBy[req.method](req, res);
+  
+    return res.status(404).json({ message: 'Not found' });
+  } else {
+    if (controllerSimpleBy[req.method] && req.body?.status) return controllerSimpleBy[req.method](req, res);
+
+    return res.status(401).json({ message: 'Not authorized' });
+  }
 }

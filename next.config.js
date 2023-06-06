@@ -13,6 +13,7 @@ const nextConfig = {
     MYSQL_PASSWORD: process.env.MYSQL_PASSWORD,
     ACCESSTOKEN_SECRET: process.env.ACCESSTOKEN_SECRET,
     REFRESHTOKEN_SECRET: process.env.REFRESHTOKEN_SECRET,
+    MAIL_PASS: process.env.MAIL_PASS,
   }
 }
 

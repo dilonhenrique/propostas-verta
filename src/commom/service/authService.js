@@ -25,7 +25,7 @@ const authService = {
 
   isLogged: async (ctx = null) => {
     if(tokenService.getAccess(ctx) === '') return false;
-    return await authService.getSession()
+    return await authService.getSession(ctx)
       .then(res => {
         return true;
       })
