@@ -10,7 +10,7 @@ export const verta = createTheme(
       }
     },
     typography: {
-      fontFamily: 'Montserrat, sans-serif'
+      fontFamily: 'Montserrat, sans-serif',
     },
     components: {
       MuiButton: {
