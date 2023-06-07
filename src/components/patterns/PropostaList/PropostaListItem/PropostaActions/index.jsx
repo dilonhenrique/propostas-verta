@@ -1,5 +1,5 @@
 import propostaService from '@/commom/service/propostaService';
-import { CircularProgress, Divider, IconButton, ListItemIcon, Menu, MenuItem } from '@mui/material'
+import { CircularProgress, Divider, IconButton, Link, ListItemIcon, Menu, MenuItem } from '@mui/material'
 import React, { useState } from 'react'
 import { SlOptions } from 'react-icons/sl'
 import { TbCopy, TbFileCheck, TbSquaresDiagonal, TbTrash } from 'react-icons/tb'
@@ -13,12 +13,12 @@ export default function PropostaActions({ proposta }) {
   const closeMenu = () => {
     setAnchorEl(null);
   };
-  
+
   async function saveProposta(propostaAtual) {
     await propostaService.saveProposta(propostaAtual);
     setLoading(false);
   }
-  async function versionar(){
+  async function versionar() {
     closeMenu();
     setLoading(true);
     const propostaAtual = await propostaService.getSingleProposta(proposta.id);
@@ -31,7 +31,7 @@ export default function PropostaActions({ proposta }) {
     };
     await saveProposta(novaProposta);
   }
-  async function clonar(){
+  async function clonar() {
     closeMenu();
     setLoading(true);
     const propostaAtual = await propostaService.getSingleProposta(proposta.id);
@@ -45,7 +45,7 @@ export default function PropostaActions({ proposta }) {
     };
     await saveProposta(novaProposta);
   }
-  async function excluir(){
+  async function excluir() {
     closeMenu();
     setLoading(true);
     await propostaService.deleteProposta(proposta.id);
@@ -71,7 +71,12 @@ export default function PropostaActions({ proposta }) {
         open={Boolean(anchorEl)}
         onClose={closeMenu}
       >
-        <MenuItem disabled onClick={() => {}}>
+        <MenuItem
+          onClick={closeMenu}
+          href={`/assinar/?n=${proposta.numeroProposta}.${proposta.versaoProposta}&c=${proposta.cliente}`}
+          component={Link}
+          disabled={proposta.status === 'aprovada' || proposta.status === 'aprovada*'}
+        >
           <ListItemIcon>
             <TbFileCheck size={20} />
           </ListItemIcon>

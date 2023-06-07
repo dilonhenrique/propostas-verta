@@ -17,10 +17,10 @@ const iconStyle = {
 }
 
 function Navbar() {
-  const { mode, id, darkMode } = useSelector(state => {
+  const { mode, propostaAtual, darkMode } = useSelector(state => {
     return {
       mode: state.globalStatus.mode,
-      id: state.propostaAtual.data.id,
+      propostaAtual: state.propostaAtual.data,
       darkMode: state.globalStatus.darkMode,
     }
   });
@@ -32,12 +32,18 @@ function Navbar() {
     </>,
     edit: <>
       <SaveButton iconStyle={iconStyle} />
-      <Button href={`/exportar/${id}`} startIcon={<TbFileExport {...iconStyle} />}><p>Exportar</p></Button>
-      <Button disabled startIcon={<TbFileCheck {...iconStyle} />}><p>Assinar</p></Button>
+      <Button href={`/exportar/${propostaAtual.id}`} startIcon={<TbFileExport {...iconStyle} />}><p>Exportar</p></Button>
+      <Button
+        href={`/assinar/?n=${propostaAtual.numeroProposta}.${propostaAtual.versaoProposta}&c=${propostaAtual.cliente}`}
+        startIcon={<TbFileCheck {...iconStyle} />}
+        disabled={propostaAtual.status === 'aprovada' || propostaAtual.status === 'aprovada*'}
+      >
+        <p>Assinar</p>
+      </Button>
     </>,
     deleted: <>
       <small style={{ color: '#eaa8a8' }}>Proposta deletada! </small>
-      <Button onClick={() => { propostaService.undeleteProposta(id) }} startIcon={<TbTrashOff {...iconStyle} />}><p>Restaurar?</p></Button>
+      <Button onClick={() => { propostaService.undeleteProposta(propostaAtual.id) }} startIcon={<TbTrashOff {...iconStyle} />}><p>Restaurar?</p></Button>
     </>,
     neutral: <></>,
   }
