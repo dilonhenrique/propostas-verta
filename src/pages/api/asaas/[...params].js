@@ -16,8 +16,8 @@ export default async function handler(req, res) {
 
   // if(controllers[req.method]) return controllers[req.method](req,res);
 
-  if(req.method === 'GET'){
-    if(!email && !params.includes('cities')) return res.status(200).json({ ok: true, data: [] })
+  if (req.method === 'GET') {
+    if (!email && !params.includes('cities')) return res.status(200).json({ ok: true, data: [] })
   }
 
   const options = {
@@ -43,14 +43,11 @@ export default async function handler(req, res) {
     return fetchUrl;
   }
 
-  fetch(urlConstructor(), options)
-    .then(async response => {
-      const data = await response.json();
-      return {
-        status: response.status,
-        data
-      }
-    })
-    .then(response => (res.status(response.status).json(response.data)))
-    .catch(erro => (res.status(erro.status).json(erro.data)))
+  try {
+    const conexao = await fetch(urlConstructor(), options);
+    const response = await conexao.json();
+    res.status(conexao.status).json(response);
+  } catch (err) {
+    res.status(500).json({ message: 'Ops! Algo deu errado', data: err });
+  }
 }
