@@ -7,7 +7,15 @@ export const verta = createTheme(
     palette: {
       primary: {
         main: '#8D47FF'
-      }
+      },
+      success: {
+        main: '#46b66c',
+        contrastText: '#FFFFFF',
+      },
+      info: {
+        main: '#369def',
+        contrastText: '#FFFFFF',
+      },
     },
     typography: {
       fontFamily: 'Montserrat, sans-serif',
