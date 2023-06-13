@@ -1,0 +1,19 @@
+.newUserContainer {
+  :global {
+    .container {
+      align-items: center;
+    }
+    .row {
+      flex-direction: column;
+      width: 100%;
+      max-width: 500px;
+      padding-top: 3rem;
+    }
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+}

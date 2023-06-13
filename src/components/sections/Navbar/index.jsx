@@ -11,12 +11,15 @@ import SearchBar from '@/components/elements/SearchBar';
 import { Alert, Avatar, ButtonBase, Divider, IconButton, ListItemIcon, Menu, MenuItem, ThemeProvider } from '@mui/material';
 import propostaService from '@/commom/service/propostaService';
 import { dark } from '@/theme/theme';
+import { tokenService } from '@/commom/service/tokenService';
+import { useRouter } from 'next/router';
 
 const iconStyle = {
   size: 18
 }
 
 function Navbar() {
+  const router = useRouter();
   const { mode, propostaAtual, darkMode } = useSelector(state => {
     return {
       mode: state.globalStatus.mode,
@@ -55,6 +58,12 @@ function Navbar() {
   const closeMenu = () => {
     setAnchorEl(null);
   };
+
+  async function logout (){
+    closeMenu();
+    await tokenService.delete();
+    router.push('/login');
+  }
 
   return (
     <ThemeProvider theme={dark}>
@@ -96,7 +105,7 @@ function Navbar() {
           </ListItemIcon>
           Meu perfil
         </MenuItem>
-        <MenuItem onClick={closeMenu} href="/" disabled component={Link}>
+        <MenuItem onClick={closeMenu} href="/usuarios/novo" component={Link}>
           <ListItemIcon>
             <TbUserPlus {...iconStyle} />
           </ListItemIcon>
@@ -113,7 +122,7 @@ function Navbar() {
               : 'Dark mode'}
         </MenuItem>
         <Divider />
-        <MenuItem disabled onClick={closeMenu}>
+        <MenuItem onClick={logout}>
           <ListItemIcon>
             <TbLogout {...iconStyle} />
           </ListItemIcon>

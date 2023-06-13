@@ -82,16 +82,17 @@ const propostaService = {
   saveProposta: async (proposta) => {
     const access_token = tokenService.getAccess();
     //criando fases temporatiamente
-    const propostaTratada = translateJsToDb(createFases(proposta));
-    delete propostaTratada.id;
+    // const propostaTratada = translateJsToDb(createFases(proposta));
+    // delete propostaTratada.id;
     const id = proposta.id || '';
+    delete proposta.id;
 
     try {
       propostaDispatcher.setPropostaSaved();
       const response = await propApiAuth(`propostas/${id}`, {
         access_token,
         method: 'POST',
-        data: JSON.stringify(propostaTratada),
+        data: JSON.stringify(proposta),
       });
 
       if (response.insertId) {

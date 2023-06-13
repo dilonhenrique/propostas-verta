@@ -1,5 +1,5 @@
 import { authService } from "../authService";
-import {executeQuery} from "../db";
+import { executeQuery } from "../db";
 import bcrypt from 'bcrypt';
 import nookies from 'nookies';
 
