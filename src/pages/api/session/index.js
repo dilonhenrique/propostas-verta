@@ -15,9 +15,10 @@ const controllers = {
 
       res.status(200).json({
         data: {
+          id: user.id,
           nome: user.Nome,
-          email: decodedToken.sub,
-          role: decodedToken.role,
+          email: user.Email,
+          role: user.Role,
         }
       });
     } catch (err) {

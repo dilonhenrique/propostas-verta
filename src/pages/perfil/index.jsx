@@ -6,19 +6,19 @@ import { useEffect } from 'react';
 import { setGlobalValue } from '@/store/reducers/globalStatus';
 import FormEditUser from '@/components/patterns/FormEditUser';
 
-export default function Editar(props) {
+export default function Editar({session}) {
   const dispatch = useDispatch();
-
+  
   useEffect(() => {
     dispatch(setGlobalValue({ key: 'mode', value: 'neutral' }));
   }, [dispatch])
 
   return (
     <>
-      <PageTitle>Cadastrar usuários | Propostas Vertá</PageTitle>
+      <PageTitle>Meu perfil | Propostas Vertá</PageTitle>
       <Navbar />
       <main>
-        <div className='container'>
+      <div className='container'>
           <div className='row' style={{
             alignSelf: 'center',
             flexDirection: 'column',
@@ -26,8 +26,8 @@ export default function Editar(props) {
             maxWidth: '500px',
             paddingTop: '3rem',
           }}>
-            <h1>Cadastrar novo usuário</h1>
-            <FormEditUser />
+            <h1>Editar meu perfil</h1>
+            <FormEditUser usuario={session.data} />
           </div>
         </div>
       </main>
@@ -39,13 +39,9 @@ export default function Editar(props) {
 export const getServerSideProps = withSession(async (ctx) => {
   const session = ctx.req.session;
 
-  if (session?.data?.role === 'admin')
-    return {
-      props: {
-        session,
-      }
-    }
-
   return {
+    props: {
+      session,
+    }
   }
 })

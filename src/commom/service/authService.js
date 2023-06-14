@@ -1,6 +1,8 @@
+import store from "@/store";
 import { propApi, propApiAuth } from "../infra/propApi";
 import { tokenService } from "./tokenService";
 import nookies from 'nookies';
+import { setUser, updateUser } from "@/store/reducers/globalStatus";
 
 const authService = {
   login: async (user, password) => {
@@ -17,10 +19,13 @@ const authService = {
   getSession: async (ctx = null) => {
     const access_token = tokenService.getAccess(ctx);
 
-    return await propApiAuth('session', {
+    const response = await propApiAuth('session', {
       access_token,
       ctx
     })
+    // store.dispatch(setUser(response.data)); //DISPATCH DOESNT WORK IN SERVER SIDE :(
+    
+    return response;
   },
 
   isLogged: async (ctx = null) => {

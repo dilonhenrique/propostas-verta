@@ -33,15 +33,15 @@ const controllers = {
       if (data.hasOwnProperty(key)) {
         let val = data[key];
         if (Array.isArray(val)) {
-          data[key] = JSON.stringify(val);
+          val = JSON.stringify(val);
         }
         if (val === false || val === true) {
-          data[key] = Number(val);
+          val = Number(val);
         }
         if (key === 'password' || key === 'senha' || key === 'Senha') {
-          data[key] = await hashPass(data[key]);
+          val = await hashPass(val);
         }
-        keyval.push(key + " = '" + data[key] + "'");
+        keyval.push(key + " = '" + val + "'");
       }
     }
 

@@ -38,12 +38,12 @@ const controllers = {
           val = Number(val);
         }
         if (key === 'password' || key === 'senha' || key === 'Senha') {
-          data[key] = await hashPass(data[key]);
+          val = await hashPass(val);
         }
         keyval.push(key + " = '" + val + "'");
       }
     }
-
+    
     const updated = keyval.join(", ");
     const query = `UPDATE usuarios SET ${updated} WHERE id = ${id}`;
 

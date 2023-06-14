@@ -10,16 +10,25 @@ import { verta } from '@/theme/theme';
 import { Loader } from '@/components/patterns/Loader';
 import NProgress from "nprogress";
 import Router from "next/router";
-
+import { setUser } from '@/store/reducers/globalStatus';
 
 
 export default function App({ Component, pageProps }) {
+
+  //LOADER SHOWS UP WHEN THE ROUTER OF NEXT ACTIVATE
   NProgress.configure({ showSpinner: false });
   useEffect(() => {
     Router.events.on("routeChangeStart", () => NProgress.start());
     Router.events.on("routeChangeComplete", () => NProgress.done());
     Router.events.on("routeChangeError", () => NProgress.done());
   }, []);
+
+  //UPDATE USER DATA IN THE STORE WHEN THE SESSION DATA CHANGES
+  useEffect(() => {
+    if(pageProps?.session?.data){
+      store.dispatch(setUser({...pageProps.session.data}))
+    }
+  },[pageProps?.session?.data])
 
   return (
     <Provider store={store}>

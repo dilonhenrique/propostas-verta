@@ -40,16 +40,17 @@ const userService = {
 
       if (response.affectedRows) {
         enqueueSnackbar('Usuário salvo com sucesso!', { variant: 'success' })
-        return response;
+        return { ...response, ok: true };
       } else if (response.data.emailExists) {
         enqueueSnackbar('Este email já está cadastrado', { variant: 'error' });
+        return { ...response, ok: false };
       } else {
         throw Error(response)
       }
     } catch (err) {
       console.log(err)
       enqueueSnackbar('Ops! Erro ao salvar', { variant: 'error' });
-      return err;
+      return { ...err, ok: false };
     }
   },
 

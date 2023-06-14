@@ -41,7 +41,7 @@ export default function Login() {
             <p>Faça login para continuar</p>
             <form onSubmit={submit}>
               <TextField variant='outlined' label='email' type='email' name='email' required defaultValue='dilon@dilon.com.br' />
-              <TextField variant='outlined' label='senha' type='password' name='password' required defaultValue='passwordboladão' />
+              <TextField variant='outlined' label='senha' type='password' name='password' required defaultValue='123456' />
               <Button type='submit' size='large' variant='contained' sx={{ height: 40 }}>
                 {loading
                   ?

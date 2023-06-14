@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router';
 import authService from "./authService";
+import store from '@/store';
+import { setUser } from '@/store/reducers/globalStatus';
 
+//server side
 export default function withSession(funcao) {
   return async (ctx) => {
     try {
@@ -49,6 +52,7 @@ export function useSession() {
   }
 }
 
+//client side
 export function withSessionHOC(Component) {
   return function Wrapper(props) {
     const router = useRouter();

@@ -1,9 +1,20 @@
-import { createSlice } from "@reduxjs/toolkit";
+import authService from "@/commom/service/authService";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+
+export const updateUser = createAsyncThunk('globalStatus/update', async (ctx = null) => {
+  try {
+    const session = await authService.getSession(ctx);
+    return session.data;
+  } catch(err){
+    throw new Error(err)
+  }
+})
 
 const initialState = {
   loading: false,
   mode: 'neutral',
   darkMode: false,
+  user: {},
 }
 
 const globalStatusSlice = createSlice({
@@ -17,7 +28,7 @@ const globalStatusSlice = createSlice({
       }
     },
     changeLoading: (state, { payload }) => {
-      if(typeof payload === "boolean"){
+      if (typeof payload === "boolean") {
         state.loading = payload
       } else {
         state.loading = !state.loading
@@ -26,8 +37,22 @@ const globalStatusSlice = createSlice({
     setDarkMode: (state, { payload }) => {
       state.darkMode = !state.darkMode
     },
+    setUser: (state, { payload }) => {
+      state.user = payload;
+    },
+  },
+  extraReducers(builder) {
+    builder
+      .addCase(updateUser.fulfilled,
+        (state, { payload }) => {
+          state.user = payload;
+        })
+      .addCase(updateUser.rejected,
+        (state, { payload }) => {
+          console.log(payload);
+        })
   }
 })
 
-export const { setGlobalValue, changeLoading, setDarkMode } = globalStatusSlice.actions;
+export const { setGlobalValue, changeLoading, setDarkMode, setUser } = globalStatusSlice.actions;
 export default globalStatusSlice.reducer;

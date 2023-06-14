@@ -20,11 +20,12 @@ const iconStyle = {
 
 function Navbar() {
   const router = useRouter();
-  const { mode, propostaAtual, darkMode } = useSelector(state => {
+  const { mode, propostaAtual, darkMode, user } = useSelector(state => {
     return {
       mode: state.globalStatus.mode,
       propostaAtual: state.propostaAtual.data,
       darkMode: state.globalStatus.darkMode,
+      user: state.globalStatus.user,
     }
   });
 
@@ -99,18 +100,19 @@ function Navbar() {
           </ListItemIcon>
           Lista de propostas
         </MenuItem>
-        <MenuItem onClick={closeMenu} href="/" disabled component={Link}>
+        <MenuItem onClick={closeMenu} href="/perfil" component={Link}>
           <ListItemIcon>
             <TbUserCircle {...iconStyle} />
           </ListItemIcon>
           Meu perfil
         </MenuItem>
+        {user.role === 'admin' &&
         <MenuItem onClick={closeMenu} href="/usuarios/novo" component={Link}>
           <ListItemIcon>
             <TbUserPlus {...iconStyle} />
           </ListItemIcon>
           Cadastrar usuário
-        </MenuItem>
+        </MenuItem>}
         <MenuItem onClick={closeMenu} disabled>
           <ListItemIcon>
             {darkMode
