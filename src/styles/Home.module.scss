@@ -2,6 +2,7 @@
 
 $sobreposicao: 6rem;
 
+
 .listHeader {
   background-color: $color-black;
   color: $color-primary;
@@ -10,9 +11,20 @@ $sobreposicao: 6rem;
 
 .listContainer {
   margin-top: -$sobreposicao;
+}
 
-  @media (max-width: $bp-md){
+@media (max-width: $bp-md) {
+  .container {
+    padding: 0;
+  }
+
+  .listContainer {
     overflow: auto;
+
+    > ul {
+      margin-left: 2rem;
+      margin-right: 2rem;
+    }
   }
 }
 
@@ -29,7 +41,7 @@ $sobreposicao: 6rem;
 }
 
 .nested {
-  background-image: linear-gradient(0.25turn,#FAFAFA,#FFFFFF 25%);
+  background-image: linear-gradient(0.25turn, #FAFAFA, #FFFFFF 25%);
 }
 
 .link {

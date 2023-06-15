@@ -31,7 +31,7 @@ export default function Home(props) {
         </div>
       </div>
       <main style={{ backgroundColor: '#f2f2f2' }}>
-        <div className='containerXl'>
+        <div className={`containerXl ${styles.container}`}>
           <PropostaList />
         </div>
         <FloatingActions />
