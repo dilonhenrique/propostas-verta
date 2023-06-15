@@ -5,12 +5,12 @@ import styles from './EditUser.module.scss';
 import { useState } from 'react';
 import userService from '@/commom/service/userService';
 import { useRouter } from 'next/router';
-import authService from '@/commom/service/authService';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUser } from '@/store/reducers/globalStatus';
 import ConfirmationDialog from '../ConfirmationDialog';
 
 export default function FormEditUser({ usuario }) {
+  
   const { user } = useSelector(state => state.globalStatus);
   const router = useRouter();
   const dispatch = useDispatch();
@@ -103,8 +103,12 @@ export default function FormEditUser({ usuario }) {
     setLoading(true);
     const response = await userService.saveUser(novoUsuario);
     if (response.ok) {
-      //update user data in the store
-      dispatch(updateUser());
+      if (router.pathname === '/usuarios') {
+        router.reload();
+      } else {
+        //update user data in the store
+        dispatch(updateUser());
+      }
     }
     setLoading(false);
   }
