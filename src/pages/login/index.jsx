@@ -40,8 +40,8 @@ export default function Login() {
             <h1>Área restrita</h1>
             <p>Faça login para continuar</p>
             <form onSubmit={submit}>
-              <TextField variant='outlined' label='email' type='email' name='email' required defaultValue='dilon@dilon.com.br' />
-              <TextField variant='outlined' label='senha' type='password' name='password' required defaultValue='123456' />
+              <TextField variant='outlined' label='email' type='email' name='email' required />
+              <TextField variant='outlined' label='senha' type='password' name='password' required />
               <Button type='submit' size='large' variant='contained' sx={{ height: 40 }}>
                 {loading
                   ?

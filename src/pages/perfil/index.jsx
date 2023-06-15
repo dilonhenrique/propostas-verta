@@ -1,3 +1,4 @@
+import styles from '@/styles/User.module.scss';
 import PageTitle from '@/components/elements/PageTitle';
 import { useDispatch } from "react-redux";
 import withSession from '@/commom/service/session';
@@ -18,15 +19,9 @@ export default function Editar({ session }) {
     <>
       <PageTitle>Meu perfil | Propostas Vertá</PageTitle>
       <Navbar />
-      <main style={{ backgroundColor: '#f2f2f2' }}>
+      <main className={styles.userMain}>
         <div className='container'>
-          <div className='row' style={{
-            alignSelf: 'center',
-            flexDirection: 'column',
-            width: '100%',
-            maxWidth: '500px',
-            padding: '3rem 0',
-          }}>
+          <div className='row'>
             <h1>Editar meu perfil</h1>
             <Paper sx={{padding:'2rem'}} elevation={4}>
               <FormEditUser usuario={session.data} />

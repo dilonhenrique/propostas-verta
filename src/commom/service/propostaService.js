@@ -85,14 +85,15 @@ const propostaService = {
     // const propostaTratada = translateJsToDb(createFases(proposta));
     // delete propostaTratada.id;
     const id = proposta.id || '';
-    delete proposta.id;
+    const novaProposta = { ...proposta };
+    delete novaProposta.id;
 
     try {
       propostaDispatcher.setPropostaSaved();
       const response = await propApiAuth(`propostas/${id}`, {
         access_token,
         method: 'POST',
-        data: JSON.stringify(proposta),
+        data: JSON.stringify(novaProposta),
       });
 
       if (response.insertId) {
@@ -181,9 +182,9 @@ const propostaService = {
       const versoesAlt = lista.filter(prop => prop.numeroProposta === proposta.numeroProposta && prop.versaoProposta !== proposta.versaoProposta);
 
       //se mudar PARA aprovada
-      if(newStatus === 'aprovada'){
+      if (newStatus === 'aprovada') {
         versoesAlt.forEach(async versao => {
-          if(versao.status !== 'aprovada*')
+          if (versao.status !== 'aprovada*')
             await propApiAuth(`propostas/${versao.id}`, {
               access_token,
               method: 'POST',
@@ -193,9 +194,9 @@ const propostaService = {
       }
 
       //se mudar DE aprovada
-      if(proposta.status === 'aprovada'){
+      if (proposta.status === 'aprovada') {
         versoesAlt.forEach(async versao => {
-          if(versao.status === 'aprovada*')
+          if (versao.status === 'aprovada*')
             await propApiAuth(`propostas/${versao.id}`, {
               access_token,
               method: 'POST',

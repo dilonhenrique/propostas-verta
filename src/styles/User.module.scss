@@ -1,0 +1,11 @@
+.userMain {
+  background-color: #f2f2f2;
+
+  :global(.row) {
+    align-self: center;
+    flex-direction: column;
+    width: 100%;
+    max-width: 500px;
+    padding: 3rem 0;
+  }
+}

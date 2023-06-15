@@ -99,7 +99,8 @@ export default async function handler(req, res) {
   
     return res.status(404).json({ message: 'Not found' });
   } else {
-    if (controllerSimpleBy[req.method] && req.body?.status) return controllerSimpleBy[req.method](req, res);
+    console.log(req.body)
+    if (controllerSimpleBy[req.method] && req.body?.status && req.body.length === 1) return controllerSimpleBy[req.method](req, res);
 
     return res.status(401).json({ message: 'Not authorized' });
   }

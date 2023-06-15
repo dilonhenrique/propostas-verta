@@ -20,9 +20,10 @@ export const authService = {
 
   isAuthenticated: async (req) => {
     const token = getTokenFromHeaders(req);
-    
+
     try {
-      await authService.validateAccessToken(token);
+      const user = await authService.validateAccessToken(token);
+      if (req.method !== 'GET' && user.role === 'viewer') return false;
       return true;
     } catch (err) {
       return false;

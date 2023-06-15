@@ -1,3 +1,4 @@
+import styles from '@/styles/User.module.scss';
 import PageTitle from '@/components/elements/PageTitle';
 import { useDispatch } from "react-redux";
 import withSession from '@/commom/service/session';
@@ -21,15 +22,9 @@ export default function Editar({ usuarios }) {
     <>
       <PageTitle>Gerenciar usuários | Propostas Vertá</PageTitle>
       <Navbar />
-      <main style={{backgroundColor: '#f2f2f2'}}>
+      <main className={styles.userMain}>
         <div className='container'>
-          <div className='row' style={{
-            alignSelf: 'center',
-            flexDirection: 'column',
-            width: '100%',
-            maxWidth: '600px',
-            padding: '3rem 0',
-          }}>
+          <div className='row'>
             <h1>Gerenciar usuários</h1>
             <Paper elevation={4}>
               {users?.map(user => (
@@ -44,7 +39,7 @@ export default function Editar({ usuarios }) {
               ))}
               <Accordion disableGutters sx={{padding:'1rem'}} variant='outlined'>
                   <AccordionSummary>
-                    <Typography variant='h6' color='primary'>+ adicionar</Typography>
+                    <Typography variant='h6' color='primary'>+ adicionar novo</Typography>
                   </AccordionSummary>
                   <AccordionDetails>
                     <FormEditUser />
