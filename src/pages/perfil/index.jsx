@@ -5,10 +5,11 @@ import Navbar from '@/components/sections/Navbar';
 import { useEffect } from 'react';
 import { setGlobalValue } from '@/store/reducers/globalStatus';
 import FormEditUser from '@/components/patterns/FormEditUser';
+import { Paper } from '@mui/material';
 
-export default function Editar({session}) {
+export default function Editar({ session }) {
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
     dispatch(setGlobalValue({ key: 'mode', value: 'neutral' }));
   }, [dispatch])
@@ -17,17 +18,19 @@ export default function Editar({session}) {
     <>
       <PageTitle>Meu perfil | Propostas Vertá</PageTitle>
       <Navbar />
-      <main>
-      <div className='container'>
+      <main style={{ backgroundColor: '#f2f2f2' }}>
+        <div className='container'>
           <div className='row' style={{
             alignSelf: 'center',
             flexDirection: 'column',
             width: '100%',
             maxWidth: '500px',
-            paddingTop: '3rem',
+            padding: '3rem 0',
           }}>
             <h1>Editar meu perfil</h1>
-            <FormEditUser usuario={session.data} />
+            <Paper sx={{padding:'2rem'}} elevation={4}>
+              <FormEditUser usuario={session.data} />
+            </Paper>
           </div>
         </div>
       </main>

@@ -2,7 +2,7 @@
 import Button from '@/components/elements/Button';
 import styles from './Navbar.module.scss';
 
-import { TbFilter, TbFileCheck, TbFileExport, TbHistory, TbTrashOff, TbSquaresDiagonal, TbFileStack, TbUserCircle, TbUserPlus, TbLogout, TbMoon, TbSunHigh, TbSun } from 'react-icons/tb';
+import { TbUsers, TbFilter, TbFileCheck, TbFileExport, TbHistory, TbTrashOff, TbSquaresDiagonal, TbFileStack, TbUserCircle, TbUserPlus, TbLogout, TbMoon, TbSunHigh, TbSun } from 'react-icons/tb';
 import SaveButton from '@/components/elements/SaveButton';
 import { memo, useState } from 'react';
 import Link from 'next/link';
@@ -107,11 +107,11 @@ function Navbar() {
           Meu perfil
         </MenuItem>
         {user.role === 'admin' &&
-        <MenuItem onClick={closeMenu} href="/usuarios/novo" component={Link}>
+        <MenuItem onClick={closeMenu} href="/usuarios" component={Link}>
           <ListItemIcon>
-            <TbUserPlus {...iconStyle} />
+            <TbUsers {...iconStyle} />
           </ListItemIcon>
-          Cadastrar usuário
+          Gerenciar usuários
         </MenuItem>}
         <MenuItem onClick={closeMenu} disabled>
           <ListItemIcon>

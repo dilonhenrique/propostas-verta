@@ -57,7 +57,7 @@ const userService = {
   deleteUser: async (id) => {
     try {
       const access_token = tokenService.getAccess();
-      const response = await propApiAuth(`propostas/${id}`, {
+      const response = await propApiAuth(`usuarios/${id}`, {
         access_token,
         method: 'DELETE',
       });

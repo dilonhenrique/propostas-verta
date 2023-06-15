@@ -1,5 +1,5 @@
 import React from 'react';
-import { CircularProgress, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import { CircularProgress, FormControl, InputLabel, MenuItem, Select, Stack, TextField } from '@mui/material';
 import Button from '@/components/elements/Button';
 import styles from './EditUser.module.scss';
 import { useState } from 'react';
@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import authService from '@/commom/service/authService';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUser } from '@/store/reducers/globalStatus';
+import ConfirmationDialog from '../ConfirmationDialog';
 
 export default function FormEditUser({ usuario }) {
   const { user } = useSelector(state => state.globalStatus);
@@ -15,11 +16,11 @@ export default function FormEditUser({ usuario }) {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState({
-    Nome: usuario?.nome || '',
-    Email: usuario?.email || '',
+    Nome: usuario?.nome || usuario?.Nome || '',
+    Email: usuario?.email || usuario?.Email || '',
     Senha: '',
     SenhaConf: '',
-    Role: usuario?.role || '',
+    Role: usuario?.role || usuario?.Role || '',
   })
   const [error, setError] = useState({
     Nome: '',
@@ -108,6 +109,11 @@ export default function FormEditUser({ usuario }) {
     setLoading(false);
   }
 
+  const [open, setOpen] = useState(false);
+  async function excluirUsuario(id) {
+    await userService.deleteUser(id);
+  }
+
   return (
     <form className={styles.editUserForm} onSubmit={validateForm}>
       <TextField required variant='outlined' {...register('Nome')} label='Nome' inputProps={{ minLength: 3 }} />
@@ -124,7 +130,13 @@ export default function FormEditUser({ usuario }) {
             <MenuItem value='viewer'>Somente visualização</MenuItem>
           </Select>
         </FormControl>}
-      <Button type='submit' variant='contained' sx={{ height: 30 }}>{loading ? <CircularProgress color='inherit' size={20} /> : 'Salvar'}</Button>
+      <Stack direction='row' gap={2} sx={{ justifyContent: 'right' }}>
+        {usuario && usuario.id &&
+          <Button color='error' onClick={() => setOpen(true)}>{usuario?.id === user?.id ? 'Excluir conta' : 'Excluir usuário'}</Button>}
+        <Button type='submit' variant='contained' sx={{ height: 30 }}>{loading ? <CircularProgress color='inherit' size={20} /> : 'Salvar'}</Button>
+      </Stack>
+      {usuario?.id &&
+        <ConfirmationDialog open={open} setOpen={setOpen} action={() => excluirUsuario(usuario.id)} />}
     </form>
   )
 }
