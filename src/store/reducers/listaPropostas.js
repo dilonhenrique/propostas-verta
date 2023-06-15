@@ -17,16 +17,16 @@ const initialState = {
 
 export function prepareList(originalList) {
   let newList = [];
-  originalList.forEach((prop,index,lista) => {
+  originalList.forEach((prop, index, lista) => {
     //primeira ocorrência do numeroProposta
-    if(lista.findIndex(item => item.numeroProposta === prop.numeroProposta) === index){
+    if (lista.findIndex(item => item.numeroProposta === prop.numeroProposta) === index) {
       newList.push({
         numeroProposta: prop.numeroProposta,
-        versoes: [{...prop}],
+        versoes: [{ ...prop }],
       })
     } else {
       const versoesAtual = newList[newList.findIndex(item => item.numeroProposta === prop.numeroProposta)].versoes;
-      versoesAtual.push({...prop});
+      versoesAtual.push({ ...prop });
 
       if (prop.status === 'aprovada') {
         //colocar aprovada em primeiro lugar
@@ -83,8 +83,7 @@ const listaPropostasSlice = createSlice({
       .addCase(updateListaProposta.rejected,
         (state, { payload }) => {
           state.isLoading = false;
-          console.log('Erro ao atualizar lista:',payload)
-          // alert('Erro ao atualizar lista');
+          console.log('Erro ao atualizar lista:', payload)
         })
   }
 })

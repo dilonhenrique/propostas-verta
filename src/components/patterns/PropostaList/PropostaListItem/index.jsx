@@ -18,18 +18,21 @@ export const rowStyle = {
 
 export default function PropostaListItem({ proposta, versoes = [], nested = false }) {
   const [openNested, setOpenNested] = useState(false);
+  const [loadingStatus, setLoadingStatus] = useState(false);
   const versoesAlt = versoes.length <= 1 ? [] : versoes.filter(versao => versao.versaoProposta !== proposta.versaoProposta);
 
   function changeHandler(){
     return async (evento) => {
+      setLoadingStatus(true);
       const value = evento.target.value;
       const response = await propostaService.changeStatus(proposta, value);
+      setLoadingStatus(false);
     }
   }
 
   return (
     <>
-      <motion.div
+      <motion.ul
         initial={{ opacity: 0, height: 0 }}
         animate={{ opacity: 1, height: 'auto' }}
         exit={{ opacity: 0, height: 0 }}
@@ -42,17 +45,17 @@ export default function PropostaListItem({ proposta, versoes = [], nested = fals
             }
           </div>
           <ListItemText secondary={`${proposta.numeroProposta}.${proposta.versaoProposta}`} />
-          <ListItemText secondary={<small>{proposta.categoria}</small>}>
+          <ListItemText secondary={<small>{proposta.categoria}</small>} className='stickyCol'>
             <Link href={`/editar/${proposta.id}`} className={styles.link}>{proposta.nomeProjeto}</Link>
           </ListItemText>
           <ListItemText primary={proposta.cliente} secondary={proposta.marca} />
           <ListItemText secondary={toCurrency(proposta.valorTotal)} />
-          <StatusSelector value={proposta.status} onChange={changeHandler()} />
+          <StatusSelector value={proposta.status} onChange={changeHandler()} isLoading={loadingStatus} />
           <div>
             <PropostaActions proposta={proposta} />
           </div>
         </ListItem>
-      </motion.div>
+      </motion.ul>
 
       <AnimatePresence>
         {versoesAlt.length && openNested

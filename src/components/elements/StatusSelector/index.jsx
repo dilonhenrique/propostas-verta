@@ -1,7 +1,7 @@
 import { Button, FormControl, InputBase, MenuItem, Select, ThemeProvider, createTheme, styled } from '@mui/material'
-import React from 'react'
+import React, { useState } from 'react'
 
-export default function StatusSelector({ onChange, ...props }) {
+export default function StatusSelector({ onChange, isLoading, ...props }) {
 
   if (props.value === 'aprovada*') {
     props.value = 'aprovada';
@@ -28,7 +28,11 @@ export default function StatusSelector({ onChange, ...props }) {
     },
     '.MuiOutlinedInput-notchedOutline': { border: 0 },
     '.MuiSelect-icon': { color: theme.palette[color[props.value]]?.contrastText, },
-    '.MuiInputBase-input': { textOverflow: 'inherit', }
+    '.MuiInputBase-input': { textOverflow: 'inherit', },
+    // '&.loading': {
+    //   width: '2rem',
+    //   '> *': { opacity: 0 }
+    // }
   }))
 
   return (
@@ -38,6 +42,8 @@ export default function StatusSelector({ onChange, ...props }) {
       fullWidth
       variant='outlined'
       size='small'
+      className={isLoading ? 'loading' : ''}
+      disabled={isLoading}
       {...props}
     >
       <MenuItem value='aberta'>Aberta</MenuItem>
