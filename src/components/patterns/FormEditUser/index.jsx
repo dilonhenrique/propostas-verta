@@ -120,9 +120,9 @@ export default function FormEditUser({ usuario }) {
 
   return (
     <form className={styles.editUserForm} onSubmit={validateForm} autoComplete="off">
-      <TextField required variant='outlined' {...register('Nome')} label='Nome' inputProps={{ minLength: 3 }} />
-      <TextField required variant='outlined' {...register('Email')} type='email' label='Email' />
-      <TextField required={!Boolean(usuario?.id)} variant='outlined' {...register('Senha')} type='password' label={!Boolean(usuario?.id) ? 'Senha' : 'Nova senha'} inputProps={{ minLength: 6, maxLength: 20 }} />
+      <TextField required variant='outlined' {...register('Nome')} label='Nome' inputProps={{ minLength: 3 }} autoComplete="off" />
+      <TextField required variant='outlined' {...register('Email')} type='email' label='Email' autoComplete="off" />
+      <TextField required={!Boolean(usuario?.id)} variant='outlined' {...register('Senha')} type='password' label={!Boolean(usuario?.id) ? 'Senha' : 'Nova senha'} inputProps={{ minLength: 6, maxLength: 20 }} autoComplete="new-password" />
       <TextField required={!Boolean(usuario?.id)} variant='outlined' {...register('SenhaConf')} type='password' label='Confirme a senha' inputProps={{ minLength: 6, maxLength: 20 }} />
       {user.role === 'admin' &&
         <FormControl>
