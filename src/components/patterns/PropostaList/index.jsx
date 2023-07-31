@@ -23,7 +23,7 @@ export default function PropostaList() {
         const versoesFiltradas = prop.versoes.filter(versao =>
           Object.keys(versao).some(key => {
             if (pesquisaveis.includes(key))
-              return versao[key].toLowerCase().includes(search.toLowerCase());
+              return versao[key].toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(search.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""));
             return false;
           })
         )
