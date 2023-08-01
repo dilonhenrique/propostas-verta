@@ -1,8 +1,7 @@
 import axios from 'axios';
 import { tokenService } from '../service/tokenService';
 
-// const API_URL = 'http://localhost:3000/api/';
-const API_URL = 'https://propostas.vercel.app/api/';
+const API_URL = process.env.API_URL;
 
 export const propApi = axios.create({
   baseURL: API_URL,
