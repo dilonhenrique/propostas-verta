@@ -10,22 +10,27 @@ const clickupService = {
     let taskLink;
     let parentId;
 
-    for (let item of projeto.escopo) {
-      if (item.tipo === 'fase') {
-        parentId = await clickupService.createList(item, folderId);
-      } else {
-        if (first) {
-          const tarefa = {
-            nome: "Onboarding e cronograma",
-            tempo: 1,
-            pessoas: 1
+    try {
+      for (let item of projeto.escopo) {
+        if (item.tipo === 'fase') {
+          parentId = await clickupService.createList(item, folderId);
+        } else {
+          if (first) {
+            const tarefa = {
+              nome: "Onboarding e cronograma",
+              tempo: 1,
+              pessoas: 1
+            }
+            const firstTaskConn = await clickupService.createTask(tarefa, parentId, first);
+            taskLink = firstTaskConn.url;
+            first = false;
           }
-          const firstTaskConn = await clickupService.createTask(tarefa, parentId, first);
-          taskLink = firstTaskConn.url;
-          first = false;
+          const taskConn = await clickupService.createTask(item, parentId);
         }
-        const taskConn = await clickupService.createTask(item, parentId);
       }
+    } catch(err){
+      clickupService.deleteProject(folderId);
+      throw Error(err);
     }
     return { folderId, taskLink };
   },
@@ -83,11 +88,11 @@ const clickupService = {
   },
 
   createTask: async (tarefa, listId, first) => {
-    if (tarefa.pessoas == "") { tarefa.pessoas = 1 }
+    const pessoas = tarefa.pessoas == '' ? 1 : tarefa.pessoas;
 
     const obj = {
       name: tarefa.nome,
-      time_estimate: parseInt(Number(tarefa.tempo) * Number(tarefa.pessoas)) * 3600000
+      time_estimate: parseInt(Number(tarefa.tempo) * Number(pessoas)) * 3600000
     }
 
     if (first) {

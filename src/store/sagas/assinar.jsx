@@ -66,13 +66,14 @@ function* assinarPropostaWorker() {
     // throw new Error('exemplo de erro');
 
   } catch (err) {
+    console.log(err);
     yield put(setSigning({ mensagem: 'Ops! Algo deu errado.', porcentagem: 100, error: true }));
     const response = yield call(compensation);
   }
 }
 
 function* callAndLog(funcao, params) {
-  const response = yield retry(3, 1000, funcao);
+  const response = yield funcao();
   log.push(response);
   return response;
 }
